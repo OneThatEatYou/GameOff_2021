@@ -232,6 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75b45731343438f4d9d0f90000d86435, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetable: 1
 --- !u!4 &198644826
 Transform:
   m_ObjectHideFlags: 0
@@ -952,8 +953,8 @@ LineRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1968258023
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
@@ -1008,7 +1009,7 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 2
+    textureMode: 1
     shadowBias: 0.5
     generateLightingData: 0
   m_UseWorldSpace: 0
@@ -1020,12 +1021,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 986833986}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_Father: {fileID: 1019051420}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &993963728
 GameObject:
@@ -1057,6 +1058,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75b45731343438f4d9d0f90000d86435, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetable: 1
 --- !u!4 &993963730
 Transform:
   m_ObjectHideFlags: 0
@@ -1127,7 +1129,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bbb7a8cb38a0a14aa26ce48aa724059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  lineObject: {fileID: 986833986}
+  hoveredTarget: {fileID: 0}
+  selectedTarget: {fileID: 0}
+  isHoldingSelect: 0
 --- !u!4 &1019051420
 Transform:
   m_ObjectHideFlags: 0
@@ -1138,9 +1143,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 986833988}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1354850916
 GameObject:
@@ -1246,6 +1252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75b45731343438f4d9d0f90000d86435, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetable: 1
 --- !u!4 &1434554850
 Transform:
   m_ObjectHideFlags: 0
