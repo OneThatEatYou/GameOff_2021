@@ -26,40 +26,37 @@ public class BattleManager : MonoBehaviour
         get { return Camera.main.ScreenToWorldPoint(input.BattleActions.MousePosition.ReadValue<Vector2>()); }
     }
 
-    public GameObject lineObject;
-
     [SerializeField, ReadOnly] private Targetable hoveredTarget;
-    [SerializeField, ReadOnly] private Targetable selectedTarget;
+    [SerializeField, ReadOnly] private CardHolder selectedCard;
+    [SerializeField, ReadOnly] private Vector2 selectOffset;
     [SerializeField, ReadOnly] private bool isHoldingSelect;
 
     private MainInput input;
-    private LineRenderer lineRenderer;
 
     private void Awake()
     {
         input = new MainInput();
-        lineRenderer = lineObject.GetComponent<LineRenderer>();
     }
 
     private void OnEnable()
     {
         input.Enable();
-        input.BattleActions.Select.started += ctx => StartDrawLine();
-        input.BattleActions.Select.canceled += ctx => StopDrawLine();
+        input.BattleActions.Select.started += ctx => StartHoldingSelect();
+        input.BattleActions.Select.canceled += ctx => StopHoldingSelect();
     }
 
     private void OnDisable()
     {
         input.Disable();
-        input.BattleActions.Select.started -= ctx => StartDrawLine();
-        input.BattleActions.Select.canceled -= ctx => StopDrawLine();
+        input.BattleActions.Select.started -= ctx => StartHoldingSelect();
+        input.BattleActions.Select.canceled -= ctx => StopHoldingSelect();
     }
 
     private void Update()
     {
         if (isHoldingSelect)
         {
-            UpdateDrawLine();
+            WhileHoldingSelect();
         }
     }
 
@@ -68,31 +65,33 @@ public class BattleManager : MonoBehaviour
         hoveredTarget = targetable;
     }
 
-    private void StartDrawLine()
+    private void DragCard(CardHolder cardHolder, Vector2 offest)
     {
-        if (!hoveredTarget) return;
+        if (!cardHolder) return;
+
+        cardHolder.transform.position = MouseWorldPosition + offest;
+    }
+
+    private void StartHoldingSelect()
+    {
+        if (!hoveredTarget || !(hoveredTarget is CardHolder)) return;
 
         isHoldingSelect = true;
-        selectedTarget = hoveredTarget;
-
-        lineObject.SetActive(true);
-        lineRenderer.positionCount = 2;
-        lineRenderer.SetPosition(0, MouseWorldPosition);
+        selectedCard = hoveredTarget as CardHolder;
+        selectOffset = (Vector2)selectedCard.transform.position - MouseWorldPosition;
     }
 
-    private void UpdateDrawLine()
+    private void WhileHoldingSelect()
     {
-        lineRenderer.SetPosition(1, MouseWorldPosition);
+        DragCard(selectedCard, selectOffset);
     }
 
-    private void StopDrawLine()
+    private void StopHoldingSelect()
     {
         if (!isHoldingSelect) return;
 
         isHoldingSelect = false;
-        selectedTarget = null;
-
-        lineObject.SetActive(false);
-        lineRenderer.positionCount = 0;
+        selectedCard.Reset();
+        selectedCard = null;
     }
 }

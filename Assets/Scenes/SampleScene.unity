@@ -1131,7 +1131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineObject: {fileID: 986833986}
   hoveredTarget: {fileID: 0}
-  selectedTarget: {fileID: 0}
+  selectedCard: {fileID: 0}
   isHoldingSelect: 0
 --- !u!4 &1019051420
 Transform:
@@ -1597,7 +1597,8 @@ PrefabInstance:
       propertyPath: card
       value: 
       objectReference: {fileID: 11400000, guid: 5a6e6f3af4af9b046b9c870cd817d17f, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5462977987327818929, guid: 2e13cb8a1614a7e41a9ba756a23cd991, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2e13cb8a1614a7e41a9ba756a23cd991, type: 3}
 --- !u!224 &7050105745271165761 stripped
 RectTransform:

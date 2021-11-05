@@ -5,15 +5,23 @@ using UnityEngine.UI;
 using TMPro;
 using MyBox;
 
-public class CardHolder : MonoBehaviour
+public class CardHolder : Targetable
 {
     public Card card;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI descriptionText;
 
+    [SerializeField, ReadOnly] private Vector2 basePos;
+
     private void Start()
     {
-        SetText();    
+        SetText();
+        basePos = transform.position;
+    }
+
+    public void Reset()
+    {
+        transform.position = basePos;
     }
 
     [ButtonMethod]

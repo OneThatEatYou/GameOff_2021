@@ -7,12 +7,12 @@ public class Targetable : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 {
     public bool targetable = true;
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public virtual void OnPointerEnter(PointerEventData eventData)
     {
         BattleManager.Instance.SetHoveredTarget(this);
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public virtual void OnPointerExit(PointerEventData eventData)
     {
         BattleManager.Instance.SetHoveredTarget(null);
     }
