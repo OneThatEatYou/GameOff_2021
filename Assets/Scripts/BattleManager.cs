@@ -4,6 +4,12 @@ using UnityEngine;
 using MyBox;
 public class BattleManager : MonoBehaviour
 {
+    public enum TurnStatus
+    {
+        Player,
+        Enemy
+    }
+
     private static BattleManager instance;
     public static BattleManager Instance
     {
@@ -26,10 +32,15 @@ public class BattleManager : MonoBehaviour
         get { return Camera.main.ScreenToWorldPoint(input.BattleActions.MousePosition.ReadValue<Vector2>()); }
     }
 
+    [Header("Selection")]
     [SerializeField, ReadOnly] private Targetable hoveredTarget;
     [SerializeField, ReadOnly] private CardHolder selectedCard;
     [SerializeField, ReadOnly] private Vector2 selectOffset;
     [SerializeField, ReadOnly] private bool isHoldingSelect;
+
+    [Header("Turn Info")]
+    [SerializeField, ReadOnly] private int turnNum = 1;
+    [SerializeField, ReadOnly] private TurnStatus curTurnStatus;
 
     private MainInput input;
 
@@ -65,33 +76,39 @@ public class BattleManager : MonoBehaviour
         hoveredTarget = targetable;
     }
 
-    private void DragCard(CardHolder cardHolder, Vector2 offest)
-    {
-        if (!cardHolder) return;
-
-        cardHolder.transform.position = MouseWorldPosition + offest;
-    }
-
     private void StartHoldingSelect()
     {
-        if (!hoveredTarget || !(hoveredTarget is CardHolder)) return;
-
         isHoldingSelect = true;
-        selectedCard = hoveredTarget as CardHolder;
-        selectOffset = (Vector2)selectedCard.transform.position - MouseWorldPosition;
+
+        if (hoveredTarget && (hoveredTarget is CardHolder))
+        {
+            selectedCard = hoveredTarget as CardHolder;
+            selectOffset = (Vector2)selectedCard.transform.position - MouseWorldPosition;
+            selectedCard.ToggleRaycastable(false);
+        }
     }
 
     private void WhileHoldingSelect()
     {
-        DragCard(selectedCard, selectOffset);
+        if (selectedCard) selectedCard.DragCard(selectOffset);
     }
 
     private void StopHoldingSelect()
     {
-        if (!isHoldingSelect) return;
-
         isHoldingSelect = false;
-        selectedCard.Reset();
-        selectedCard = null;
+
+        if (selectedCard)
+        {
+            selectedCard.TryUseCard(hoveredTarget);
+            selectedCard.ToggleRaycastable(true);
+            selectedCard = null;
+        }
+    }
+
+    [ContextMenu("Proceed Turn")]
+    public void ProceedTurn()
+    {
+        curTurnStatus = curTurnStatus.Next();
+        if (curTurnStatus == 0) turnNum++;
     }
 }

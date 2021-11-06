@@ -7,11 +7,18 @@ using MyBox;
 
 public class CardHolder : Targetable
 {
-    public Card card;
+    [Expandable] public CardData card;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI descriptionText;
 
     [SerializeField, ReadOnly] private Vector2 basePos;
+
+    private GraphicRaycaster graphicRaycaster;
+
+    private void Awake()
+    {
+        graphicRaycaster = GetComponent<GraphicRaycaster>();
+    }
 
     private void Start()
     {
@@ -19,9 +26,38 @@ public class CardHolder : Targetable
         basePos = transform.position;
     }
 
-    public void Reset()
+    public void DragCard(Vector2 offest)
+    {
+        transform.position = BattleManager.Instance.MouseWorldPosition + offest;
+    }
+
+    public void TryUseCard(Targetable targetable)
+    {
+        if (targetable is Character)
+        {
+            card.UseCard(targetable as Character);
+            DestoyCard();
+            BattleManager.Instance.ProceedTurn();
+        }
+        else
+        {
+            ResetPosition();
+        }
+    }
+
+    public void ToggleRaycastable(bool canBlockRaycast)
+    {
+        graphicRaycaster.enabled = canBlockRaycast;
+    }
+
+    private void ResetPosition()
     {
         transform.position = basePos;
+    }
+
+    private void DestoyCard()
+    {
+        Destroy(gameObject);
     }
 
     [ButtonMethod]
