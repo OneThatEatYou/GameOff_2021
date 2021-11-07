@@ -534,6 +534,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Card (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 3280509397038197642, guid: 2e13cb8a1614a7e41a9ba756a23cd991, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3406892135809359421, guid: 2e13cb8a1614a7e41a9ba756a23cd991, type: 3}
       propertyPath: m_text
       value: Another description...
@@ -648,6 +652,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Card (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 3280509397038197642, guid: 2e13cb8a1614a7e41a9ba756a23cd991, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3406892135809359421, guid: 2e13cb8a1614a7e41a9ba756a23cd991, type: 3}
       propertyPath: m_text
       value: Deal 1 dmg
@@ -692,6 +700,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bbb7a8cb38a0a14aa26ce48aa724059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deck: {fileID: 11400000, guid: 84be914352c3dc84399099738545c1e4, type: 2}
+  cardHolderPrefab: {fileID: 3280509397038197642, guid: 2e13cb8a1614a7e41a9ba756a23cd991, type: 3}
+  cardHolderParent: {fileID: 136048145}
+  cardHolderArea: {x: 16.25, y: 3.06}
+  heldCards:
+  - position: {x: -5.4166665, y: -2.777778}
+    cardHolder: {fileID: 0}
+  - position: {x: 0, y: -2.777778}
+    cardHolder: {fileID: 0}
+  - position: {x: 5.4166665, y: -2.777778}
+    cardHolder: {fileID: 0}
   hoveredTarget: {fileID: 0}
   selectedCard: {fileID: 0}
   selectOffset: {x: 0, y: 0}
@@ -884,6 +903,10 @@ PrefabInstance:
     - target: {fileID: 3280509397038197642, guid: 2e13cb8a1614a7e41a9ba756a23cd991, type: 3}
       propertyPath: m_Name
       value: Card (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3280509397038197642, guid: 2e13cb8a1614a7e41a9ba756a23cd991, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3406892135809359421, guid: 2e13cb8a1614a7e41a9ba756a23cd991, type: 3}
       propertyPath: m_text
@@ -1112,6 +1135,10 @@ PrefabInstance:
     - target: {fileID: 3280509397038197642, guid: 2e13cb8a1614a7e41a9ba756a23cd991, type: 3}
       propertyPath: m_Name
       value: Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 3280509397038197642, guid: 2e13cb8a1614a7e41a9ba756a23cd991, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3406892135809359421, guid: 2e13cb8a1614a7e41a9ba756a23cd991, type: 3}
       propertyPath: m_text

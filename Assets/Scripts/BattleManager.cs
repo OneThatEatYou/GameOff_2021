@@ -4,6 +4,13 @@ using UnityEngine;
 using MyBox;
 public class BattleManager : MonoBehaviour
 {
+    [System.Serializable]
+    public struct CardPosition
+    {
+        [ReadOnly] public Vector2 position;
+        [ReadOnly] public CardHolder cardHolder;
+    }
+
     public enum TurnStatus
     {
         Player,
@@ -60,6 +67,12 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    public CardDeck deck;
+    public GameObject cardHolderPrefab;
+    public RectTransform cardHolderParent;
+    public Vector2 cardHolderArea;
+    public CardPosition[] heldCards;
+
     [Header("Selection")]
     [SerializeField, ReadOnly] private Targetable hoveredTarget;
     [SerializeField, ReadOnly] private CardHolder selectedCard;
@@ -79,6 +92,7 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
+        UpdateCardPositions();
         StartBattle();
     }
 
@@ -148,6 +162,32 @@ public class BattleManager : MonoBehaviour
         EvaluateTurn();
     }
 
+    private void StartBattle()
+    {
+        EvaluateTurn();
+        DrawCard();
+    }
+
+    private void DrawCard()
+    {
+        for (int i = 0; i < heldCards.Length; i++)
+        {
+            if (!heldCards[i].cardHolder)
+            {
+                CardData cardData = deck.GetRandomCard();
+                CreateCard(cardData, i);
+            }
+        }
+    }
+
+    private void CreateCard(CardData cardData, int cardPosIndex)
+    {
+        CardHolder cardHolder = Instantiate(cardHolderPrefab, cardHolderParent).GetComponent<CardHolder>();
+        cardHolder.card = cardData;
+        cardHolder.transform.position = heldCards[cardPosIndex].position;
+        heldCards[cardPosIndex].cardHolder = cardHolder;
+    }
+
     private void EvaluateTurn()
     {
         switch (curTurnStatus)
@@ -161,14 +201,10 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void StartBattle()
-    {
-        EvaluateTurn();
-    }
-
     private IEnumerator EvaluatePlayerTurn()
     {
         Debug.Log($"It's {Player.name}'s turn");
+        DrawCard();
         StartCoroutine(Player.Evaluate());
 
         while (Player.IsExecutingTurn)
@@ -194,5 +230,36 @@ public class BattleManager : MonoBehaviour
         }
 
         ProceedTurn();
+    }
+
+    private void UpdateCardPositions()
+    {
+        Vector2 positionOffset = new Vector2(cardHolderArea.x / heldCards.Length, 0);
+
+        for (int i = 0; i < heldCards.Length; i++)
+        {
+            heldCards[i].position = (Vector2)cardHolderParent.position + positionOffset * i - new Vector2(positionOffset.x / 2 * (heldCards.Length - 1), 0);
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (cardHolderParent)
+        {
+            Gizmos.DrawWireCube(cardHolderParent.position, cardHolderArea);
+        }
+
+        foreach (CardPosition hc in heldCards)
+        {
+            Gizmos.DrawWireSphere(hc.position, 0.5f);
+        }
+    }
+
+    private void OnValidate()
+    {
+        if (heldCards.Length > 0)
+        {
+            UpdateCardPositions();
+        }
     }
 }
