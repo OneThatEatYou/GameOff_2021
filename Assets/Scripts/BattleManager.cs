@@ -168,11 +168,11 @@ public class BattleManager : MonoBehaviour
 
     private IEnumerator EvaluatePlayerTurn()
     {
+        Debug.Log($"It's {Player.name}'s turn");
         StartCoroutine(Player.Evaluate());
 
         while (Player.IsExecutingTurn)
         {
-            Debug.Log($"It's {Player.name}'s turn");
             yield return null;
         }
 

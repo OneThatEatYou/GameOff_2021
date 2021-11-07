@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using MyBox;
 
-[CreateAssetMenu(fileName = "NewAttackEffect", menuName = "ScriptableObjects/CardEffect/AttackEffect")]
-public class AttackEffect : CardEffect
+[CreateAssetMenu(fileName = "NewDamageEffect", menuName = "ScriptableObjects/CardEffect/DamageEffect")]
+public class DamageEffect : CardEffect
 {
     public bool useUserAttack;
     [ConditionalField(nameof(useUserAttack), true)] public int damage;

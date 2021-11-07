@@ -10,7 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa7cd00b19a84f5409362707dabe99b7, type: 3}
-  m_Name: TestCard3
+  m_Name: Self-Destruct
   m_EditorClassIdentifier: 
-  cardName: Test Card 3
-  description: Deal 1 dmg
+  cardName: Self-Destruct
+  description: User takes same DMG as ATK
+  effects:
+  - {fileID: 11400000, guid: 4eb994e337bed1b45afd46e723dc4c99, type: 2}

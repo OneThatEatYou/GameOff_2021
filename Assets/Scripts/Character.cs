@@ -18,15 +18,10 @@ public class Character : Targetable
         }
     }
 
-    [SerializeField, ReadOnly] private int curDamage;
+    [SerializeField, ReadOnly] private int damageBoost;
     public int CurDamage
     {
-        get { return curDamage; }
-        set
-        {
-            curDamage = value;
-            onDamageChange?.Invoke(curDamage);
-        }
+        get { return baseDamage + damageBoost; }
     }
 
     public int maxHealth = 1;
@@ -70,5 +65,11 @@ public class Character : Targetable
     public void EndTurn()
     {
         isExecutingTurn = false;
+    }
+
+    public void BoostDamage(int change)
+    {
+        damageBoost += change;
+        onDamageChange?.Invoke(CurDamage);
     }
 }
