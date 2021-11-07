@@ -37,7 +37,7 @@ public class CardHolder : Targetable
         {
             card.UseCard(targetable as Character);
             DestoyCard();
-            BattleManager.Instance.ProceedTurn();
+            BattleManager.Instance.Player.EndTurn();
         }
         else
         {

@@ -32,14 +32,43 @@ public class Character : Targetable
     public int maxHealth = 1;
     public int baseDamage;
 
+    [SerializeField, ReadOnly] private bool isExecutingTurn = false;
+    public bool IsExecutingTurn
+    {
+        get { return isExecutingTurn; }
+    }
+
     public delegate void ValueChangeCallback(int val);
     public ValueChangeCallback onHealthChange;
     public ValueChangeCallback onDamageChange;
     public delegate void VoidCallback();
     public VoidCallback onDeathCallback;
 
+    private void Start()
+    {
+        CurHealth = maxHealth;
+    }
+
     public void TakeDamage(int damage)
     {
         CurHealth -= damage;
+        Debug.Log($"{name} took {damage} damage");
+    }
+
+    public virtual IEnumerator Evaluate()
+    {
+        isExecutingTurn = true;
+        yield return null;
+        isExecutingTurn = false;
+    }
+
+    public void StartTurn()
+    {
+        isExecutingTurn = true;
+    }
+
+    public void EndTurn()
+    {
+        isExecutingTurn = false;
     }
 }

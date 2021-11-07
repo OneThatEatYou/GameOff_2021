@@ -32,6 +32,34 @@ public class BattleManager : MonoBehaviour
         get { return Camera.main.ScreenToWorldPoint(input.BattleActions.MousePosition.ReadValue<Vector2>()); }
     }
 
+    private Player player;
+    public Player Player
+    {
+        get
+        {
+            if (!player)
+            {
+                player = FindObjectOfType<Player>();
+            }
+
+            return player;
+        }
+    }
+
+    private List<Enemy> enemies;
+    public List<Enemy> Enemies
+    {
+        get
+        {
+            if (enemies == null)
+            {
+                enemies = new List<Enemy>(FindObjectsOfType<Enemy>());
+            }
+
+            return enemies;
+        }
+    }
+
     [Header("Selection")]
     [SerializeField, ReadOnly] private Targetable hoveredTarget;
     [SerializeField, ReadOnly] private CardHolder selectedCard;
@@ -47,6 +75,11 @@ public class BattleManager : MonoBehaviour
     private void Awake()
     {
         input = new MainInput();
+    }
+
+    private void Start()
+    {
+        StartBattle();
     }
 
     private void OnEnable()
@@ -80,7 +113,8 @@ public class BattleManager : MonoBehaviour
     {
         isHoldingSelect = true;
 
-        if (hoveredTarget && (hoveredTarget is CardHolder))
+        // card selection and usage logic
+        if (curTurnStatus == TurnStatus.Player && hoveredTarget && (hoveredTarget is CardHolder))
         {
             selectedCard = hoveredTarget as CardHolder;
             selectOffset = (Vector2)selectedCard.transform.position - MouseWorldPosition;
@@ -110,5 +144,55 @@ public class BattleManager : MonoBehaviour
     {
         curTurnStatus = curTurnStatus.Next();
         if (curTurnStatus == 0) turnNum++;
+
+        EvaluateTurn();
+    }
+
+    private void EvaluateTurn()
+    {
+        switch (curTurnStatus)
+        {
+            case TurnStatus.Player:
+                StartCoroutine(EvaluatePlayerTurn());
+                break;
+            case TurnStatus.Enemy:
+                StartCoroutine(EvaluateEnemyTurn());
+                break;
+        }
+    }
+
+    private void StartBattle()
+    {
+        EvaluateTurn();
+    }
+
+    private IEnumerator EvaluatePlayerTurn()
+    {
+        StartCoroutine(Player.Evaluate());
+
+        while (Player.IsExecutingTurn)
+        {
+            Debug.Log($"It's {Player.name}'s turn");
+            yield return null;
+        }
+
+        ProceedTurn();
+    }
+
+    private IEnumerator EvaluateEnemyTurn()
+    {
+        foreach (Enemy enemy in Enemies)
+        {
+            Debug.Log($"It's {enemy.name}'s turn");
+            StartCoroutine(enemy.Evaluate());
+
+            // wait until the turn finished
+            while (enemy.IsExecutingTurn)
+            {
+                yield return null;
+            }
+        }
+
+        ProceedTurn();
     }
 }
