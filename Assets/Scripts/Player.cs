@@ -10,7 +10,7 @@ public class Player : Character
         yield return null;
     }
 
-    protected override void Die()
+    protected override void Die(Character character)
     {
         Debug.Log("Player died.");
     }

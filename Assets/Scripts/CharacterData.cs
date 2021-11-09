@@ -10,4 +10,6 @@ public class CharacterData : ScriptableObject
     public int BaseHealth { get { return baseHealth; } }
     [SerializeField] private int baseDamage;
     public int BaseDamage { get { return baseDamage; } }
+    [SerializeField] private Sprite characterSprite;
+    public Sprite CharacterSprite { get { return characterSprite; } }
 }

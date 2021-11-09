@@ -6,10 +6,17 @@ using MyBox;
 public class EncounterManager : Singleton<EncounterManager>
 {
     [SerializeField, ReadOnly] private bool isWandering;
+    [Expandable] public CharacterData[] encounterData;
+    public Vector2 encounterNumberRange;
 
     private void Awake()
     {
         InitializeSingleton();
+    }
+
+    private void Start()
+    {
+        Encounter(new CharacterData[1] { encounterData[0] });
     }
 
     private void OnEnable()
@@ -30,9 +37,26 @@ public class EncounterManager : Singleton<EncounterManager>
         StartCoroutine(PlayerWanderCoroutine());
     }
 
-    private void Encounter(Enemy[] enemies)
+    private CharacterData[] GetRandomEncounters(int num)
     {
+        CharacterData[] encounters = new CharacterData[num];
 
+        for (int i = 0; i < num; i++)
+        {
+            encounters[i] = encounterData[Random.Range(0, encounterData.Length)];
+        }
+
+        return encounters;
+    }
+
+    private void Encounter(CharacterData[] fixedEncounter = null)
+    {
+        CharacterData[] encounters;
+
+        if (fixedEncounter != null) encounters = fixedEncounter;
+        else encounters = GetRandomEncounters(Random.Range(1, 3));
+
+        BattleManager.Instance.StartBattle(encounters);
     }
 
     private IEnumerator PlayerWanderCoroutine()
@@ -40,5 +64,6 @@ public class EncounterManager : Singleton<EncounterManager>
         yield return new WaitForSeconds(5);
 
         isWandering = false;
+        Encounter();
     }
 }

@@ -39,6 +39,10 @@ public class BattleManager : Singleton<BattleManager>
 
     private List<Enemy> enemies = new List<Enemy>();
 
+    [Header("Characters")]
+    public GameObject enemyPrefab;
+
+    [Header("Cards")]
     public CardDeck deck;
     public GameObject cardHolderPrefab;
     public RectTransform cardHolderParent;
@@ -72,7 +76,6 @@ public class BattleManager : Singleton<BattleManager>
     private void Start()
     {
         UpdateCardPositions();
-        StartBattle();
     }
 
     private void OnEnable()
@@ -141,9 +144,16 @@ public class BattleManager : Singleton<BattleManager>
         EvaluateTurn();
     }
 
-    private void StartBattle()
+    public void StartBattle(CharacterData[] enemies)
     {
+        if (isBattling)
+        {
+            Debug.LogWarning("Battle has already started");
+            return;
+        }
+
         isBattling = true;
+        SpawnEnemies(enemies);
         StartCoroutine(StartBattleCoroutine());
     }
 
@@ -154,6 +164,22 @@ public class BattleManager : Singleton<BattleManager>
         isBattling = false;
         StartCoroutine(EndBattleCoroutine());
         Debug.Log("Ending battle");
+    }
+
+    private void SpawnEnemies(CharacterData[] enemies)
+    {
+        foreach (var enemy in enemies)
+        {
+            SpawnEnemy(enemy);
+        }
+    }
+
+    private void SpawnEnemy(CharacterData enemyData)
+    {
+        Enemy enemy = Instantiate(enemyPrefab).GetComponent<Enemy>();
+        enemy.Initialize(enemyData);
+        RegisterEnemy(enemy);
+        enemy.onDeathCallback += UnregisterEnemy;
     }
 
     private IEnumerator StartBattleCoroutine()
@@ -265,14 +291,28 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
-    public void RegisterEnemy(Enemy enemy)
+    private void RegisterEnemy(Character enemy)
     {
-        enemies.Add(enemy);
+        if (enemy is Enemy)
+        {
+            enemies.Add(enemy as Enemy);
+        }
+        else
+        {
+            Debug.LogError("Attempting to register non-enemy character");
+        }
     }
 
-    public void UnregisterEnemy(Enemy enemy)
+    private void UnregisterEnemy(Character enemy)
     {
-        enemies.Remove(enemy);
+        if (enemy is Enemy)
+        {
+            enemies.Remove(enemy as Enemy);
+        }
+        else
+        {
+            Debug.LogError("Attempting to unregister non-enemy character");
+        }
     }
 
     /// <summary>

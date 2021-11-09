@@ -16,7 +16,7 @@ public abstract class Character : Targetable
             curHealth = Mathf.Max(0, value);
             onHealthChange?.Invoke(curHealth);
 
-            if (curHealth == 0) onDeathCallback?.Invoke();
+            if (curHealth == 0) onDeathCallback?.Invoke(this);
         }
     }
 
@@ -30,11 +30,18 @@ public abstract class Character : Targetable
         get { return isExecutingTurn; }
     }
 
+    private SpriteRenderer spriteRenderer;
+
     public delegate void ValueChangeCallback(int val);
     public ValueChangeCallback onHealthChange;
     public ValueChangeCallback onDamageChange;
-    public delegate void VoidCallback();
-    public VoidCallback onDeathCallback;
+    public delegate void CharacterCallback(Character character);
+    public CharacterCallback onDeathCallback;
+
+    protected virtual void Awake()
+    {
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+    }
 
     protected virtual void Start()
     {
@@ -49,6 +56,13 @@ public abstract class Character : Targetable
     protected virtual void OnDisable()
     {
         onDeathCallback -= Die;
+    }
+
+    public void Initialize(CharacterData data)
+    {
+        characterData = Instantiate(data);
+        spriteRenderer.sprite = data.CharacterSprite;
+        // set health and dmg UI here
     }
 
     public void TakeDamage(int damage)
@@ -80,5 +94,5 @@ public abstract class Character : Targetable
         onDamageChange?.Invoke(Damage);
     }
 
-    protected abstract void Die();
+    protected abstract void Die(Character character);
 }

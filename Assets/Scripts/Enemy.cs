@@ -4,18 +4,6 @@ using UnityEngine;
 
 public class Enemy : Character
 {
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        BattleManager.Instance.RegisterEnemy(this);
-    }
-
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-        BattleManager.Instance.UnregisterEnemy(this);
-    }
-
     public override IEnumerator Evaluate()
     {
         StartTurn();
@@ -30,7 +18,7 @@ public class Enemy : Character
         BattleManager.Instance.Player.TakeDamage(Damage);
     }
 
-    protected override void Die()
+    protected override void Die(Character character)
     {
         Destroy(gameObject);
     }
