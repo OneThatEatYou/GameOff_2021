@@ -11,7 +11,7 @@ public class DamageEffect : CardEffect
 
     public override void ApplyEffect(Character character)
     {
-        int damageDealt = useUserAttack ? character.CurDamage : damage;
+        int damageDealt = useUserAttack ? character.Damage : damage;
         character.TakeDamage(damageDealt);
     }
 }

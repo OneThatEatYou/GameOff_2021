@@ -9,4 +9,9 @@ public class Player : Character
         StartTurn();
         yield return null;
     }
+
+    protected override void Die()
+    {
+        Debug.Log("Player died.");
+    }
 }

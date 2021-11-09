@@ -55,7 +55,7 @@ public class CardHolder : Targetable
         transform.position = basePos;
     }
 
-    private void DestoyCard()
+    public void DestoyCard()
     {
         Destroy(gameObject);
     }

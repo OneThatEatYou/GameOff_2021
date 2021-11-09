@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 136048145}
   - component: {fileID: 136048147}
   - component: {fileID: 136048146}
+  - component: {fileID: 136048148}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -202,6 +203,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 136048144}
   m_CullTransparentMesh: 1
+--- !u!225 &136048148
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136048144}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &238322069
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,8 +307,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 136048145}
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_Father: {fileID: 1019051420}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -703,7 +716,8 @@ MonoBehaviour:
   deck: {fileID: 11400000, guid: 84be914352c3dc84399099738545c1e4, type: 2}
   cardHolderPrefab: {fileID: 3280509397038197642, guid: 2e13cb8a1614a7e41a9ba756a23cd991, type: 3}
   cardHolderParent: {fileID: 136048145}
-  cardHolderArea: {x: 16.25, y: 3.06}
+  cardAreaCanvasGroup: {fileID: 136048148}
+  cardHolderArea: {x: 16.25, y: 3}
   heldCards:
   - position: {x: -5.4166665, y: -2.777778}
     cardHolder: {fileID: 0}
@@ -727,9 +741,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 238322073}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1354850916
 GameObject:
@@ -804,6 +819,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1566618044
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1566618046}
+  - component: {fileID: 1566618045}
+  m_Layer: 0
+  m_Name: EnconterManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1566618045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1566618044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62152785095c48444921eed288cea79e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isWandering: 0
+--- !u!4 &1566618046
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1566618044}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1811846462
 PrefabInstance:
@@ -932,7 +991,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3065828294737990885, guid: dd776a7cfea2c104992ef425cf3503d3, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3065828294737990885, guid: dd776a7cfea2c104992ef425cf3503d3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -987,9 +1046,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2271556571592542673, guid: 1d251e4a36e3582498b61a1970d21277, type: 3}
+      propertyPath: characterData
+      value: 
+      objectReference: {fileID: 11400000, guid: 6dadfeb95e5e76941ae3b15e3d72fa02, type: 2}
     - target: {fileID: 3755481186970196913, guid: 1d251e4a36e3582498b61a1970d21277, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3755481186970196913, guid: 1d251e4a36e3582498b61a1970d21277, type: 3}
       propertyPath: m_LocalPosition.x

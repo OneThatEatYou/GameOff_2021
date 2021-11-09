@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MyBox;
-public class BattleManager : MonoBehaviour
+
+public class BattleManager : Singleton<BattleManager>
 {
     [System.Serializable]
     public struct CardPosition
@@ -15,23 +16,6 @@ public class BattleManager : MonoBehaviour
     {
         Player,
         Enemy
-    }
-
-    private static BattleManager instance;
-    public static BattleManager Instance
-    {
-        get
-        {
-            // check if BattleManager exists in scene
-            if (instance == null) instance = FindObjectOfType<BattleManager>();
-            if (instance == null)
-            {
-                Debug.LogError("BattleManager not found in scene");
-                instance = new GameObject("BattleManager").AddComponent<BattleManager>();
-            }
-
-            return instance;
-        }
     }
 
     public Vector2 MouseWorldPosition
@@ -53,23 +37,12 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private List<Enemy> enemies;
-    public List<Enemy> Enemies
-    {
-        get
-        {
-            if (enemies == null)
-            {
-                enemies = new List<Enemy>(FindObjectsOfType<Enemy>());
-            }
-
-            return enemies;
-        }
-    }
+    private List<Enemy> enemies = new List<Enemy>();
 
     public CardDeck deck;
     public GameObject cardHolderPrefab;
     public RectTransform cardHolderParent;
+    public CanvasGroup cardAreaCanvasGroup;
     public Vector2 cardHolderArea;
     public CardPosition[] heldCards;
 
@@ -84,9 +57,15 @@ public class BattleManager : MonoBehaviour
     [SerializeField, ReadOnly] private TurnStatus curTurnStatus;
 
     private MainInput input;
+    private bool isBattling;
+
+    public delegate void BattleDelegate();
+    public BattleDelegate onBattleStartCallback;
+    public BattleDelegate onBattleEndCallback;
 
     private void Awake()
     {
+        InitializeSingleton();
         input = new MainInput();
     }
 
@@ -164,8 +143,48 @@ public class BattleManager : MonoBehaviour
 
     private void StartBattle()
     {
+        isBattling = true;
+        StartCoroutine(StartBattleCoroutine());
+    }
+
+    private void EndBattle()
+    {
+        if (!isBattling) return;
+
+        isBattling = false;
+        StartCoroutine(EndBattleCoroutine());
+        Debug.Log("Ending battle");
+    }
+
+    private IEnumerator StartBattleCoroutine()
+    {
+        yield return new WaitForSeconds(1);
+
+        cardAreaCanvasGroup.alpha = 1;
+
+        yield return new WaitForSeconds(1);
+
         EvaluateTurn();
         DrawCard();
+
+        onBattleStartCallback?.Invoke();
+    }
+
+    private IEnumerator EndBattleCoroutine()
+    {
+        yield return new WaitForSeconds(1);
+
+        foreach (var heldCard in heldCards)
+        {
+            if (heldCard.cardHolder) heldCard.cardHolder.DestoyCard();
+            yield return new WaitForSeconds(0.3f);
+        }
+
+        yield return new WaitForSeconds(1);
+
+        cardAreaCanvasGroup.alpha = 0;
+
+        onBattleEndCallback?.Invoke();
     }
 
     private void DrawCard()
@@ -183,13 +202,16 @@ public class BattleManager : MonoBehaviour
     private void CreateCard(CardData cardData, int cardPosIndex)
     {
         CardHolder cardHolder = Instantiate(cardHolderPrefab, cardHolderParent).GetComponent<CardHolder>();
-        cardHolder.card = cardData;
+        cardHolder.card = Instantiate(cardData);
         cardHolder.transform.position = heldCards[cardPosIndex].position;
         heldCards[cardPosIndex].cardHolder = cardHolder;
     }
 
     private void EvaluateTurn()
     {
+        // check if battle ended
+        if (CheckBattleStatus()) return;
+
         switch (curTurnStatus)
         {
             case TurnStatus.Player:
@@ -217,7 +239,7 @@ public class BattleManager : MonoBehaviour
 
     private IEnumerator EvaluateEnemyTurn()
     {
-        foreach (Enemy enemy in Enemies)
+        foreach (Enemy enemy in enemies)
         {
             Debug.Log($"It's {enemy.name}'s turn");
             StartCoroutine(enemy.Evaluate());
@@ -232,6 +254,7 @@ public class BattleManager : MonoBehaviour
         ProceedTurn();
     }
 
+    [ContextMenu("Update Card Positions")]
     private void UpdateCardPositions()
     {
         Vector2 positionOffset = new Vector2(cardHolderArea.x / heldCards.Length, 0);
@@ -240,6 +263,30 @@ public class BattleManager : MonoBehaviour
         {
             heldCards[i].position = (Vector2)cardHolderParent.position + positionOffset * i - new Vector2(positionOffset.x / 2 * (heldCards.Length - 1), 0);
         }
+    }
+
+    public void RegisterEnemy(Enemy enemy)
+    {
+        enemies.Add(enemy);
+    }
+
+    public void UnregisterEnemy(Enemy enemy)
+    {
+        enemies.Remove(enemy);
+    }
+
+    /// <summary>
+    /// Returns true if there is no enemies left. False otherwise
+    /// </summary>
+    private bool CheckBattleStatus()
+    {
+        if (enemies.Count == 0)
+        {
+            EndBattle();
+            return true;
+        }
+
+        return false;
     }
 
     private void OnDrawGizmos()

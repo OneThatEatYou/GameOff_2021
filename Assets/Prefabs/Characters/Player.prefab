@@ -72,10 +72,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetable: 1
+  characterData: {fileID: 11400000, guid: 78a38023eb9d73244b59d5a21bed10e1, type: 2}
   curHealth: 0
-  curDamage: 0
-  maxHealth: 1
-  baseDamage: 0
+  damageBoost: 0
   isExecutingTurn: 0
 --- !u!1 &3065828295901723176
 GameObject:

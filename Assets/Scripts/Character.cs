@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using MyBox;
 
-public class Character : Targetable
+public abstract class Character : Targetable
 {
+    public CharacterData characterData;
+
     [SerializeField, ReadOnly] private int curHealth;
     public int CurHealth
     {
@@ -19,13 +21,8 @@ public class Character : Targetable
     }
 
     [SerializeField, ReadOnly] private int damageBoost;
-    public int CurDamage
-    {
-        get { return baseDamage + damageBoost; }
-    }
-
-    public int maxHealth = 1;
-    public int baseDamage;
+    public int Damage { get { return characterData.BaseDamage + damageBoost; } }
+    public int MaxHealth { get { return characterData.BaseHealth; } }
 
     [SerializeField, ReadOnly] private bool isExecutingTurn = false;
     public bool IsExecutingTurn
@@ -39,9 +36,19 @@ public class Character : Targetable
     public delegate void VoidCallback();
     public VoidCallback onDeathCallback;
 
-    private void Start()
+    protected virtual void Start()
     {
-        CurHealth = maxHealth;
+        CurHealth = MaxHealth;
+    }
+
+    protected virtual void OnEnable()
+    {
+        onDeathCallback += Die;
+    }
+
+    protected virtual void OnDisable()
+    {
+        onDeathCallback -= Die;
     }
 
     public void TakeDamage(int damage)
@@ -70,6 +77,8 @@ public class Character : Targetable
     public void BoostDamage(int change)
     {
         damageBoost += change;
-        onDamageChange?.Invoke(CurDamage);
+        onDamageChange?.Invoke(Damage);
     }
+
+    protected abstract void Die();
 }
