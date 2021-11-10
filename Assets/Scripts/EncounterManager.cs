@@ -16,7 +16,7 @@ public class EncounterManager : Singleton<EncounterManager>
 
     private void Start()
     {
-        Encounter(new CharacterData[1] { encounterData[0] });
+        Encounter(new CharacterData[] { encounterData[0], encounterData[0], encounterData[0] });
     }
 
     private void OnEnable()

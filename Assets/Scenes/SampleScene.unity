@@ -439,7 +439,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56666c5a40171f54783dd416a44f42bf, type: 3}
   m_Name: 
@@ -714,6 +714,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 3755481186970196915, guid: 1d251e4a36e3582498b61a1970d21277, type: 3}
+  enemies:
+  - position: {x: 1.94, y: 0.46}
+    enemy: {fileID: 0}
+  - position: {x: 4.41, y: 2.22}
+    enemy: {fileID: 0}
+  - position: {x: 6.88, y: 0.46}
+    enemy: {fileID: 0}
   deck: {fileID: 11400000, guid: 84be914352c3dc84399099738545c1e4, type: 2}
   cardHolderPrefab: {fileID: 3280509397038197642, guid: 2e13cb8a1614a7e41a9ba756a23cd991, type: 3}
   cardHolderParent: {fileID: 136048145}

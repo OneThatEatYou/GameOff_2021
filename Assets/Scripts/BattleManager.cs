@@ -6,10 +6,17 @@ using MyBox;
 public class BattleManager : Singleton<BattleManager>
 {
     [System.Serializable]
-    public struct CardPosition
+    public class CardPosition
     {
         [ReadOnly] public Vector2 position;
         [ReadOnly] public CardHolder cardHolder;
+    }
+
+    [System.Serializable]
+    public class EnemyPosition
+    {
+        public Vector2 position;
+        [ReadOnly] public Enemy enemy;
     }
 
     public enum TurnStatus
@@ -37,10 +44,11 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
-    private List<Enemy> enemies = new List<Enemy>();
+    //private List<Enemy> enemies = new List<Enemy>();
 
     [Header("Characters")]
     public GameObject enemyPrefab;
+    public List<EnemyPosition> enemies;
 
     [Header("Cards")]
     public CardDeck deck;
@@ -153,6 +161,7 @@ public class BattleManager : Singleton<BattleManager>
         }
 
         isBattling = true;
+        curTurnStatus = TurnStatus.Player;
         SpawnEnemies(enemies);
         StartCoroutine(StartBattleCoroutine());
     }
@@ -168,18 +177,46 @@ public class BattleManager : Singleton<BattleManager>
 
     private void SpawnEnemies(CharacterData[] enemies)
     {
+        int maxPosIndex = enemies.Length - 1;
+
         foreach (var enemy in enemies)
         {
-            SpawnEnemy(enemy);
+            if (GetVacantEnemyPos(maxPosIndex, out int i))
+            {
+                SpawnEnemy(enemy, i);
+            }
         }
     }
 
-    private void SpawnEnemy(CharacterData enemyData)
+    private void SpawnEnemy(CharacterData enemyData, int positionIndex)
     {
-        Enemy enemy = Instantiate(enemyPrefab).GetComponent<Enemy>();
+        Enemy enemy = Instantiate(enemyPrefab, enemies[positionIndex].position, Quaternion.identity).GetComponent<Enemy>();
         enemy.Initialize(enemyData);
-        RegisterEnemy(enemy);
+        RegisterEnemy(enemy, positionIndex);
         enemy.onDeathCallback += UnregisterEnemy;
+    }
+
+    private bool GetVacantEnemyPos(int maxPosIndex, out int index)
+    {
+        List<int> vacantPosIndex = new List<int>();
+        index = -1;
+
+        for (int i = 0; i <= Mathf.Min(maxPosIndex, enemies.Count - 1); i++)
+        {
+            if (!enemies[i].enemy)
+            {
+                // position is vacant
+                vacantPosIndex.Add(i);
+            }
+        }
+
+        if (vacantPosIndex.Count > 0)
+        {
+            index = vacantPosIndex[Random.Range(0, vacantPosIndex.Count)];
+            return true;
+        }
+
+        return false;
     }
 
     private IEnumerator StartBattleCoroutine()
@@ -265,13 +302,14 @@ public class BattleManager : Singleton<BattleManager>
 
     private IEnumerator EvaluateEnemyTurn()
     {
-        foreach (Enemy enemy in enemies)
+        foreach (EnemyPosition enemyPos in enemies)
         {
-            Debug.Log($"It's {enemy.name}'s turn");
-            StartCoroutine(enemy.Evaluate());
+            if (!enemyPos.enemy) continue;
+
+            StartCoroutine(enemyPos.enemy.Evaluate());
 
             // wait until the turn finished
-            while (enemy.IsExecutingTurn)
+            while (enemyPos.enemy.IsExecutingTurn)
             {
                 yield return null;
             }
@@ -291,11 +329,11 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
-    private void RegisterEnemy(Character enemy)
+    private void RegisterEnemy(Character enemy, int positionIndex)
     {
         if (enemy is Enemy)
         {
-            enemies.Add(enemy as Enemy);
+            enemies[positionIndex].enemy = enemy as Enemy;
         }
         else
         {
@@ -307,7 +345,14 @@ public class BattleManager : Singleton<BattleManager>
     {
         if (enemy is Enemy)
         {
-            enemies.Remove(enemy as Enemy);
+            foreach (EnemyPosition enemyPosition in enemies)
+            {
+                if (enemyPosition.enemy == enemy)
+                {
+                    enemyPosition.enemy = null;
+                    break;
+                }
+            }
         }
         else
         {
@@ -320,13 +365,16 @@ public class BattleManager : Singleton<BattleManager>
     /// </summary>
     private bool CheckBattleStatus()
     {
-        if (enemies.Count == 0)
+        foreach (var enemyPos in enemies)
         {
-            EndBattle();
-            return true;
+            if (enemyPos.enemy)
+            {
+                return false;
+            }
         }
 
-        return false;
+        EndBattle();
+        return true;
     }
 
     private void OnDrawGizmos()
@@ -339,6 +387,12 @@ public class BattleManager : Singleton<BattleManager>
         foreach (CardPosition hc in heldCards)
         {
             Gizmos.DrawWireSphere(hc.position, 0.5f);
+        }
+
+        foreach (EnemyPosition ep in enemies)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(ep.position, 0.5f);
         }
     }
 
