@@ -29,6 +29,15 @@ public class BattleManager : Singleton<BattleManager>
     {
         get { return Camera.main.ScreenToWorldPoint(input.BattleActions.MousePosition.ReadValue<Vector2>()); }
     }
+    public Vector2 CardHolderArea 
+    { 
+        get 
+        {
+            Vector2 cardHolderParentWorldSize = Camera.main.ScreenToWorldPoint(cardHolderParent.rect.max) - Camera.main.ScreenToWorldPoint(cardHolderParent.rect.min);
+            return cardHolderParentWorldSize - cardHolderAreaPadding * 2;
+        }
+    }
+
 
     private Player player;
     public Player Player
@@ -55,7 +64,7 @@ public class BattleManager : Singleton<BattleManager>
     public GameObject cardHolderPrefab;
     public RectTransform cardHolderParent;
     public CanvasGroup cardAreaCanvasGroup;
-    public Vector2 cardHolderArea;
+    public Vector2 cardHolderAreaPadding;
     public CardPosition[] heldCards;
 
     [Header("Selection")]
@@ -265,7 +274,7 @@ public class BattleManager : Singleton<BattleManager>
     private void CreateCard(CardData cardData, int cardPosIndex)
     {
         CardHolder cardHolder = Instantiate(cardHolderPrefab, cardHolderParent).GetComponent<CardHolder>();
-        cardHolder.card = Instantiate(cardData);
+        cardHolder.Initialize(cardData);
         cardHolder.transform.position = heldCards[cardPosIndex].position;
         heldCards[cardPosIndex].cardHolder = cardHolder;
     }
@@ -321,7 +330,7 @@ public class BattleManager : Singleton<BattleManager>
     [ContextMenu("Update Card Positions")]
     private void UpdateCardPositions()
     {
-        Vector2 positionOffset = new Vector2(cardHolderArea.x / heldCards.Length, 0);
+        Vector2 positionOffset = new Vector2(CardHolderArea.x / heldCards.Length, 0);
 
         for (int i = 0; i < heldCards.Length; i++)
         {
@@ -381,7 +390,7 @@ public class BattleManager : Singleton<BattleManager>
     {
         if (cardHolderParent)
         {
-            Gizmos.DrawWireCube(cardHolderParent.position, cardHolderArea);
+            Gizmos.DrawWireCube(cardHolderParent.position, CardHolderArea);
         }
 
         foreach (CardPosition hc in heldCards)

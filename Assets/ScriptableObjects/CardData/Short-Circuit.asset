@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa7cd00b19a84f5409362707dabe99b7, type: 3}
   m_Name: Short-Circuit
   m_EditorClassIdentifier: 
-  cardName: Short-Circuit
+  cardName: Short-Circ
   description: User takes 1 damage
+  cardImage: {fileID: 0}
   effects:
   - {fileID: 11400000, guid: 202e14df9668af94a8ebd0437704eac0, type: 2}

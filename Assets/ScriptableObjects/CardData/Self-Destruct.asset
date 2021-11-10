@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa7cd00b19a84f5409362707dabe99b7, type: 3}
   m_Name: Self-Destruct
   m_EditorClassIdentifier: 
-  cardName: Self-Destruct
+  cardName: Self-Dest
   description: User takes same DMG as ATK
+  cardImage: {fileID: -1636742031616846006, guid: f108f745bf4ccb34982294f6f1fd4000, type: 3}
   effects:
   - {fileID: 11400000, guid: 4eb994e337bed1b45afd46e723dc4c99, type: 2}

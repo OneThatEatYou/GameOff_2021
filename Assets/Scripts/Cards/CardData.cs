@@ -7,6 +7,7 @@ public class CardData : ScriptableObject
 {
     public string cardName = "NewCard";
     public string description;
+    public Sprite cardImage;
     public CardEffect[] effects;
 
     public void UseCard(Character character)

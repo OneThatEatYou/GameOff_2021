@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: Minecraft
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: 645151053
   material: {fileID: 2806691868726826058}
-  materialHashCode: 0
+  materialHashCode: 1829995085
   m_Version: 1.1.0
   m_SourceFontFileGUID: daeb1a0e1aa57a24081f285687d4bc24
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: daeb1a0e1aa57a24081f285687d4bc24, type: 3}

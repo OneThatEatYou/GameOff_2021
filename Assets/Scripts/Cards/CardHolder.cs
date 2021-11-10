@@ -14,16 +14,25 @@ public class CardHolder : Targetable
     [SerializeField, ReadOnly] private Vector2 basePos;
 
     private GraphicRaycaster graphicRaycaster;
+    private Image cardImage;
 
     private void Awake()
     {
         graphicRaycaster = GetComponent<GraphicRaycaster>();
+        cardImage = GetComponent<Image>();
     }
 
     private void Start()
     {
         SetText();
         basePos = transform.position;
+    }
+
+    public void Initialize(CardData cardData)
+    {
+        card = Instantiate(cardData);
+        if (card.cardImage) cardImage.sprite = card.cardImage;
+        else Debug.LogWarning($"Card image of {card.cardName} not assigned");
     }
 
     public void DragCard(Vector2 offest)
