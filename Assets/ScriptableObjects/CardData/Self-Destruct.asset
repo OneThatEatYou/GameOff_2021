@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Self-Dest
   description: User takes same DMG as ATK
-  cardImage: {fileID: -1636742031616846006, guid: f108f745bf4ccb34982294f6f1fd4000, type: 3}
+  cardImage: {fileID: 21300000, guid: 402d1eb8831c98549989415503462ec1, type: 3}
   effects:
   - {fileID: 11400000, guid: 4eb994e337bed1b45afd46e723dc4c99, type: 2}

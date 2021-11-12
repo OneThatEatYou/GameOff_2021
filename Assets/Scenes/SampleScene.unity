@@ -609,11 +609,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 3755481186970196915, guid: 1d251e4a36e3582498b61a1970d21277, type: 3}
   enemies:
-  - position: {x: 0.87, y: 0.82}
+  - position: {x: 0.87, y: 0.21}
     enemy: {fileID: 0}
-  - position: {x: 3.875, y: 2.22}
+  - position: {x: 3.875, y: 0.98}
     enemy: {fileID: 0}
-  - position: {x: 6.88, y: 0.82}
+  - position: {x: 6.88, y: 0.21}
     enemy: {fileID: 0}
   deck: {fileID: 11400000, guid: 84be914352c3dc84399099738545c1e4, type: 2}
   cardHolderPrefab: {fileID: 3280509397038197642, guid: 2e13cb8a1614a7e41a9ba756a23cd991, type: 3}
@@ -761,6 +761,7 @@ MonoBehaviour:
   wanderTimeRange: {x: 5, y: 10}
   wanderSpeed: 0.5
   wanderAccelDur: 2
+  wanderDeccel: 2
   groundMaterial: {fileID: 2100000, guid: 932d2172d5259294bb7e20392fdcbe88, type: 2}
 --- !u!4 &1566618046
 Transform:
