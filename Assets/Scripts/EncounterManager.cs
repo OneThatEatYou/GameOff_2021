@@ -26,7 +26,8 @@ public class EncounterManager : Singleton<EncounterManager>
 
     private void OnDisable()
     {
-        BattleManager.Instance.onBattleEndCallback -= Wander;
+        // if-statement stops error when exiting playmode
+        if (BattleManager.Instance) BattleManager.Instance.onBattleEndCallback -= Wander;
     }
 
     private void Wander()

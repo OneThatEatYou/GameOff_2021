@@ -60,7 +60,7 @@ public class BattleManager : Singleton<BattleManager>
     public List<EnemyPosition> enemies;
 
     [Header("Cards")]
-    public CardDeck deck;
+    [Expandable] public CardDeck deck;
     public GameObject cardHolderPrefab;
     public RectTransform cardHolderParent;
     public CanvasGroup cardAreaCanvasGroup;
@@ -132,6 +132,7 @@ public class BattleManager : Singleton<BattleManager>
             selectedCard = hoveredTarget as CardHolder;
             selectOffset = (Vector2)selectedCard.transform.position - MouseWorldPosition;
             selectedCard.ToggleRaycastable(false);
+            selectedCard.SetLayerFront();
         }
     }
 
@@ -148,6 +149,7 @@ public class BattleManager : Singleton<BattleManager>
         {
             selectedCard.TryUseCard(hoveredTarget);
             selectedCard.ToggleRaycastable(true);
+            selectedCard.SetLayerBack();
             selectedCard = null;
         }
     }

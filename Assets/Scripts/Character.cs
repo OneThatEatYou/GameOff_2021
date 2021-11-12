@@ -31,6 +31,7 @@ public abstract class Character : Targetable
     }
 
     private SpriteRenderer spriteRenderer;
+    private Animator animator;
 
     public delegate void ValueChangeCallback(int val);
     public ValueChangeCallback onHealthChange;
@@ -41,6 +42,7 @@ public abstract class Character : Targetable
     protected virtual void Awake()
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     protected virtual void Start()
@@ -62,6 +64,7 @@ public abstract class Character : Targetable
     {
         characterData = Instantiate(data);
         spriteRenderer.sprite = data.CharacterSprite;
+        animator.runtimeAnimatorController = data.CharacterAnimator;
         // set health and dmg UI here
     }
 

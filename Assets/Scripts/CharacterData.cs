@@ -12,4 +12,6 @@ public class CharacterData : ScriptableObject
     public int BaseDamage { get { return baseDamage; } }
     [SerializeField] private Sprite characterSprite;
     public Sprite CharacterSprite { get { return characterSprite; } }
+    [SerializeField] private RuntimeAnimatorController characterAnimator;
+    public RuntimeAnimatorController CharacterAnimator { get { return characterAnimator; } }
 }

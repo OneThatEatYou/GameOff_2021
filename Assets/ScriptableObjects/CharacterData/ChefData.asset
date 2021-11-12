@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4acea7e3c86337a41bae552fcfaa9304, type: 3}
-  m_Name: PlayerData
+  m_Name: ChefData
   m_EditorClassIdentifier: 
-  enemyName: Player
-  baseHealth: 5
+  enemyName: Chef
+  baseHealth: 1
   baseDamage: 1
-  characterSprite: {fileID: 6920209119401886799, guid: b57199e9244fe0b4c8819ffce1cb892f, type: 3}
-  characterAnimator: {fileID: 9100000, guid: 33ce9952e11c75449b23a231e17f3da3, type: 2}
+  characterSprite: {fileID: -8937142932638233397, guid: e4d9f28c943177748a51dd3e41ffec18, type: 3}
+  characterAnimator: {fileID: 9100000, guid: ba3cd664b7c9d7349a63c4f2b415427c, type: 2}

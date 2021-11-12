@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4acea7e3c86337a41bae552fcfaa9304, type: 3}
-  m_Name: PlayerData
+  m_Name: GuardianData
   m_EditorClassIdentifier: 
-  enemyName: Player
-  baseHealth: 5
+  enemyName: Guardian
+  baseHealth: 1
   baseDamage: 1
-  characterSprite: {fileID: 6920209119401886799, guid: b57199e9244fe0b4c8819ffce1cb892f, type: 3}
-  characterAnimator: {fileID: 9100000, guid: 33ce9952e11c75449b23a231e17f3da3, type: 2}
+  characterSprite: {fileID: -8256966635805211441, guid: 7d742442a7e96cd45b74281b46f86f9b, type: 3}
+  characterAnimator: {fileID: 9100000, guid: bd155bcfb1e2a8f4697d0cbafd72ce42, type: 2}

@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4acea7e3c86337a41bae552fcfaa9304, type: 3}
-  m_Name: AlgoData
+  m_Script: {fileID: 11500000, guid: b62b22e1e70d680498065b42088b1d81, type: 3}
+  m_Name: Heal1
   m_EditorClassIdentifier: 
-  enemyName: Algo
-  baseHealth: 1
-  baseDamage: 1
-  characterSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  useUserAttack: 0
+  damage: -1

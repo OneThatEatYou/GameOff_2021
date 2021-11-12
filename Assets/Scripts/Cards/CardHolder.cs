@@ -13,11 +13,13 @@ public class CardHolder : Targetable
 
     [SerializeField, ReadOnly] private Vector2 basePos;
 
+    private Canvas canvas;
     private GraphicRaycaster graphicRaycaster;
     private Image cardImage;
 
     private void Awake()
     {
+        canvas = GetComponent<Canvas>();
         graphicRaycaster = GetComponent<GraphicRaycaster>();
         cardImage = GetComponent<Image>();
     }
@@ -38,6 +40,21 @@ public class CardHolder : Targetable
     public void DragCard(Vector2 offest)
     {
         transform.position = BattleManager.Instance.MouseWorldPosition + offest;
+    }
+
+    public void SetLayerFront()
+    {
+        SetLayer(2);
+    }
+
+    public void SetLayerBack()
+    {
+        SetLayer(1);
+    }
+
+    private void SetLayer(int order)
+    {
+        canvas.sortingOrder = order;
     }
 
     public void TryUseCard(Targetable targetable)
