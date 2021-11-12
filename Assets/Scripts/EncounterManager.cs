@@ -9,6 +9,17 @@ public class EncounterManager : Singleton<EncounterManager>
     [Expandable] public CharacterData[] encounterData;
     public Vector2 encounterNumberRange;
 
+    [Header("Wander")]
+    public Vector2 wanderTimeRange;
+    public float wanderSpeed = 1;
+    public float wanderAccelDur = 0.5f;
+    public float wanderDeccel = 2;
+    public Material groundMaterial;
+
+    private float wanderTime;
+
+    public const string groundOffsetRef = "_Offset";
+
     private void Awake()
     {
         InitializeSingleton();
@@ -16,7 +27,8 @@ public class EncounterManager : Singleton<EncounterManager>
 
     private void Start()
     {
-        Encounter(new CharacterData[] { encounterData[0], encounterData[0], encounterData[0] });
+        //Encounter(new CharacterData[] { encounterData[0], encounterData[0], encounterData[0] });
+        Wander();
     }
 
     private void OnEnable()
@@ -35,6 +47,7 @@ public class EncounterManager : Singleton<EncounterManager>
         if (isWandering) return;
 
         isWandering = true;
+        wanderTime = Random.Range(wanderTimeRange.x, wanderTimeRange.y);
         StartCoroutine(PlayerWanderCoroutine());
     }
 
@@ -62,7 +75,30 @@ public class EncounterManager : Singleton<EncounterManager>
 
     private IEnumerator PlayerWanderCoroutine()
     {
-        yield return new WaitForSeconds(5);
+        float elapsed = 0;
+        float velocity = 0;
+
+        while (elapsed < wanderTime)
+        {
+            velocity = Mathf.Min(elapsed / wanderAccelDur, 1);
+            elapsed += Time.deltaTime;
+            Vector2 curOffset = groundMaterial.GetVector(groundOffsetRef);
+            curOffset.x = Mathf.Repeat(curOffset.x + Time.deltaTime * wanderSpeed * velocity, 1);
+            groundMaterial.SetVector(groundOffsetRef, new Vector4(curOffset.x, 0, 0, 0));
+
+            yield return null;
+        }
+
+        while (velocity > 0.1f)
+        {
+            velocity = Mathf.Lerp(velocity, 0, Time.deltaTime * wanderDeccel);
+            elapsed += Time.deltaTime;
+            Vector2 curOffset = groundMaterial.GetVector(groundOffsetRef);
+            curOffset.x = Mathf.Repeat(curOffset.x + Time.deltaTime * wanderSpeed * velocity, 1);
+            groundMaterial.SetVector(groundOffsetRef, new Vector4(curOffset.x, 0, 0, 0));
+
+            yield return null;
+        }
 
         isWandering = false;
         Encounter();
