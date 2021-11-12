@@ -5,7 +5,7 @@ using MyBox;
 
 public abstract class Character : Targetable
 {
-    public CharacterData characterData;
+    [Expandable] public CharacterData characterData;
 
     [SerializeField, ReadOnly] private int curHealth;
     public int CurHealth
@@ -16,13 +16,14 @@ public abstract class Character : Targetable
             curHealth = Mathf.Max(0, value);
             onHealthChange?.Invoke(curHealth);
 
-            if (curHealth == 0) onDeathCallback?.Invoke(this);
+            if (curHealth == 0 || curHealth > OverflowLimit) onDeathCallback?.Invoke(this);
         }
     }
 
     [SerializeField, ReadOnly] private int damageBoost;
     public int Damage { get { return characterData.BaseDamage + damageBoost; } }
     public int MaxHealth { get { return characterData.BaseHealth; } }
+    public int OverflowLimit { get { return characterData.OverflowLimit; } }
 
     [SerializeField, ReadOnly] private bool isExecutingTurn = false;
     public bool IsExecutingTurn

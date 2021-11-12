@@ -15,5 +15,6 @@ MonoBehaviour:
   enemyName: Chef
   baseHealth: 1
   baseDamage: 1
+  overflowLimit: 8
   characterSprite: {fileID: -8937142932638233397, guid: e4d9f28c943177748a51dd3e41ffec18, type: 3}
   characterAnimator: {fileID: 9100000, guid: ba3cd664b7c9d7349a63c4f2b415427c, type: 2}

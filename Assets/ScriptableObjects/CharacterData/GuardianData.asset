@@ -15,5 +15,6 @@ MonoBehaviour:
   enemyName: Guardian
   baseHealth: 1
   baseDamage: 1
+  overflowLimit: 8
   characterSprite: {fileID: -8256966635805211441, guid: 7d742442a7e96cd45b74281b46f86f9b, type: 3}
   characterAnimator: {fileID: 9100000, guid: bd155bcfb1e2a8f4697d0cbafd72ce42, type: 2}

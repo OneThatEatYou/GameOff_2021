@@ -6,12 +6,19 @@ using UnityEngine;
 public class CharacterData : ScriptableObject
 {
     public string enemyName;
+
     [SerializeField] private int baseHealth;
     public int BaseHealth { get { return baseHealth; } }
+
     [SerializeField] private int baseDamage;
     public int BaseDamage { get { return baseDamage; } }
+
+    [SerializeField] private int overflowLimit;
+    public int OverflowLimit { get { return overflowLimit; } }
+
     [SerializeField] private Sprite characterSprite;
     public Sprite CharacterSprite { get { return characterSprite; } }
+
     [SerializeField] private RuntimeAnimatorController characterAnimator;
     public RuntimeAnimatorController CharacterAnimator { get { return characterAnimator; } }
 }

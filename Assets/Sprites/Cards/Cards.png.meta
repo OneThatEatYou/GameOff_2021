@@ -113,9 +113,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 72
-        width: 48
-        height: 56
+        y: 70
+        width: 50
+        height: 58
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -133,12 +133,12 @@ TextureImporter:
       name: Cards_1
       rect:
         serializedVersion: 2
-        x: 48
-        y: 72
-        width: 48
-        height: 56
+        x: 50
+        y: 70
+        width: 50
+        height: 58
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -146,6 +146,27 @@ TextureImporter:
       bones: []
       spriteID: a47d6884bcf1949e0800000000000000
       internalID: -1636742031616846006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cards_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 12
+        width: 50
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f600167ab526e1790800000000000000
+      internalID: -7557494978891415441
       vertices: []
       indices: 
       edges: []
