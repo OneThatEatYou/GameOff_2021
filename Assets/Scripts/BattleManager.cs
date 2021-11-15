@@ -33,8 +33,11 @@ public class BattleManager : Singleton<BattleManager>
     { 
         get 
         {
-            Vector2 cardHolderParentWorldSize = Camera.main.ScreenToWorldPoint(cardHolderParent.rect.max) - Camera.main.ScreenToWorldPoint(cardHolderParent.rect.min);
-            return cardHolderParentWorldSize - cardHolderAreaPadding * 2;
+            Vector2 min = cardHolderParent.rect.min;
+            Vector2 max = cardHolderParent.rect.max;
+            Vector2 cardHolderParentWorldSize = Camera.main.ScreenToWorldPoint(max) - Camera.main.ScreenToWorldPoint(min);
+            //Debug.Log(cardHolderParentWorldSize);
+            return cardHolderParentWorldSize * 3 - cardHolderAreaPadding;
         }
     }
 
@@ -66,6 +69,7 @@ public class BattleManager : Singleton<BattleManager>
     public CanvasGroup cardAreaCanvasGroup;
     public Vector2 cardHolderAreaPadding;
     public CardPosition[] heldCards;
+    [SerializeField, ReadOnly] private bool isDrawingCard;
 
     [Header("Selection")]
     [SerializeField, ReadOnly] private Targetable hoveredTarget;
@@ -76,6 +80,12 @@ public class BattleManager : Singleton<BattleManager>
     [Header("Turn Info")]
     [SerializeField, ReadOnly] private int turnNum = 1;
     [SerializeField, ReadOnly] private TurnStatus curTurnStatus;
+
+    [Header("Animation")]
+    public float cardPanelSpawnDelay = 1f;
+    public float cardSpawnStartDelay = 1f;
+    public float cardDrawDelay = 0.5f;
+    public float cardDissolveDelay = 0.5f;
 
     private MainInput input;
     private bool isBattling;
@@ -232,14 +242,14 @@ public class BattleManager : Singleton<BattleManager>
 
     private IEnumerator StartBattleCoroutine()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(cardPanelSpawnDelay);
 
         cardAreaCanvasGroup.alpha = 1;
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(cardSpawnStartDelay);
 
         EvaluateTurn();
-        DrawCard();
+        DrawCards();
 
         onBattleStartCallback?.Invoke();
     }
@@ -250,8 +260,11 @@ public class BattleManager : Singleton<BattleManager>
 
         foreach (var heldCard in heldCards)
         {
-            if (heldCard.cardHolder) heldCard.cardHolder.DestoyCard();
-            yield return new WaitForSeconds(0.3f);
+            if (heldCard.cardHolder)
+            {
+                heldCard.cardHolder.DestoyCard();
+                yield return new WaitForSeconds(cardDissolveDelay);
+            }
         }
 
         yield return new WaitForSeconds(1);
@@ -261,7 +274,15 @@ public class BattleManager : Singleton<BattleManager>
         onBattleEndCallback?.Invoke();
     }
 
-    private void DrawCard()
+    private void DrawCards()
+    {
+        if (isDrawingCard) return;
+
+        isDrawingCard = true;
+        StartCoroutine(DrawCardsCoroutine());
+    }
+
+    private IEnumerator DrawCardsCoroutine()
     {
         for (int i = 0; i < heldCards.Length; i++)
         {
@@ -269,8 +290,12 @@ public class BattleManager : Singleton<BattleManager>
             {
                 CardData cardData = deck.GetRandomCard();
                 CreateCard(cardData, i);
+
+                yield return new WaitForSeconds(cardDrawDelay);
             }
         }
+
+        isDrawingCard = false;
     }
 
     private void CreateCard(CardData cardData, int cardPosIndex)
@@ -300,7 +325,7 @@ public class BattleManager : Singleton<BattleManager>
     private IEnumerator EvaluatePlayerTurn()
     {
         Debug.Log($"It's {Player.name}'s turn");
-        DrawCard();
+        DrawCards();
         StartCoroutine(Player.Evaluate());
 
         while (Player.IsExecutingTurn)
@@ -390,16 +415,19 @@ public class BattleManager : Singleton<BattleManager>
 
     private void OnDrawGizmos()
     {
+        // draw card panel
         if (cardHolderParent)
         {
             Gizmos.DrawWireCube(cardHolderParent.position, CardHolderArea);
         }
 
+        // draw card positions
         foreach (CardPosition hc in heldCards)
         {
             Gizmos.DrawWireSphere(hc.position, 0.5f);
         }
 
+        // draw enemy positions
         foreach (EnemyPosition ep in enemies)
         {
             Gizmos.color = Color.red;

@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: TutorialDeck
   m_EditorClassIdentifier: 
   cards:
-  - {fileID: 11400000, guid: 68b8982731a81794aaaa1616c9dd421e, type: 2}
-  - {fileID: 11400000, guid: 5664d47823af12244953a0c70f2f1077, type: 2}
+  - {fileID: 11400000, guid: f2ec95580a91c1d4291a629fdb8b7abc, type: 2}
+  - {fileID: 11400000, guid: 96e77c163f34eaa4fba71ff2704093ca, type: 2}
   - {fileID: 11400000, guid: ea8c9a2ed18ae2b4f81a9b452b81cfc6, type: 2}
+  - {fileID: 11400000, guid: 98deac79e7ae83945b0ec062d512e0c9, type: 2}
   - {fileID: 11400000, guid: cab0c3f1ab42b0c47ae22ba690523194, type: 2}
+  - {fileID: 11400000, guid: 7a58552f321475648861fdc1e63fd3cb, type: 2}
+  - {fileID: 11400000, guid: 5664d47823af12244953a0c70f2f1077, type: 2}
+  - {fileID: 11400000, guid: 68b8982731a81794aaaa1616c9dd421e, type: 2}

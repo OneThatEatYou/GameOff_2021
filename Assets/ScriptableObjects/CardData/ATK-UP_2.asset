@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa7cd00b19a84f5409362707dabe99b7, type: 3}
-  m_Name: Heal
+  m_Name: ATK-UP_2
   m_EditorClassIdentifier: 
-  cardName: Heal
-  description: Heals user 1 HP
-  cardImage: {fileID: 21300000, guid: e82c10b9534a3ac4ea5959c05d8f4be6, type: 3}
+  cardName: ATK UP 2
+  description: User ATK +2
+  cardImage: {fileID: 21300000, guid: d2a771338e621f04589122e403c854f3, type: 3}
   effects:
-  - {fileID: 11400000, guid: 09e40c97e8c82724d9d83e07f5097f56, type: 2}
+  - {fileID: 11400000, guid: 034367edfac6ea44380901a82cfbf062, type: 2}

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4acea7e3c86337a41bae552fcfaa9304, type: 3}
-  m_Name: ChefData
+  m_Name: ChiefData
   m_EditorClassIdentifier: 
-  enemyName: Chef
+  enemyName: Chief
   baseHealth: 1
   baseDamage: 1
   overflowLimit: 8
