@@ -35,11 +35,17 @@ public class BattleManager : Singleton<BattleManager>
         {
             Vector2 min = cardHolderParent.rect.min;
             Vector2 max = cardHolderParent.rect.max;
+            float resolutionScale = Camera.main.pixelWidth / referenceResolution.x;
             Vector2 cardHolderParentWorldSize = Camera.main.ScreenToWorldPoint(max) - Camera.main.ScreenToWorldPoint(min);
             //Debug.Log(cardHolderParentWorldSize);
-            return cardHolderParentWorldSize * 3 - cardHolderAreaPadding;
+            //Debug.Log("Max: " + Camera.main.ScreenToWorldPoint(cardHolderParent.rect.max) + ", Min: " + Camera.main.ScreenToWorldPoint(cardHolderParent.rect.min));
+            //Debug.Log(resolutionScale);
+            return cardHolderParentWorldSize * resolutionScale * cardHolderAreaScale;
         }
     }
+
+    //public float uiScale = 3;
+    public Vector2 referenceResolution = new Vector2(320, 180);
 
 
     private Player player;
@@ -56,8 +62,6 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
-    //private List<Enemy> enemies = new List<Enemy>();
-
     [Header("Characters")]
     public GameObject enemyPrefab;
     public List<EnemyPosition> enemies;
@@ -67,7 +71,7 @@ public class BattleManager : Singleton<BattleManager>
     public GameObject cardHolderPrefab;
     public RectTransform cardHolderParent;
     public CanvasGroup cardAreaCanvasGroup;
-    public Vector2 cardHolderAreaPadding;
+    public Vector2 cardHolderAreaScale;
     public CardPosition[] heldCards;
     [SerializeField, ReadOnly] private bool isDrawingCard;
 
@@ -86,6 +90,8 @@ public class BattleManager : Singleton<BattleManager>
     public float cardSpawnStartDelay = 1f;
     public float cardDrawDelay = 0.5f;
     public float cardDissolveDelay = 0.5f;
+    public float cardEffectInitialDelay = 0.5f;
+    public float cardEffectTriggerDelay = 0.3f;
 
     private MainInput input;
     private bool isBattling;

@@ -45,6 +45,6 @@ Material:
     - Vector2_0a259d6142ff4b629687241768d082d6: {r: 5.35, g: 1, b: 0, a: 0}
     - Vector2_637c1fb74f5a4d60a8c5e7840746aa1a: {r: -0.74, g: -0.34, b: 0, a: 0}
     - Vector2_c55eff1a91a44026a56b28191110ad5d: {r: 0, g: 0, b: 0, a: 0}
-    - _Offset: {r: 0.23305377, g: 0, b: 0, a: 0}
+    - _Offset: {r: 0.7401552, g: 0, b: 0, a: 0}
     - _Tiling: {r: 5.7, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []

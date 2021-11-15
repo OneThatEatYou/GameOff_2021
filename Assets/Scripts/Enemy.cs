@@ -8,12 +8,12 @@ public class Enemy : Character
     {
         StartTurn();
         yield return new WaitForSeconds(1);
-        Attack();
+        Action();
         yield return new WaitForSeconds(1);
         EndTurn();
     }
 
-    public void Attack()
+    public void Action()
     {
         BattleManager.Instance.Player.TakeDamage(Damage);
     }

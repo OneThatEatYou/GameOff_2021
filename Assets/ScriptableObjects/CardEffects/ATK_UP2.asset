@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66d9e21c0be144041b18fd4f225e6426, type: 3}
   m_Name: ATK_UP2
   m_EditorClassIdentifier: 
-  amount: 1
+  amount: 2
