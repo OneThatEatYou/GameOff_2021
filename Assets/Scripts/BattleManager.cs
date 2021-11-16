@@ -6,13 +6,6 @@ using MyBox;
 public class BattleManager : Singleton<BattleManager>
 {
     [System.Serializable]
-    public class CardPosition
-    {
-        [ReadOnly] public Vector2 position;
-        [ReadOnly] public CardHolder cardHolder;
-    }
-
-    [System.Serializable]
     public class EnemyPosition
     {
         public Vector2 position;
@@ -420,7 +413,7 @@ public class BattleManager : Singleton<BattleManager>
         return true;
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         // draw card panel
         if (cardHolderParent)
@@ -444,9 +437,16 @@ public class BattleManager : Singleton<BattleManager>
 
     private void OnValidate()
     {
-        if (heldCards.Length > 0)
+        if (heldCards.Length > 0 && cardHolderParent)
         {
             UpdateCardPositions();
         }
     }
+}
+
+[System.Serializable]
+public class CardPosition
+{
+    [ReadOnly] public Vector2 position;
+    [ReadOnly] public CardHolder cardHolder;
 }

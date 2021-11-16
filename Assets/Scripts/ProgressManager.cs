@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using TMPro;
 using MyBox;
 
 public class ProgressManager : Singleton<ProgressManager>
 {
     [SerializeField, ReadOnly] private bool isWandering;
+    [SerializeField, ReadOnly] private bool levelIsOver;
     [Expandable] public CharacterData[] encounterData;
     public Vector2 encounterNumberRange;
 
@@ -16,7 +19,24 @@ public class ProgressManager : Singleton<ProgressManager>
     public float wanderDeccel = 2;
     public Material groundMaterial;
 
+    [Header("Level Progress")]
+    public int curLevel;
+    [SerializeField, ReadOnly] private float progress;
+    public float startLevelLength = 30;
+    public float levelLengthIncrement = 10;
+    [SerializeField, ReadOnly] private float levelLength;
+
+    [Header("Level Clear")]
+    public TextMeshProUGUI levelEndText;
+    public float levelEndNoticeDur = 5;
+    public DeckModifier deckModifier;
+
     private float wanderTime;
+    private Coroutine wanderCR;
+    private float levelTimeElapsed = 0;
+
+    public delegate void LevelLoadedDelegate();
+    public LevelLoadedDelegate onLevelLoaded;
 
     public const string groundOffsetRef = "_Offset";
 
@@ -27,19 +47,31 @@ public class ProgressManager : Singleton<ProgressManager>
 
     private void Start()
     {
-        //Encounter(new CharacterData[] { encounterData[0], encounterData[0], encounterData[0] });
+        levelLength = startLevelLength;
         Wander();
     }
 
     private void OnEnable()
     {
+        SceneManager.sceneLoaded += OnSceneLoaded;
         BattleManager.Instance.onBattleEndCallback += Wander;
+        onLevelLoaded += UpdateLevelLength;
     }
 
     private void OnDisable()
     {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
         // if-statement stops error when exiting playmode
         if (BattleManager.Instance) BattleManager.Instance.onBattleEndCallback -= Wander;
+        onLevelLoaded -= UpdateLevelLength;
+    }
+
+    private void Update()
+    {
+        if (isWandering)
+        {
+            ProgressLevel();
+        }
     }
 
     private void Wander()
@@ -48,7 +80,7 @@ public class ProgressManager : Singleton<ProgressManager>
 
         isWandering = true;
         wanderTime = Random.Range(wanderTimeRange.x, wanderTimeRange.y);
-        StartCoroutine(PlayerWanderCoroutine());
+        wanderCR = StartCoroutine(PlayerWanderCoroutine());
     }
 
     private CharacterData[] GetRandomEncounters(int num)
@@ -89,6 +121,9 @@ public class ProgressManager : Singleton<ProgressManager>
             yield return null;
         }
 
+        isWandering = false;
+
+        // deccel
         while (velocity > 0.1f)
         {
             velocity = Mathf.Lerp(velocity, 0, Time.deltaTime * wanderDeccel);
@@ -100,7 +135,55 @@ public class ProgressManager : Singleton<ProgressManager>
             yield return null;
         }
 
-        isWandering = false;
         Encounter();
+    }
+
+    private void ProgressLevel()
+    {
+        if (levelIsOver) return;
+
+        if (progress < 1)
+        {
+            levelTimeElapsed += Time.deltaTime;
+            progress = levelTimeElapsed / levelLength;
+        }
+        else
+        {
+            progress = 1;
+            EndLevel();
+        }
+    }
+
+    private void EndLevel()
+    {
+        Debug.Log("Level ended");
+
+        levelIsOver = true;
+        if (wanderCR != null) StopCoroutine(wanderCR);
+
+        // choose card to add to deck
+
+        //SceneManager.LoadScene(0);
+    }
+
+    private IEnumerator EndLevelCoroutine()
+    {
+        float elapsed = 0;
+
+        // show level end text
+
+        yield return new WaitForSeconds(levelEndNoticeDur);
+
+        deckModifier.ShowPanel();
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
+    {
+        onLevelLoaded?.Invoke();
+    }
+
+    private void UpdateLevelLength()
+    {
+        levelLength = startLevelLength + curLevel * levelLengthIncrement;
     }
 }
