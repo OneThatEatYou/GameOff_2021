@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MyBox;
 
-public class EncounterManager : Singleton<EncounterManager>
+public class ProgressManager : Singleton<ProgressManager>
 {
     [SerializeField, ReadOnly] private bool isWandering;
     [Expandable] public CharacterData[] encounterData;

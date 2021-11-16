@@ -104,6 +104,7 @@ public class BattleManager : Singleton<BattleManager>
     {
         InitializeSingleton();
         input = new MainInput();
+        deck = Instantiate(deck);
     }
 
     private void Start()

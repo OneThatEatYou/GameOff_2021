@@ -16,36 +16,40 @@ public class Enemy : Character
     public void Action()
     {
         Action action = characterData.GetRandomAction();
+        Character target = null;
         //Debug.Log($"{characterData.enemyName} is using {action.effect.name}");
+
+        // assign target
+        switch (action.target)
+        {
+            case TargetEnum.Player:
+                target = BattleManager.Instance.Player;
+                break;
+            case TargetEnum.Enemy:
+                target = GetRandomEnemy(action.canTargetSelf);
+                break;
+        }
 
         if (action.justAttack)
         {
-            Attack();
+            Attack(target);
         }
         else
         {
-            switch (action.target)
+            if (target)
             {
-                case TargetEnum.Player:
-                    action.effect.ApplyEffect(BattleManager.Instance.Player);
-                    break;
-                case TargetEnum.Enemy:
-                    if (GetRandomEnemy(action.canTargetSelf, out Enemy enemy))
-                    {
-                        action.effect.ApplyEffect(enemy);
-                    }
-                    else
-                    {
-                        DoNothing();
-                    }
-                    break;
+                action.effect.ApplyEffect(target);
+            }
+            else
+            {
+                DoNothing();
             }
         }
     }
 
-    private void Attack()
+    private void Attack(Character target)
     {
-        BattleManager.Instance.Player.TakeDamage(Damage);
+        target.TakeDamage(Damage);
     }
 
     protected override void Die(Character character)
@@ -53,10 +57,9 @@ public class Enemy : Character
         Destroy(gameObject);
     }
 
-    private bool GetRandomEnemy(bool canTargetSelf, out Enemy randomEnemy)
+    private Enemy GetRandomEnemy(bool canTargetSelf)
     {
         List<BattleManager.EnemyPosition> enemies = new List<BattleManager.EnemyPosition>(BattleManager.Instance.enemies);
-        randomEnemy = null;
 
         // filter the enemy positions to get valid enemies
         foreach (var enemy in enemies.ToArray())
@@ -70,11 +73,10 @@ public class Enemy : Character
 
         if (enemies.Count == 0)
         {
-            return false;
+            return null;
         }
 
-        randomEnemy = enemies[Random.Range(0, enemies.Count)].enemy;
-        return true;
+        return enemies[Random.Range(0, enemies.Count)].enemy;
     }
 
     private void DoNothing()

@@ -42,6 +42,6 @@ public class Action
 {
     public bool justAttack;
     [ConditionalField(nameof(justAttack), true)] public CardEffect effect;
-    [ConditionalField(nameof(justAttack), true)] public TargetEnum target;
+    public TargetEnum target;
     [ConditionalField(nameof(target), false, TargetEnum.Enemy)] public bool canTargetSelf;
 }
