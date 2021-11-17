@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
 using MyBox;
 
 public class ProgressManager : Singleton<ProgressManager>
@@ -27,9 +26,7 @@ public class ProgressManager : Singleton<ProgressManager>
     [SerializeField, ReadOnly] private float levelLength;
 
     [Header("Level Clear")]
-    public TextMeshProUGUI levelEndText;
-    public float levelEndNoticeDur = 5;
-    public DeckModifier deckModifier;
+    public LevelEndManager levelEndManager;
 
     private float wanderTime;
     private Coroutine wanderCR;
@@ -48,14 +45,14 @@ public class ProgressManager : Singleton<ProgressManager>
     private void Start()
     {
         levelLength = startLevelLength;
-        Wander();
+        //Wander();
+        EndLevel();
     }
 
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
         BattleManager.Instance.onBattleEndCallback += Wander;
-        onLevelLoaded += UpdateLevelLength;
     }
 
     private void OnDisable()
@@ -63,7 +60,6 @@ public class ProgressManager : Singleton<ProgressManager>
         SceneManager.sceneLoaded -= OnSceneLoaded;
         // if-statement stops error when exiting playmode
         if (BattleManager.Instance) BattleManager.Instance.onBattleEndCallback -= Wander;
-        onLevelLoaded -= UpdateLevelLength;
     }
 
     private void Update()
@@ -142,7 +138,7 @@ public class ProgressManager : Singleton<ProgressManager>
     {
         if (levelIsOver) return;
 
-        if (progress < 1)
+        if (levelTimeElapsed < levelLength)
         {
             levelTimeElapsed += Time.deltaTime;
             progress = levelTimeElapsed / levelLength;
@@ -162,24 +158,17 @@ public class ProgressManager : Singleton<ProgressManager>
         if (wanderCR != null) StopCoroutine(wanderCR);
 
         // choose card to add to deck
+        levelEndManager.EndLevel();
 
         //SceneManager.LoadScene(0);
-    }
-
-    private IEnumerator EndLevelCoroutine()
-    {
-        float elapsed = 0;
-
-        // show level end text
-
-        yield return new WaitForSeconds(levelEndNoticeDur);
-
-        deckModifier.ShowPanel();
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
         onLevelLoaded?.Invoke();
+
+        UpdateLevelLength();
+        levelTimeElapsed = 0;
     }
 
     private void UpdateLevelLength()

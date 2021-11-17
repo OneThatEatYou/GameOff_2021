@@ -37,10 +37,6 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
-    //public float uiScale = 3;
-    public Vector2 referenceResolution = new Vector2(320, 180);
-
-
     private Player player;
     public Player Player
     {
@@ -55,13 +51,14 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
+    public Vector2 referenceResolution = new Vector2(320, 180);
+
     [Header("Characters")]
     public GameObject enemyPrefab;
     public List<EnemyPosition> enemies;
 
     [Header("Cards")]
     [Expandable] public CardDeck deck;
-    public GameObject cardHolderPrefab;
     public RectTransform cardHolderParent;
     public CanvasGroup cardAreaCanvasGroup;
     public Vector2 cardHolderAreaScale;
@@ -86,6 +83,7 @@ public class BattleManager : Singleton<BattleManager>
     public float cardEffectInitialDelay = 0.5f;
     public float cardEffectTriggerDelay = 0.3f;
 
+    private GameObject cardHolderPrefab;
     private MainInput input;
     private bool isBattling;
 
@@ -96,6 +94,7 @@ public class BattleManager : Singleton<BattleManager>
     private void Awake()
     {
         InitializeSingleton();
+        cardHolderPrefab = (GameObject)Resources.Load("Card");
         input = new MainInput();
         deck = Instantiate(deck);
     }
