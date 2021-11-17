@@ -46,6 +46,33 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "NormalActions",
+            "id": "3b64f373-267e-4a05-896a-3e771f140261",
+            "actions": [
+                {
+                    "name": "Select",
+                    "type": "Button",
+                    "id": "f124ff13-ee6c-4e4b-a47b-a4c22eb03a9d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "598bf107-8cdb-4f14-81d7-61abc156107e",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

@@ -106,16 +106,19 @@ public class BattleManager : Singleton<BattleManager>
 
     private void OnEnable()
     {
-        input.Enable();
+        //EnableInput();
         input.BattleActions.Select.started += ctx => StartHoldingSelect();
         input.BattleActions.Select.canceled += ctx => StopHoldingSelect();
     }
 
     private void OnDisable()
     {
-        input.Disable();
-        input.BattleActions.Select.started -= ctx => StartHoldingSelect();
-        input.BattleActions.Select.canceled -= ctx => StopHoldingSelect();
+        if (input != null)
+        {
+            DisableInput();
+            input.BattleActions.Select.started -= ctx => StartHoldingSelect();
+            input.BattleActions.Select.canceled -= ctx => StopHoldingSelect();
+        }
     }
 
     private void Update()
@@ -142,7 +145,7 @@ public class BattleManager : Singleton<BattleManager>
 
     private void WhileHoldingSelect()
     {
-        if (SelectedCard) SelectedCard.DragCard(selectOffset);
+        if (SelectedCard) DragCard(SelectedCard.transform, selectOffset);
     }
 
     private void StopHoldingSelect()
@@ -178,7 +181,23 @@ public class BattleManager : Singleton<BattleManager>
         isBattling = true;
         curTurnStatus = TurnStatus.Player;
         SpawnEnemies(enemies);
+        EnableInput();
         StartCoroutine(StartBattleCoroutine());
+    }
+
+    public void DisableInput()
+    {
+        input.Disable();
+    }
+
+    public void EnableInput()
+    {
+        input.Enable();
+    }
+
+    private void DragCard(Transform cardTransform, Vector2 offest)
+    {
+        cardTransform.position = MouseWorldPosition + offest;
     }
 
     private void EndBattle()
@@ -186,6 +205,7 @@ public class BattleManager : Singleton<BattleManager>
         if (!isBattling) return;
 
         isBattling = false;
+        DisableInput();
         StartCoroutine(EndBattleCoroutine());
         Debug.Log("Ending battle");
     }

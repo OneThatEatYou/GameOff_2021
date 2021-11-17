@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class LevelEndManager : MonoBehaviour
+public class DeckModifier : MonoBehaviour
 {
     [System.Serializable]
     public class CardConditions
@@ -19,7 +19,7 @@ public class LevelEndManager : MonoBehaviour
         {
             Vector2 min = choiceRect.rect.min;
             Vector2 max = choiceRect.rect.max;
-            float resolutionScale = Camera.main.pixelWidth / BattleManager.Instance.referenceResolution.x;
+            float resolutionScale = Camera.main.pixelWidth / referenceResolution.x;
             Vector2 cardHolderParentWorldSize = Camera.main.ScreenToWorldPoint(max) - Camera.main.ScreenToWorldPoint(min);
             return cardHolderParentWorldSize * resolutionScale * cardHolderAreaScale;
         }
@@ -30,7 +30,7 @@ public class LevelEndManager : MonoBehaviour
         {
             Vector2 min = choiceRect.rect.min;
             Vector2 max = choiceRect.rect.max;
-            float resolutionScale = Camera.main.pixelWidth / BattleManager.Instance.referenceResolution.x;
+            float resolutionScale = Camera.main.pixelWidth / referenceResolution.x;
             Vector2 cardHolderParentWorldSize = Camera.main.ScreenToWorldPoint(max) - Camera.main.ScreenToWorldPoint(min);
             return cardHolderParentWorldSize * resolutionScale * cardHolderAreaOffset;
         }
@@ -42,8 +42,12 @@ public class LevelEndManager : MonoBehaviour
             return (Vector2)choiceRect.position + CardHolderAreaOffset;
         }
     }
+    public Targetable HoveredTarget { get { return PlayerSelectionHandler.Instance.HoveredTarget; } }
+    public CardHolder SelectedCard { get { return PlayerSelectionHandler.Instance.SelectedCard; } }
 
     public CardConditions[] cardPool;
+
+    public Vector2 referenceResolution = new Vector2(320, 180);
 
     [Header("UI")]
     public TextMeshProUGUI levelEndText;
@@ -51,23 +55,45 @@ public class LevelEndManager : MonoBehaviour
     public Vector2 cardHolderAreaScale = Vector2.one;
     public Vector2 cardHolderAreaOffset;
     public CardPosition[] cardChoices;
+    public Button confirmButton;
 
     [Header("Animation")]
     public float cardPanelSpawnDelay = 5f;
     public float cardSpawnStartDelay = 1f;
     public float cardDrawDelay = 0.5f;
 
+    public delegate void LevelEndDelegate();
+    public LevelEndDelegate onChoiceConfirmed;
+
     private GameObject cardHolderPrefab;
+    private MainInput input;
+    private TextMeshProUGUI confirmButtonText;
     private bool isShowingChoices;
 
     private void Awake()
     {
+        input = new MainInput();
         cardHolderPrefab = (GameObject)Resources.Load("Card");
+        confirmButtonText = confirmButton.GetComponentInChildren<TextMeshProUGUI>();
     }
 
     private void Start()
     {
         UpdateCardPositions();
+    }
+
+    private void OnEnable()
+    {
+        input.Enable();
+        input.NormalActions.Select.performed += ctx => SelectCard();
+        input.NormalActions.Select.performed += ctx => UpdateButtons();
+    }
+
+    private void OnDisable()
+    {
+        input.Disable();
+        input.NormalActions.Select.performed -= ctx => SelectCard();
+        input.NormalActions.Select.performed -= ctx => UpdateButtons();
     }
 
     public void EndLevel()
@@ -76,12 +102,42 @@ public class LevelEndManager : MonoBehaviour
         ShowChoices();
     }
 
+    public void ConfirmChoice()
+    {
+        if (SelectedCard != null)
+        {
+            BattleManager.Instance.deck.AddCard(SelectedCard.card);
+            HideChoices();
+        }
+    }
+
+    private void SelectCard()
+    {
+        if (SelectedCard && HoveredTarget == SelectedCard) PlayerSelectionHandler.Instance.SelectCard(null);
+        else if (HoveredTarget is CardHolder) PlayerSelectionHandler.Instance.SelectCard(HoveredTarget as CardHolder);
+    }
+
+    private void UpdateButtons()
+    {
+        if (SelectedCard != null)
+        {
+            confirmButtonText.color = Color.white;
+            confirmButton.interactable = true;
+        }
+        else
+        {
+            confirmButtonText.color = Color.grey;
+            confirmButton.interactable = false;
+        }
+    }
+
     private void ShowChoices()
     {
         if (isShowingChoices) return;
 
         isShowingChoices = true;
         choiceRect.gameObject.SetActive(true);
+        UpdateButtons();
         StartCoroutine(ShowChoicesCoroutine());
     }
 
@@ -95,6 +151,33 @@ public class LevelEndManager : MonoBehaviour
             yield return new WaitForSeconds(cardDrawDelay);
         }
     }
+
+    private void HideChoices()
+    {
+        if (!isShowingChoices) return;
+
+        StartCoroutine(HideChoicesCoroutine());
+    }
+
+    private IEnumerator HideChoicesCoroutine()
+    {
+        foreach (CardPosition cp in cardChoices)
+        {
+            if (cp.cardHolder)
+            {
+                cp.cardHolder.DestoyCard();
+                yield return new WaitForSeconds(BattleManager.Instance.cardDissolveDelay);
+            }
+        }
+
+        yield return new WaitForSeconds(1);
+
+        isShowingChoices = false;
+        choiceRect.gameObject.SetActive(false);
+        levelEndText.gameObject.SetActive(false);
+        onChoiceConfirmed?.Invoke();
+    }
+
 
     private CardData[] PickCards(int cardNum)
     {

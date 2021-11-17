@@ -49,11 +49,6 @@ public class CardHolder : Targetable
         PlaySpawnCardAnimation();
     }
 
-    public void DragCard(Vector2 offest)
-    {
-        transform.position = BattleManager.Instance.MouseWorldPosition + offest;
-    }
-
     public void SetLayerFront()
     {
         SetLayer(2);

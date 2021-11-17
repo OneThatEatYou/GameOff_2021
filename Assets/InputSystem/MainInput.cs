@@ -59,6 +59,33 @@ public class @MainInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""NormalActions"",
+            ""id"": ""3b64f373-267e-4a05-896a-3e771f140261"",
+            ""actions"": [
+                {
+                    ""name"": ""Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""f124ff13-ee6c-4e4b-a47b-a4c22eb03a9d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""598bf107-8cdb-4f14-81d7-61abc156107e"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -84,6 +111,9 @@ public class @MainInput : IInputActionCollection, IDisposable
         m_BattleActions = asset.FindActionMap("BattleActions", throwIfNotFound: true);
         m_BattleActions_Select = m_BattleActions.FindAction("Select", throwIfNotFound: true);
         m_BattleActions_MousePosition = m_BattleActions.FindAction("MousePosition", throwIfNotFound: true);
+        // NormalActions
+        m_NormalActions = asset.FindActionMap("NormalActions", throwIfNotFound: true);
+        m_NormalActions_Select = m_NormalActions.FindAction("Select", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -170,6 +200,39 @@ public class @MainInput : IInputActionCollection, IDisposable
         }
     }
     public BattleActionsActions @BattleActions => new BattleActionsActions(this);
+
+    // NormalActions
+    private readonly InputActionMap m_NormalActions;
+    private INormalActionsActions m_NormalActionsActionsCallbackInterface;
+    private readonly InputAction m_NormalActions_Select;
+    public struct NormalActionsActions
+    {
+        private @MainInput m_Wrapper;
+        public NormalActionsActions(@MainInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Select => m_Wrapper.m_NormalActions_Select;
+        public InputActionMap Get() { return m_Wrapper.m_NormalActions; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(NormalActionsActions set) { return set.Get(); }
+        public void SetCallbacks(INormalActionsActions instance)
+        {
+            if (m_Wrapper.m_NormalActionsActionsCallbackInterface != null)
+            {
+                @Select.started -= m_Wrapper.m_NormalActionsActionsCallbackInterface.OnSelect;
+                @Select.performed -= m_Wrapper.m_NormalActionsActionsCallbackInterface.OnSelect;
+                @Select.canceled -= m_Wrapper.m_NormalActionsActionsCallbackInterface.OnSelect;
+            }
+            m_Wrapper.m_NormalActionsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Select.started += instance.OnSelect;
+                @Select.performed += instance.OnSelect;
+                @Select.canceled += instance.OnSelect;
+            }
+        }
+    }
+    public NormalActionsActions @NormalActions => new NormalActionsActions(this);
     private int m_PCSchemeIndex = -1;
     public InputControlScheme PCScheme
     {
@@ -183,5 +246,9 @@ public class @MainInput : IInputActionCollection, IDisposable
     {
         void OnSelect(InputAction.CallbackContext context);
         void OnMousePosition(InputAction.CallbackContext context);
+    }
+    public interface INormalActionsActions
+    {
+        void OnSelect(InputAction.CallbackContext context);
     }
 }

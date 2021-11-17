@@ -26,7 +26,7 @@ public class ProgressManager : Singleton<ProgressManager>
     [SerializeField, ReadOnly] private float levelLength;
 
     [Header("Level Clear")]
-    public LevelEndManager levelEndManager;
+    public DeckModifier deckModifier;
 
     private float wanderTime;
     private Coroutine wanderCR;
@@ -45,14 +45,15 @@ public class ProgressManager : Singleton<ProgressManager>
     private void Start()
     {
         levelLength = startLevelLength;
-        //Wander();
-        EndLevel();
+        Wander();
+        //EndLevel();
     }
 
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
         BattleManager.Instance.onBattleEndCallback += Wander;
+        deckModifier.onChoiceConfirmed += NextLevel;
     }
 
     private void OnDisable()
@@ -60,6 +61,7 @@ public class ProgressManager : Singleton<ProgressManager>
         SceneManager.sceneLoaded -= OnSceneLoaded;
         // if-statement stops error when exiting playmode
         if (BattleManager.Instance) BattleManager.Instance.onBattleEndCallback -= Wander;
+        deckModifier.onChoiceConfirmed -= NextLevel;
     }
 
     private void Update()
@@ -156,23 +158,50 @@ public class ProgressManager : Singleton<ProgressManager>
 
         levelIsOver = true;
         if (wanderCR != null) StopCoroutine(wanderCR);
+        isWandering = false;
 
         // choose card to add to deck
-        levelEndManager.EndLevel();
+        deckModifier.EndLevel();
+    }
 
-        //SceneManager.LoadScene(0);
+    private void NextLevel()
+    {
+        curLevel++;
+        SceneManager.LoadScene(0);
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
         onLevelLoaded?.Invoke();
 
+        UpdateCanvasCamera();
         UpdateLevelLength();
+        ResetProgress();
+        Wander();
+    }
+
+    private void ResetProgress()
+    {
         levelTimeElapsed = 0;
+        progress = 0;
+        levelIsOver = false;
     }
 
     private void UpdateLevelLength()
     {
         levelLength = startLevelLength + curLevel * levelLengthIncrement;
+    }
+
+    private void UpdateCanvasCamera()
+    {
+        Canvas[] canvases = FindObjectsOfType<Canvas>();
+        foreach (Canvas canvas in canvases)
+        {
+            Debug.Log(canvas.gameObject.name);
+            if (canvas.renderMode == RenderMode.ScreenSpaceCamera)
+            {
+                canvas.worldCamera = Camera.main;
+            }
+        }
     }
 }
