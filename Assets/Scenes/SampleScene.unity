@@ -609,11 +609,11 @@ MonoBehaviour:
   cardHolderAreaScale: {x: 0.9, y: 0.7}
   cardHolderAreaOffset: {x: 0, y: -0.08}
   cardChoices:
-  - position: {x: -4.664, y: -0.84309065}
+  - position: {x: -8.939333, y: -2.4964786}
     cardHolder: {fileID: 0}
-  - position: {x: 0, y: -0.84309065}
+  - position: {x: 0, y: -2.4964786}
     cardHolder: {fileID: 0}
-  - position: {x: 4.664, y: -0.84309065}
+  - position: {x: 8.939333, y: -2.4964786}
     cardHolder: {fileID: 0}
   cardPanelSpawnDelay: 1
   cardSpawnStartDelay: 1
@@ -675,17 +675,15 @@ MonoBehaviour:
   cardAreaCanvasGroup: {fileID: 136048148}
   cardHolderAreaScale: {x: 1, y: 1}
   heldCards:
-  - position: {x: -5.83, y: -3.1093333}
+  - position: {x: -11.174167, y: -1.0364444}
     cardHolder: {fileID: 0}
-  - position: {x: -1.9433331, y: -3.1093333}
+  - position: {x: -3.7247224, y: -1.0364444}
     cardHolder: {fileID: 0}
-  - position: {x: 1.9433336, y: -3.1093333}
+  - position: {x: 3.724722, y: -1.0364444}
     cardHolder: {fileID: 0}
-  - position: {x: 5.83, y: -3.1093333}
+  - position: {x: 11.174167, y: -1.0364444}
     cardHolder: {fileID: 0}
   isDrawingCard: 0
-  hoveredTarget: {fileID: 0}
-  selectedCard: {fileID: 0}
   selectOffset: {x: 0, y: 0}
   isHoldingSelect: 0
   turnNum: 1
@@ -711,6 +709,51 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1138469511
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1138469512}
+  - component: {fileID: 1138469513}
+  m_Layer: 0
+  m_Name: PlayerSelectionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1138469512
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1138469511}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1138469513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1138469511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 862c2c086d47ea24f824bed33c18fb7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoveredTarget: {fileID: 0}
+  selectedCard: {fileID: 0}
 --- !u!1 &1354850916
 GameObject:
   m_ObjectHideFlags: 0
@@ -960,7 +1003,7 @@ MonoBehaviour:
   groundMaterial: {fileID: 2100000, guid: 932d2172d5259294bb7e20392fdcbe88, type: 2}
   curLevel: 0
   progress: 0
-  startLevelLength: 3
+  startLevelLength: 30
   levelLengthIncrement: 10
   levelLength: 0
   levelEndManager: {fileID: 691389839}
@@ -1014,7 +1057,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -14.84444}
+  m_AnchoredPosition: {x: 0, y: -14.844437}
   m_SizeDelta: {x: 200, y: 19.373}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1579771103
@@ -1131,7 +1174,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1801710769
 RectTransform:
   m_ObjectHideFlags: 0

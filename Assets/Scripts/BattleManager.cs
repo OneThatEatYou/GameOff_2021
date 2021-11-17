@@ -36,6 +36,8 @@ public class BattleManager : Singleton<BattleManager>
             return cardHolderParentWorldSize * resolutionScale * cardHolderAreaScale;
         }
     }
+    public Targetable HoveredTarget { get { return PlayerSelectionHandler.Instance.HoveredTarget; } }
+    public CardHolder SelectedCard { get { return PlayerSelectionHandler.Instance.SelectedCard; } }
 
     private Player player;
     public Player Player
@@ -66,8 +68,6 @@ public class BattleManager : Singleton<BattleManager>
     [SerializeField, ReadOnly] private bool isDrawingCard;
 
     [Header("Selection")]
-    [SerializeField, ReadOnly] private Targetable hoveredTarget;
-    [SerializeField, ReadOnly] private CardHolder selectedCard;
     [SerializeField, ReadOnly] private Vector2 selectOffset;
     [SerializeField, ReadOnly] private bool isHoldingSelect;
 
@@ -126,40 +126,35 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
-    public void SetHoveredTarget(Targetable targetable)
-    {
-        hoveredTarget = targetable;
-    }
-
     private void StartHoldingSelect()
     {
         isHoldingSelect = true;
 
         // card selection and usage logic
-        if (curTurnStatus == TurnStatus.Player && hoveredTarget && (hoveredTarget is CardHolder))
+        if (curTurnStatus == TurnStatus.Player && HoveredTarget && (HoveredTarget is CardHolder))
         {
-            selectedCard = hoveredTarget as CardHolder;
-            selectOffset = (Vector2)selectedCard.transform.position - MouseWorldPosition;
-            selectedCard.ToggleRaycastable(false);
-            selectedCard.SetLayerFront();
+            PlayerSelectionHandler.Instance.SelectCard(HoveredTarget as CardHolder);
+            selectOffset = (Vector2)SelectedCard.transform.position - MouseWorldPosition;
+            SelectedCard.ToggleRaycastable(false);
+            SelectedCard.SetLayerFront();
         }
     }
 
     private void WhileHoldingSelect()
     {
-        if (selectedCard) selectedCard.DragCard(selectOffset);
+        if (SelectedCard) SelectedCard.DragCard(selectOffset);
     }
 
     private void StopHoldingSelect()
     {
         isHoldingSelect = false;
 
-        if (selectedCard)
+        if (SelectedCard)
         {
-            selectedCard.TryUseCard(hoveredTarget);
-            selectedCard.ToggleRaycastable(true);
-            selectedCard.SetLayerBack();
-            selectedCard = null;
+            SelectedCard.TryUseCard(HoveredTarget);
+            SelectedCard.ToggleRaycastable(true);
+            SelectedCard.SetLayerBack();
+            PlayerSelectionHandler.Instance.SelectCard(null);
         }
     }
 

@@ -9,11 +9,11 @@ public class Targetable : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        BattleManager.Instance.SetHoveredTarget(this);
+        PlayerSelectionHandler.Instance.SetHoveredTarget(this);
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-        BattleManager.Instance.SetHoveredTarget(null);
+        PlayerSelectionHandler.Instance.SetHoveredTarget(null);
     }
 }
