@@ -413,7 +413,7 @@ Canvas:
   m_GameObject: {fileID: 238322069}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 1362576674}
   m_PlaneDistance: 100
   m_PixelPerfect: 1
@@ -916,16 +916,17 @@ MonoBehaviour:
     card: {fileID: 11400000, guid: 5664d47823af12244953a0c70f2f1077, type: 2}
   - minLevel: 0
     card: {fileID: 11400000, guid: 68b8982731a81794aaaa1616c9dd421e, type: 2}
+  referenceResolution: {x: 320, y: 180}
   levelEndText: {fileID: 310117748}
   choiceRect: {fileID: 1801710769}
   cardHolderAreaScale: {x: 0.9, y: 0.55}
   cardHolderAreaOffset: {x: 0, y: 0}
   cardChoices:
-  - position: {x: -4.664, y: -1.0053504}
+  - position: {x: -312, y: 254.48001}
     cardHolder: {fileID: 0}
-  - position: {x: 0, y: -1.0053504}
+  - position: {x: 480, y: 254.48001}
     cardHolder: {fileID: 0}
-  - position: {x: 4.664, y: -1.0053504}
+  - position: {x: 1272, y: 254.48001}
     cardHolder: {fileID: 0}
   confirmButton: {fileID: 323052983}
   cardPanelSpawnDelay: 1
@@ -988,13 +989,13 @@ MonoBehaviour:
   cardAreaCanvasGroup: {fileID: 136048148}
   cardHolderAreaScale: {x: 1, y: 1}
   heldCards:
-  - position: {x: -5.83, y: -3.1093333}
+  - position: {x: -510, y: 222}
     cardHolder: {fileID: 0}
-  - position: {x: -1.9433331, y: -3.1093333}
+  - position: {x: 150, y: 222}
     cardHolder: {fileID: 0}
-  - position: {x: 1.9433336, y: -3.1093333}
+  - position: {x: 810, y: 222}
     cardHolder: {fileID: 0}
-  - position: {x: 5.83, y: -3.1093333}
+  - position: {x: 1470, y: 222}
     cardHolder: {fileID: 0}
   isDrawingCard: 0
   selectOffset: {x: 0, y: 0}
@@ -1636,7 +1637,7 @@ Canvas:
   m_GameObject: {fileID: 1883894164}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 1362576674}
   m_PlaneDistance: 100
   m_PixelPerfect: 1

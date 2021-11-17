@@ -17,22 +17,18 @@ public class DeckModifier : MonoBehaviour
     {
         get
         {
-            Vector2 min = choiceRect.rect.min;
-            Vector2 max = choiceRect.rect.max;
             float resolutionScale = Camera.main.pixelWidth / referenceResolution.x;
-            Vector2 cardHolderParentWorldSize = Camera.main.ScreenToWorldPoint(max) - Camera.main.ScreenToWorldPoint(min);
-            return cardHolderParentWorldSize * resolutionScale * cardHolderAreaScale;
+            Vector2 cardHolderParentSize = choiceRect.rect.size;
+            return cardHolderParentSize * resolutionScale * cardHolderAreaScale;
         }
     }
     public Vector2 CardHolderAreaOffset
     {
         get
         {
-            Vector2 min = choiceRect.rect.min;
-            Vector2 max = choiceRect.rect.max;
             float resolutionScale = Camera.main.pixelWidth / referenceResolution.x;
-            Vector2 cardHolderParentWorldSize = Camera.main.ScreenToWorldPoint(max) - Camera.main.ScreenToWorldPoint(min);
-            return cardHolderParentWorldSize * resolutionScale * cardHolderAreaOffset;
+            Vector2 cardHolderParentSize = choiceRect.rect.size;
+            return cardHolderParentSize * resolutionScale * cardHolderAreaOffset;
         }
     }
     public Vector2 CardHolderPosition

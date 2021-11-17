@@ -18,22 +18,21 @@ public class BattleManager : Singleton<BattleManager>
         Enemy
     }
 
+    public Vector2 MouseRawPosition
+    {
+        get { return input.BattleActions.MousePosition.ReadValue<Vector2>(); }
+    }
     public Vector2 MouseWorldPosition
     {
-        get { return Camera.main.ScreenToWorldPoint(input.BattleActions.MousePosition.ReadValue<Vector2>()); }
+        get { return Camera.main.ScreenToWorldPoint(MouseRawPosition); }
     }
     public Vector2 CardHolderArea 
     { 
         get 
         {
-            Vector2 min = cardHolderParent.rect.min;
-            Vector2 max = cardHolderParent.rect.max;
             float resolutionScale = Camera.main.pixelWidth / referenceResolution.x;
-            Vector2 cardHolderParentWorldSize = Camera.main.ScreenToWorldPoint(max) - Camera.main.ScreenToWorldPoint(min);
-            //Debug.Log(cardHolderParentWorldSize);
-            //Debug.Log("Max: " + Camera.main.ScreenToWorldPoint(cardHolderParent.rect.max) + ", Min: " + Camera.main.ScreenToWorldPoint(cardHolderParent.rect.min));
-            //Debug.Log(resolutionScale);
-            return cardHolderParentWorldSize * resolutionScale * cardHolderAreaScale;
+            Vector2 cardHolderParentSize = cardHolderParent.rect.size;
+            return cardHolderParentSize * resolutionScale * cardHolderAreaScale;
         }
     }
     public Targetable HoveredTarget { get { return PlayerSelectionHandler.Instance.HoveredTarget; } }
@@ -137,7 +136,7 @@ public class BattleManager : Singleton<BattleManager>
         if (curTurnStatus == TurnStatus.Player && HoveredTarget && (HoveredTarget is CardHolder))
         {
             PlayerSelectionHandler.Instance.SelectCard(HoveredTarget as CardHolder);
-            selectOffset = (Vector2)SelectedCard.transform.position - MouseWorldPosition;
+            selectOffset = (Vector2)SelectedCard.transform.position - MouseRawPosition;
             SelectedCard.ToggleRaycastable(false);
             SelectedCard.SetLayerFront();
         }
@@ -197,7 +196,7 @@ public class BattleManager : Singleton<BattleManager>
 
     private void DragCard(Transform cardTransform, Vector2 offest)
     {
-        cardTransform.position = MouseWorldPosition + offest;
+        cardTransform.position = MouseRawPosition + offest;
     }
 
     private void EndBattle()
@@ -438,7 +437,7 @@ public class BattleManager : Singleton<BattleManager>
         // draw card positions
         foreach (CardPosition hc in heldCards)
         {
-            Gizmos.DrawWireSphere(hc.position, 0.5f);
+            Gizmos.DrawWireSphere(hc.position, 30f);
         }
 
         // draw enemy positions

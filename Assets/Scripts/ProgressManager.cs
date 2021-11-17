@@ -174,7 +174,6 @@ public class ProgressManager : Singleton<ProgressManager>
     {
         onLevelLoaded?.Invoke();
 
-        UpdateCanvasCamera();
         UpdateLevelLength();
         ResetProgress();
         Wander();
@@ -190,18 +189,5 @@ public class ProgressManager : Singleton<ProgressManager>
     private void UpdateLevelLength()
     {
         levelLength = startLevelLength + curLevel * levelLengthIncrement;
-    }
-
-    private void UpdateCanvasCamera()
-    {
-        Canvas[] canvases = FindObjectsOfType<Canvas>();
-        foreach (Canvas canvas in canvases)
-        {
-            Debug.Log(canvas.gameObject.name);
-            if (canvas.renderMode == RenderMode.ScreenSpaceCamera)
-            {
-                canvas.worldCamera = Camera.main;
-            }
-        }
     }
 }
