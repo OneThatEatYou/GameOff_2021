@@ -324,7 +324,11 @@ public class BattleManager : Singleton<BattleManager>
     private void EvaluateTurn()
     {
         // check if battle ended
-        if (!CanContinueBattle()) return;
+        if (!CanContinueBattle())
+        {
+            EndBattle();
+            return;
+        }
 
         switch (curTurnStatus)
         {

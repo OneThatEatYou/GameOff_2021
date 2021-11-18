@@ -208,7 +208,6 @@ public class ProgressManager : Singleton<ProgressManager>
     public void PlayerDied()
     {
         playerDeathManager.playerIsDead = true;
-        BattleManager.Instance.EndBattle();
         BattleManager.Instance.onBattleEndCallback += playerDeathManager.ShowDeathPanel;
     }
 }
