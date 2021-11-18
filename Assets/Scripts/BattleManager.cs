@@ -257,7 +257,8 @@ public class BattleManager : Singleton<BattleManager>
     {
         yield return new WaitForSeconds(cardPanelSpawnDelay);
 
-        cardAreaCanvasGroup.alpha = 1;
+        //cardAreaCanvasGroup.alpha = 1;
+        cardAreaCanvasGroup.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(cardSpawnStartDelay);
 
@@ -282,7 +283,8 @@ public class BattleManager : Singleton<BattleManager>
 
         yield return new WaitForSeconds(1);
 
-        cardAreaCanvasGroup.alpha = 0;
+        //cardAreaCanvasGroup.alpha = 0;
+        cardAreaCanvasGroup.gameObject.SetActive(false);
 
         onBattleEndCallback?.Invoke();
     }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   enemyName: Player
-  baseHealth: 1
+  baseHealth: 5
   baseDamage: 1
   overflowLimit: 8
   characterSprite: {fileID: 6920209119401886799, guid: b57199e9244fe0b4c8819ffce1cb892f, type: 3}

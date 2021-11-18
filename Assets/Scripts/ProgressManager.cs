@@ -49,7 +49,6 @@ public class ProgressManager : Singleton<ProgressManager>
     private void Awake()
     {
         InitializeSingleton();
-        Debug.Log("Init prog");
     }
 
     private void Start()

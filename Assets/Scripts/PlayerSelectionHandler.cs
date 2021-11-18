@@ -18,7 +18,7 @@ public class PlayerSelectionHandler : Singleton<PlayerSelectionHandler>
 
     public void SetHoveredTarget(Targetable targetable)
     {
-        hoveredTarget = targetable;
+        if (targetable == null || targetable.targetable) hoveredTarget = targetable;
     }
 
     public void SelectCard(CardHolder cardHolder)

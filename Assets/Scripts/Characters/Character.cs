@@ -84,12 +84,12 @@ public abstract class Character : Targetable
         isExecutingTurn = false;
     }
 
-    public void StartTurn()
+    public virtual void StartTurn()
     {
         isExecutingTurn = true;
     }
 
-    public void EndTurn(float delay = 0)
+    public virtual void EndTurn(float delay = 0)
     {
         if (!isExecutingTurn || isEndingTurn) return;
 
