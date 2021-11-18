@@ -7,6 +7,7 @@ using MyBox;
 public class CharacterData : ScriptableObject
 {
     public string enemyName;
+    public string description;
 
     [SerializeField] private int baseHealth;
     public int BaseHealth { get { return baseHealth; } }

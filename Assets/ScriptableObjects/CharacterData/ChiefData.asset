@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ChiefData
   m_EditorClassIdentifier: 
   enemyName: Chief
+  description: Loves feeding his allies
   baseHealth: 1
   baseDamage: 1
   overflowLimit: 8

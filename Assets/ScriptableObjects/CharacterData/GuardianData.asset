@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: GuardianData
   m_EditorClassIdentifier: 
   enemyName: Guardian
+  description: Hates working overtime
   baseHealth: 1
   baseDamage: 1
   overflowLimit: 8

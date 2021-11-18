@@ -138,7 +138,6 @@ public class BattleManager : Singleton<BattleManager>
             PlayerSelectionHandler.Instance.SelectCard(HoveredTarget as CardHolder);
             selectOffset = (Vector2)SelectedCard.transform.position - MouseRawPosition;
             SelectedCard.ToggleRaycastable(false);
-            SelectedCard.SetLayerFront();
         }
     }
 
@@ -155,7 +154,6 @@ public class BattleManager : Singleton<BattleManager>
         {
             SelectedCard.TryUseCard(HoveredTarget);
             SelectedCard.ToggleRaycastable(true);
-            SelectedCard.SetLayerBack();
             PlayerSelectionHandler.Instance.SelectCard(null);
         }
     }

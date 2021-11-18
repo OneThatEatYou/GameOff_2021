@@ -1,19 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Enemy : Character
 {
+    [Header("Attack Animation")]
+    public float tackleMovement;
+    public float tackleTime;
+    public float recoverTime;
+    public float waitTime;
+
     public override IEnumerator Evaluate()
     {
         StartTurn();
         yield return new WaitForSeconds(1);
-        Action();
-        yield return new WaitForSeconds(1);
+
+        yield return new WaitForSeconds(Action());
         EndTurn();
     }
 
-    public void Action()
+    // returns the wait time of the action
+    public float Action()
     {
         Action action = characterData.GetRandomAction();
         Character target = null;
@@ -32,24 +40,37 @@ public class Enemy : Character
 
         if (action.justAttack)
         {
-            Attack(target);
+            return Attack(target);
         }
         else
         {
             if (target)
             {
-                action.effect.ApplyEffect(target);
+                return PlayAttackSequence(() => action.effect.ApplyEffect(target));
             }
             else
             {
                 DoNothing();
+                return 0;
             }
         }
     }
 
-    private void Attack(Character target)
+    // returns the length of attack sequence
+    private float Attack(Character target)
     {
-        target.TakeDamage(Damage);
+        return PlayAttackSequence(() => target.TakeDamage(Damage));
+    }
+
+    private float PlayAttackSequence(TweenCallback callback = null)
+    {
+        Sequence attackSequence = DOTween.Sequence();
+        attackSequence.Append(transform.DOMoveX(-tackleMovement, tackleTime).SetRelative());
+        attackSequence.Append(transform.DOMoveX(tackleMovement, recoverTime).SetRelative());
+        attackSequence.AppendInterval(waitTime);
+        if (callback != null) attackSequence.AppendCallback(callback);
+
+        return attackSequence.Duration();
     }
 
     protected override void Die(Character character)

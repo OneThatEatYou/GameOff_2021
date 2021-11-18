@@ -9,11 +9,14 @@ public class CardHolder : Targetable
 {
     [Expandable] public CardData card;
     public TextMeshProUGUI nameText;
+    public RectTransform descriptionRect;
     public TextMeshProUGUI descriptionText;
 
     [SerializeField, ReadOnly] private Vector2 basePos;
 
     [Header("Animation")]
+    public float hoveredMoveDistance;
+    public float hoveredMoveSpeed;
     public float fillDur = 1;
     public Material dissolveMat;
     public float dissolveDur = 0.5f;
@@ -24,6 +27,7 @@ public class CardHolder : Targetable
     private GraphicRaycaster graphicRaycaster;
     private Image cardImage;
     private Material cardMat;
+    private Coroutine hoveredOverCoroutine;
 
     private void Awake()
     {
@@ -40,6 +44,18 @@ public class CardHolder : Targetable
         basePos = transform.position;
     }
 
+    private void OnEnable()
+    {
+        onPointerEnter += ShowHoveredOver;
+        onPointerExit += StopHoveredOver;
+    }
+
+    private void OnDisable()
+    {
+        onPointerExit += StopHoveredOver;
+        onPointerExit -= StopHoveredOver;
+    }
+
     public void Initialize(CardData cardData)
     {
         card = Instantiate(cardData);
@@ -47,6 +63,35 @@ public class CardHolder : Targetable
         else Debug.LogWarning($"Card image of {card.cardName} not assigned");
 
         PlaySpawnCardAnimation();
+    }
+
+    public void ShowHoveredOver()
+    {
+        if (hoveredOverCoroutine != null) StopCoroutine(hoveredOverCoroutine);
+        hoveredOverCoroutine = StartCoroutine(MoveCard(basePos + Vector2.up * hoveredMoveDistance));
+
+        SetLayerFront();
+        descriptionRect.gameObject.SetActive(true);
+    }
+
+    public void StopHoveredOver()
+    {
+        if (hoveredOverCoroutine != null) StopCoroutine(hoveredOverCoroutine);
+        hoveredOverCoroutine = StartCoroutine(MoveCard(basePos));
+
+        SetLayerBack();
+        descriptionRect.gameObject.SetActive(false);
+    }
+
+    private IEnumerator MoveCard(Vector2 targetPos)
+    {
+        while (Mathf.Abs(transform.position.y - targetPos.y) > 0.01f)
+        {
+            Vector2 newPos = transform.position;
+            newPos.y = Mathf.Lerp(transform.position.y, targetPos.y, Time.deltaTime * hoveredMoveSpeed);
+            transform.position = newPos;
+            yield return null;
+        }
     }
 
     public void SetLayerFront()

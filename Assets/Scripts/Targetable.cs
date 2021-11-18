@@ -7,13 +7,22 @@ public class Targetable : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 {
     public bool targetable = true;
 
-    public virtual void OnPointerEnter(PointerEventData eventData)
+    public delegate void PointerCallback();
+    public PointerCallback onPointerEnter;
+    public PointerCallback onPointerExit;
+
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        PlayerSelectionHandler.Instance.SetHoveredTarget(this);
+        if (targetable)
+        {
+            PlayerSelectionHandler.Instance.SetHoveredTarget(this);
+            onPointerEnter?.Invoke();
+        }
     }
 
-    public virtual void OnPointerExit(PointerEventData eventData)
+    public void OnPointerExit(PointerEventData eventData)
     {
         PlayerSelectionHandler.Instance.SetHoveredTarget(null);
+        onPointerExit?.Invoke();
     }
 }

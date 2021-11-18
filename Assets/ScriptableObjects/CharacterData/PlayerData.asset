@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   enemyName: Player
+  description: It's you!
   baseHealth: 5
   baseDamage: 1
   overflowLimit: 8
