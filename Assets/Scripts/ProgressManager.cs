@@ -8,6 +8,12 @@ public class ProgressManager : Singleton<ProgressManager>
 {
     [SerializeField, ReadOnly] private bool isWandering;
     [SerializeField, ReadOnly] private bool levelIsOver;
+
+    [Header("Scene Names")]
+    public string mainMenuSceneName = "MainMenu";
+    public string mainSceneName = "Main";
+
+    [Header("Encounter")]
     [Expandable] public CharacterData[] encounterData;
     public Vector2 encounterNumberRange;
 
@@ -28,6 +34,9 @@ public class ProgressManager : Singleton<ProgressManager>
     [Header("Level Clear")]
     public DeckModifier deckModifier;
 
+    [Header("Death")]
+    public PlayerDeathManager playerDeathManager;
+
     private float wanderTime;
     private Coroutine wanderCR;
     private float levelTimeElapsed = 0;
@@ -40,6 +49,7 @@ public class ProgressManager : Singleton<ProgressManager>
     private void Awake()
     {
         InitializeSingleton();
+        Debug.Log("Init prog");
     }
 
     private void Start()
@@ -74,7 +84,7 @@ public class ProgressManager : Singleton<ProgressManager>
 
     private void Wander()
     {
-        if (isWandering) return;
+        if (isWandering || playerDeathManager.playerIsDead) return;
 
         isWandering = true;
         wanderTime = Random.Range(wanderTimeRange.x, wanderTimeRange.y);
@@ -167,7 +177,7 @@ public class ProgressManager : Singleton<ProgressManager>
     private void NextLevel()
     {
         curLevel++;
-        SceneManager.LoadScene(0);
+        ChangeScene("Main");
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
@@ -189,5 +199,17 @@ public class ProgressManager : Singleton<ProgressManager>
     private void UpdateLevelLength()
     {
         levelLength = startLevelLength + curLevel * levelLengthIncrement;
+    }
+
+    public void ChangeScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
+    public void PlayerDied()
+    {
+        playerDeathManager.playerIsDead = true;
+        BattleManager.Instance.EndBattle();
+        BattleManager.Instance.onBattleEndCallback += playerDeathManager.ShowDeathPanel;
     }
 }

@@ -13,5 +13,6 @@ public class Player : Character
     protected override void Die(Character character)
     {
         Debug.Log("Player died.");
+        ProgressManager.Instance.PlayerDied();
     }
 }

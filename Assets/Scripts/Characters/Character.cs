@@ -13,10 +13,11 @@ public abstract class Character : Targetable
         get { return curHealth; }
         set
         {
-            curHealth = Mathf.Max(0, value);
+            //curHealth = Mathf.Max(0, value);
+            curHealth = value;
             onHealthChange?.Invoke(curHealth);
 
-            if (curHealth == 0 || curHealth > OverflowLimit) onDeathCallback?.Invoke(this);
+            if (curHealth <= 0 || curHealth > OverflowLimit) onDeathCallback?.Invoke(this);
         }
     }
 

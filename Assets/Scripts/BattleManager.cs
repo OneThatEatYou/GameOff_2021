@@ -199,7 +199,7 @@ public class BattleManager : Singleton<BattleManager>
         cardTransform.position = MouseRawPosition + offest;
     }
 
-    private void EndBattle()
+    public void EndBattle()
     {
         if (!isBattling) return;
 
@@ -322,7 +322,7 @@ public class BattleManager : Singleton<BattleManager>
     private void EvaluateTurn()
     {
         // check if battle ended
-        if (CheckBattleStatus()) return;
+        if (!CanContinueBattle()) return;
 
         switch (curTurnStatus)
         {
@@ -412,18 +412,19 @@ public class BattleManager : Singleton<BattleManager>
     /// <summary>
     /// Returns true if there is no enemies left. False otherwise
     /// </summary>
-    private bool CheckBattleStatus()
+    private bool CanContinueBattle()
     {
+        if (!isBattling) return false;
+
         foreach (var enemyPos in enemies)
         {
             if (enemyPos.enemy)
             {
-                return false;
+                return true;
             }
         }
 
-        EndBattle();
-        return true;
+        return false;
     }
 
     private void OnDrawGizmosSelected()
