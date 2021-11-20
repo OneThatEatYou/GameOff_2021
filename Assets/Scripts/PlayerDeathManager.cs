@@ -15,12 +15,12 @@ public class PlayerDeathManager : MonoBehaviour
     private void Start()
     {
         // doing this in OnEnable causes ProgressManager.Instance to be called before initializing
-        ProgressManager.Instance.onLevelLoaded += ResetObject;
+        SceneTransitionManager.Instance.onLevelLoaded += ResetObject;
     }
 
     private void OnDisable()
     {
-        ProgressManager.Instance.onLevelLoaded -= ResetObject;
+        SceneTransitionManager.Instance.onLevelLoaded -= ResetObject;
     }
 
     public void ShowDeathPanel()
@@ -31,12 +31,12 @@ public class PlayerDeathManager : MonoBehaviour
 
     public void RetryLevel()
     {
-        ProgressManager.Instance.ChangeScene(ProgressManager.Instance.mainSceneName);
+        SceneTransitionManager.Instance.ChangeScene(SceneTransitionManager.MainSceneName);
     }
 
     public void BackToMainMenu()
     {
-        ProgressManager.Instance.ChangeScene(ProgressManager.Instance.mainMenuSceneName);
+        SceneTransitionManager.Instance.ChangeScene(SceneTransitionManager.MainMenuSceneName);
     }
 
     private void ResetObject()

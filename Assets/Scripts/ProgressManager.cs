@@ -1,17 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using MyBox;
 
 public class ProgressManager : Singleton<ProgressManager>
 {
     [SerializeField, ReadOnly] private bool isWandering;
     [SerializeField, ReadOnly] private bool levelIsOver;
-
-    [Header("Scene Names")]
-    public string mainMenuSceneName = "MainMenu";
-    public string mainSceneName = "Main";
 
     [Header("Encounter")]
     [Expandable] public CharacterData[] encounterData;
@@ -41,9 +36,6 @@ public class ProgressManager : Singleton<ProgressManager>
     private Coroutine wanderCR;
     private float levelTimeElapsed = 0;
 
-    public delegate void LevelLoadedDelegate();
-    public LevelLoadedDelegate onLevelLoaded;
-
     public const string groundOffsetRef = "_Offset";
 
     private void Awake()
@@ -60,17 +52,21 @@ public class ProgressManager : Singleton<ProgressManager>
 
     private void OnEnable()
     {
-        SceneManager.sceneLoaded += OnSceneLoaded;
         BattleManager.Instance.onBattleEndCallback += Wander;
         deckModifier.onChoiceConfirmed += NextLevel;
+        SceneTransitionManager.Instance.onLevelLoaded += UpdateLevelLength;
+        SceneTransitionManager.Instance.onLevelLoaded += ResetProgress;
+        SceneTransitionManager.Instance.onLevelLoaded += Wander;
     }
 
     private void OnDisable()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
         // if-statement stops error when exiting playmode
         if (BattleManager.Instance) BattleManager.Instance.onBattleEndCallback -= Wander;
         deckModifier.onChoiceConfirmed -= NextLevel;
+        SceneTransitionManager.Instance.onLevelLoaded -= UpdateLevelLength;
+        SceneTransitionManager.Instance.onLevelLoaded -= ResetProgress;
+        SceneTransitionManager.Instance.onLevelLoaded -= Wander;
     }
 
     private void Update()
@@ -176,16 +172,7 @@ public class ProgressManager : Singleton<ProgressManager>
     private void NextLevel()
     {
         curLevel++;
-        ChangeScene("Main");
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
-    {
-        onLevelLoaded?.Invoke();
-
-        UpdateLevelLength();
-        ResetProgress();
-        Wander();
+        SceneTransitionManager.Instance.ChangeScene(SceneTransitionManager.MainMenuSceneName);
     }
 
     private void ResetProgress()
@@ -198,11 +185,6 @@ public class ProgressManager : Singleton<ProgressManager>
     private void UpdateLevelLength()
     {
         levelLength = startLevelLength + curLevel * levelLengthIncrement;
-    }
-
-    public void ChangeScene(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName);
     }
 
     public void PlayerDied()

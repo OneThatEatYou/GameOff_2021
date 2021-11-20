@@ -24,6 +24,7 @@ public class MainMenuManager : MonoBehaviour
 
     [Header("Contents")]
     public float startDelay;
+    public int maxLineNum = 15;
     public List<Line> introLines;
     public List<Line> startGameLines;
 
@@ -42,10 +43,12 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
-        StartShowLine(introLines, startDelay, 0, introLines.Count - 1);
         SetMasterSlider();
         SetBGMSlider();
         SetSFXSlider();
+
+        StartShowLine(introLines, startDelay, 0, introLines.Count - 1);
+        //PlayGame();
     }
 
     private void OnEnable()
@@ -99,6 +102,16 @@ public class MainMenuManager : MonoBehaviour
 
     private void ShowLine(Line line)
     {
+        // removes oldest line is needed
+        // inefficient, but good enough
+        List<string> printedLines = new List<string>(text.text.Split('\n'));
+
+        if (printedLines.Count > 15)
+        {
+            printedLines.RemoveAt(0);
+            text.text = string.Join("\n", printedLines);
+        }
+
         text.text += "> ";
         text.text += line.line;
         text.text += "\n";
@@ -182,6 +195,6 @@ public class MainMenuManager : MonoBehaviour
 
     private void LoadGame()
     {
-
+        SceneTransitionManager.Instance.ChangeScene(SceneTransitionManager.MainSceneName);
     }
 }
