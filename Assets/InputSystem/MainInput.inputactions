@@ -2,6 +2,71 @@
     "name": "MainInput",
     "maps": [
         {
+            "name": "MainMenu",
+            "id": "4618efb7-44f4-4354-957d-8036f627356a",
+            "actions": [
+                {
+                    "name": "Play",
+                    "type": "Button",
+                    "id": "672a0fd2-d5e3-43b8-b21b-4884555a407b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Settings",
+                    "type": "Button",
+                    "id": "eae9c915-80b0-4200-99f1-f96567d8b3d5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Return",
+                    "type": "Button",
+                    "id": "8ee8f4a2-7a7d-4f96-8d32-c4ec44063c82",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "5b8c8c8f-1230-47e4-b253-63942fb3695c",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Play",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5c257186-d7ff-475f-8222-7fa97a35243a",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Settings",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d2101171-15cb-48f2-a386-0b2a29176c21",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Return",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
             "name": "BattleActions",
             "id": "dbfd6c29-fd0c-4107-9288-e7cde97eceb2",
             "actions": [

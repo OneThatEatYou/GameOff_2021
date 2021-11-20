@@ -15,6 +15,71 @@ public class @MainInput : IInputActionCollection, IDisposable
     ""name"": ""MainInput"",
     ""maps"": [
         {
+            ""name"": ""MainMenu"",
+            ""id"": ""4618efb7-44f4-4354-957d-8036f627356a"",
+            ""actions"": [
+                {
+                    ""name"": ""Play"",
+                    ""type"": ""Button"",
+                    ""id"": ""672a0fd2-d5e3-43b8-b21b-4884555a407b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Settings"",
+                    ""type"": ""Button"",
+                    ""id"": ""eae9c915-80b0-4200-99f1-f96567d8b3d5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Return"",
+                    ""type"": ""Button"",
+                    ""id"": ""8ee8f4a2-7a7d-4f96-8d32-c4ec44063c82"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""5b8c8c8f-1230-47e4-b253-63942fb3695c"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Play"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5c257186-d7ff-475f-8222-7fa97a35243a"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Settings"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d2101171-15cb-48f2-a386-0b2a29176c21"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Return"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": ""BattleActions"",
             ""id"": ""dbfd6c29-fd0c-4107-9288-e7cde97eceb2"",
             ""actions"": [
@@ -107,6 +172,11 @@ public class @MainInput : IInputActionCollection, IDisposable
         }
     ]
 }");
+        // MainMenu
+        m_MainMenu = asset.FindActionMap("MainMenu", throwIfNotFound: true);
+        m_MainMenu_Play = m_MainMenu.FindAction("Play", throwIfNotFound: true);
+        m_MainMenu_Settings = m_MainMenu.FindAction("Settings", throwIfNotFound: true);
+        m_MainMenu_Return = m_MainMenu.FindAction("Return", throwIfNotFound: true);
         // BattleActions
         m_BattleActions = asset.FindActionMap("BattleActions", throwIfNotFound: true);
         m_BattleActions_Select = m_BattleActions.FindAction("Select", throwIfNotFound: true);
@@ -159,6 +229,55 @@ public class @MainInput : IInputActionCollection, IDisposable
     {
         asset.Disable();
     }
+
+    // MainMenu
+    private readonly InputActionMap m_MainMenu;
+    private IMainMenuActions m_MainMenuActionsCallbackInterface;
+    private readonly InputAction m_MainMenu_Play;
+    private readonly InputAction m_MainMenu_Settings;
+    private readonly InputAction m_MainMenu_Return;
+    public struct MainMenuActions
+    {
+        private @MainInput m_Wrapper;
+        public MainMenuActions(@MainInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Play => m_Wrapper.m_MainMenu_Play;
+        public InputAction @Settings => m_Wrapper.m_MainMenu_Settings;
+        public InputAction @Return => m_Wrapper.m_MainMenu_Return;
+        public InputActionMap Get() { return m_Wrapper.m_MainMenu; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MainMenuActions set) { return set.Get(); }
+        public void SetCallbacks(IMainMenuActions instance)
+        {
+            if (m_Wrapper.m_MainMenuActionsCallbackInterface != null)
+            {
+                @Play.started -= m_Wrapper.m_MainMenuActionsCallbackInterface.OnPlay;
+                @Play.performed -= m_Wrapper.m_MainMenuActionsCallbackInterface.OnPlay;
+                @Play.canceled -= m_Wrapper.m_MainMenuActionsCallbackInterface.OnPlay;
+                @Settings.started -= m_Wrapper.m_MainMenuActionsCallbackInterface.OnSettings;
+                @Settings.performed -= m_Wrapper.m_MainMenuActionsCallbackInterface.OnSettings;
+                @Settings.canceled -= m_Wrapper.m_MainMenuActionsCallbackInterface.OnSettings;
+                @Return.started -= m_Wrapper.m_MainMenuActionsCallbackInterface.OnReturn;
+                @Return.performed -= m_Wrapper.m_MainMenuActionsCallbackInterface.OnReturn;
+                @Return.canceled -= m_Wrapper.m_MainMenuActionsCallbackInterface.OnReturn;
+            }
+            m_Wrapper.m_MainMenuActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Play.started += instance.OnPlay;
+                @Play.performed += instance.OnPlay;
+                @Play.canceled += instance.OnPlay;
+                @Settings.started += instance.OnSettings;
+                @Settings.performed += instance.OnSettings;
+                @Settings.canceled += instance.OnSettings;
+                @Return.started += instance.OnReturn;
+                @Return.performed += instance.OnReturn;
+                @Return.canceled += instance.OnReturn;
+            }
+        }
+    }
+    public MainMenuActions @MainMenu => new MainMenuActions(this);
 
     // BattleActions
     private readonly InputActionMap m_BattleActions;
@@ -241,6 +360,12 @@ public class @MainInput : IInputActionCollection, IDisposable
             if (m_PCSchemeIndex == -1) m_PCSchemeIndex = asset.FindControlSchemeIndex("PC");
             return asset.controlSchemes[m_PCSchemeIndex];
         }
+    }
+    public interface IMainMenuActions
+    {
+        void OnPlay(InputAction.CallbackContext context);
+        void OnSettings(InputAction.CallbackContext context);
+        void OnReturn(InputAction.CallbackContext context);
     }
     public interface IBattleActionsActions
     {

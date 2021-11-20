@@ -409,7 +409,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &136048145
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1368,24 +1368,24 @@ MonoBehaviour:
   referenceResolution: {x: 320, y: 180}
   enemyPrefab: {fileID: 3755481186970196915, guid: 1d251e4a36e3582498b61a1970d21277, type: 3}
   enemies:
-  - position: {x: 0.87, y: 0.21}
+  - position: {x: 0.87, y: 0.5}
     enemy: {fileID: 0}
   - position: {x: 3.875, y: 0.98}
     enemy: {fileID: 0}
-  - position: {x: 6.88, y: 0.21}
+  - position: {x: 6.88, y: 0.5}
     enemy: {fileID: 0}
   deck: {fileID: 11400000, guid: 84be914352c3dc84399099738545c1e4, type: 2}
   cardHolderParent: {fileID: 136048145}
   cardAreaCanvasGroup: {fileID: 136048148}
-  cardHolderAreaScale: {x: 1, y: 1}
+  cardHolderAreaScale: {x: 0.9, y: 0.8}
   heldCards:
-  - position: {x: -510, y: 222}
+  - position: {x: 237, y: 126}
     cardHolder: {fileID: 0}
-  - position: {x: 150, y: 222}
+  - position: {x: 399, y: 126}
     cardHolder: {fileID: 0}
-  - position: {x: 810, y: 222}
+  - position: {x: 561, y: 126}
     cardHolder: {fileID: 0}
-  - position: {x: 1470, y: 222}
+  - position: {x: 723, y: 126}
     cardHolder: {fileID: 0}
   isDrawingCard: 0
   selectOffset: {x: 0, y: 0}
