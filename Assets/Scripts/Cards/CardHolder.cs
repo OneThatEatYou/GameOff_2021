@@ -22,6 +22,7 @@ public class CardHolder : Targetable
     public float dissolveDur = 0.5f;
     [SerializeField, ReadOnly] private bool isSpawningCard;
     [SerializeField, ReadOnly] private bool isDestroyingCard;
+    [SerializeField, ReadOnly] private bool isSelected;
 
     private Canvas canvas;
     private GraphicRaycaster graphicRaycaster;
@@ -48,12 +49,16 @@ public class CardHolder : Targetable
     {
         onPointerEnter += ShowHoveredOver;
         onPointerExit += StopHoveredOver;
+        onSelected += OnSelected;
+        onUnselected += OnUnselected;
     }
 
     private void OnDisable()
     {
         onPointerExit += StopHoveredOver;
         onPointerExit -= StopHoveredOver;
+        onSelected -= OnSelected;
+        onUnselected -= OnUnselected;
     }
 
     public void Initialize(CardData cardData)
@@ -67,27 +72,46 @@ public class CardHolder : Targetable
 
     public void ShowHoveredOver()
     {
+        if (isSelected || isDestroyingCard) return;
+
         if (hoveredOverCoroutine != null) StopCoroutine(hoveredOverCoroutine);
         hoveredOverCoroutine = StartCoroutine(MoveCard(basePos + Vector2.up * hoveredMoveDistance));
 
-        SetLayerFront();
         descriptionRect.gameObject.SetActive(true);
     }
 
     public void StopHoveredOver()
     {
+        if (isSelected || isDestroyingCard) return;
+
         if (hoveredOverCoroutine != null) StopCoroutine(hoveredOverCoroutine);
         hoveredOverCoroutine = StartCoroutine(MoveCard(basePos));
 
-        SetLayerBack();
         descriptionRect.gameObject.SetActive(false);
+    }
+
+    private void OnSelected()
+    {
+        isSelected = true;
+
+        if (hoveredOverCoroutine != null) StopCoroutine(hoveredOverCoroutine);
+        SetLayerFront();
+        descriptionRect.gameObject.SetActive(false);
+    }
+
+    private void OnUnselected()
+    {
+        isSelected = false;
+
+        SetLayerBack();
     }
 
     private IEnumerator MoveCard(Vector2 targetPos)
     {
-        while (Mathf.Abs(transform.position.y - targetPos.y) > 0.01f)
+        while (Vector2.Distance(transform.position, targetPos) > 0.01f)
         {
             Vector2 newPos = transform.position;
+            newPos.x = Mathf.Lerp(transform.position.x, targetPos.x, Time.deltaTime * hoveredMoveSpeed);
             newPos.y = Mathf.Lerp(transform.position.y, targetPos.y, Time.deltaTime * hoveredMoveSpeed);
             transform.position = newPos;
             yield return null;
@@ -116,7 +140,6 @@ public class CardHolder : Targetable
         }
         else
         {
-            ResetPosition();
             return false;
         }
     }
@@ -152,11 +175,6 @@ public class CardHolder : Targetable
 
         dissolveMat.SetFloat("_Amount", 1);
         Destroy(gameObject);
-    }
-
-    private void ResetPosition()
-    {
-        transform.position = basePos;
     }
 
     private void SetLayer(int order)

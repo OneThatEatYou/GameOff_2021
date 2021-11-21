@@ -154,6 +154,7 @@ public class BattleManager : Singleton<BattleManager>
         {
             SelectedCard.TryUseCard(HoveredTarget);
             SelectedCard.ToggleRaycastable(true);
+            PlayerSelectionHandler.Instance.SetHoveredTarget(null);
             PlayerSelectionHandler.Instance.SelectCard(null);
         }
     }

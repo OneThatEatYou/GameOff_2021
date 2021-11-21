@@ -409,7 +409,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &136048145
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1379,13 +1379,13 @@ MonoBehaviour:
   cardAreaCanvasGroup: {fileID: 136048148}
   cardHolderAreaScale: {x: 0.9, y: 0.8}
   heldCards:
-  - position: {x: 237, y: 126}
+  - position: {x: -411, y: 222}
     cardHolder: {fileID: 0}
-  - position: {x: 399, y: 126}
+  - position: {x: 183, y: 222}
     cardHolder: {fileID: 0}
-  - position: {x: 561, y: 126}
+  - position: {x: 777, y: 222}
     cardHolder: {fileID: 0}
-  - position: {x: 723, y: 126}
+  - position: {x: 1371, y: 222}
     cardHolder: {fileID: 0}
   isDrawingCard: 0
   selectOffset: {x: 0, y: 0}
@@ -1412,6 +1412,50 @@ Transform:
   - {fileID: 238322073}
   m_Father: {fileID: 0}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1048926370
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1048926372}
+  - component: {fileID: 1048926371}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1048926371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1048926370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeecf3f267b61fd40b94efd2a87312ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainMixer: {fileID: 24100000, guid: 41308e3e68001c9479a59090fc77e27a, type: 2}
+--- !u!4 &1048926372
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1048926370}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1065022380
 GameObject:
@@ -1656,6 +1700,51 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoveredTarget: {fileID: 0}
   selectedCard: {fileID: 0}
+--- !u!1 &1345084187
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1345084189}
+  - component: {fileID: 1345084188}
+  m_Layer: 0
+  m_Name: SceneTransitionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1345084188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345084187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5086c85eb9771d44aa83d6725a22a4ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainMenuSceneName: MainMenu
+  mainSceneName: Main
+--- !u!4 &1345084189
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345084187}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1354850916
 GameObject:
   m_ObjectHideFlags: 0
@@ -1997,8 +2086,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isWandering: 0
   levelIsOver: 0
-  mainMenuSceneName: MainMenu
-  mainSceneName: Main
   encounterData:
   - {fileID: 11400000, guid: 6dadfeb95e5e76941ae3b15e3d72fa02, type: 2}
   - {fileID: 11400000, guid: e4f0c6deaae13a7408e5c90b5dd21134, type: 2}

@@ -21,8 +21,22 @@ public class PlayerSelectionHandler : Singleton<PlayerSelectionHandler>
         hoveredTarget = targetable;
     }
 
-    public void SelectCard(CardHolder cardHolder)
+    public void SelectCard(CardHolder newCard)
     {
-        selectedCard = cardHolder;
+        if (selectedCard == newCard) return;
+
+        //Debug.Log($"Old Selection: {selectedCard}, New Selection: {newCard}");
+
+        if (selectedCard)
+        {
+            selectedCard.onUnselected?.Invoke();
+        }
+
+        if (newCard)
+        {
+            newCard.onSelected?.Invoke();
+        }
+
+        selectedCard = newCard;
     }
 }

@@ -10,6 +10,8 @@ public class Targetable : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public delegate void PointerCallback();
     public PointerCallback onPointerEnter;
     public PointerCallback onPointerExit;
+    public PointerCallback onSelected;
+    public PointerCallback onUnselected;
 
     public void OnPointerEnter(PointerEventData eventData)
     {

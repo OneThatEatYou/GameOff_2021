@@ -48,6 +48,7 @@ public class ProgressManager : Singleton<ProgressManager>
         levelLength = startLevelLength;
         Wander();
         //EndLevel();
+        Encounter(new CharacterData[] { encounterData[0] });
     }
 
     private void OnEnable()
