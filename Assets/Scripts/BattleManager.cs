@@ -241,7 +241,6 @@ public class BattleManager : Singleton<BattleManager>
 
         yield return new WaitForSeconds(1);
 
-        //cardAreaCanvasGroup.alpha = 0;
         cardAreaCanvasGroup.gameObject.SetActive(false);
 
         onBattleEndCallback?.Invoke();
@@ -249,12 +248,7 @@ public class BattleManager : Singleton<BattleManager>
 
     private void EvaluateTurn()
     {
-        // check if battle ended
-        if (!CanContinueBattle())
-        {
-            EndBattle();
-        }
-        else
+        if (!HasBattleEnded())
         {
             switch (curTurnStatus)
             {
@@ -295,9 +289,32 @@ public class BattleManager : Singleton<BattleManager>
             {
                 yield return null;
             }
+
+            if (HasBattleEnded())
+            {
+                // battle ended. no need to evaluate other enemies' turns
+                break;
+            }
         }
 
-        ProceedTurn();
+        if (isBattling)
+        {
+            ProceedTurn();
+        }
+    }
+
+    /// <summary>
+    /// Returns true if the battle is ending
+    /// </summary>
+    public bool HasBattleEnded()
+    {
+        if (!CanContinueBattle())
+        {
+            EndBattle();
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>
