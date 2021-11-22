@@ -15,8 +15,16 @@ public class CharacterData : ScriptableObject
     [SerializeField] private int baseDamage;
     public int BaseDamage { get { return baseDamage; } }
 
-    [SerializeField] private int overflowLimit;
-    public int OverflowLimit { get { return overflowLimit; } }
+    [SerializeField] private int healthOverflowLimit;
+    public int HealthOverflowLimit { get { return healthOverflowLimit; } }
+
+    [SerializeField] private int damageOverflowLimit;
+    public int DamageOverflowLimit { get { return damageOverflowLimit; } }
+
+    [Foldout("Scale Settings")] public float baseHealthScaling;
+    [Foldout("Scale Settings")] public float healthOverflowLimitScaling;
+    [Foldout("Scale Settings")] public float baseDamageScaling;
+    [Foldout("Scale Settings")] public float damageOverflowLimitScaling;
 
     [SerializeField] private Sprite characterSprite;
     public Sprite CharacterSprite { get { return characterSprite; } }

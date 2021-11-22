@@ -152,6 +152,7 @@ public class DeckModifier : MonoBehaviour
     {
         if (!isShowingChoices) return;
 
+        isShowingChoices = true;
         StartCoroutine(HideChoicesCoroutine());
     }
 
@@ -159,7 +160,7 @@ public class DeckModifier : MonoBehaviour
     {
         foreach (CardPosition cp in cardChoices)
         {
-            if (cp.cardHolder)
+            if (cp.cardHolder && cp.cardHolder != PlayerSelectionHandler.Instance.SelectedCard)
             {
                 cp.cardHolder.DestoyCard();
                 yield return new WaitForSeconds(BattleManager.Instance.cardDissolveDelay);

@@ -8,6 +8,9 @@ TextureImporter:
   - first:
       213: -1009063153085919067
     second: Icons_Spritesheet_1
+  - first:
+      213: 5508246156682241296
+    second: Icons_Spritesheet_2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -146,6 +149,27 @@ TextureImporter:
       bones: []
       spriteID: 5a0d06498661ff1f0800000000000000
       internalID: -1009063153085919067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Icons_Spritesheet_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 015a47012b8317c40800000000000000
+      internalID: 5508246156682241296
       vertices: []
       indices: 
       edges: []

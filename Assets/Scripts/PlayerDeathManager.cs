@@ -20,7 +20,7 @@ public class PlayerDeathManager : MonoBehaviour
 
     private void OnDisable()
     {
-        SceneTransitionManager.Instance.onLevelLoaded -= ResetObject;
+        if (SceneTransitionManager.Instance) SceneTransitionManager.Instance.onLevelLoaded -= ResetObject;
     }
 
     public void ShowDeathPanel()

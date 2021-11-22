@@ -14,13 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Chief
   description: Loves feeding his allies
-  baseHealth: 1
-  baseDamage: 1
-  overflowLimit: 8
+  baseHealth: 4
+  baseDamage: -1
+  healthOverflowLimit: 8
+  damageOverflowLimit: 4
+  baseHealthScaling: 1
+  healthOverflowLimitScaling: 1
+  baseDamageScaling: -0.5
+  damageOverflowLimitScaling: 0.5
   characterSprite: {fileID: -8937142932638233397, guid: e4d9f28c943177748a51dd3e41ffec18, type: 3}
   characterAnimator: {fileID: 9100000, guid: ba3cd664b7c9d7349a63c4f2b415427c, type: 2}
   actions:
-  - justAttack: 0
+  - justAttack: 1
     effect: {fileID: 11400000, guid: 09e40c97e8c82724d9d83e07f5097f56, type: 2}
     target: 1
-    canTargetSelf: 0
+    canTargetSelf: 1
+  - justAttack: 1
+    effect: {fileID: 11400000, guid: 09e40c97e8c82724d9d83e07f5097f56, type: 2}
+    target: 0
+    canTargetSelf: 1

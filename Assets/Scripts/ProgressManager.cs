@@ -48,7 +48,7 @@ public class ProgressManager : Singleton<ProgressManager>
         levelLength = startLevelLength;
         Wander();
         //EndLevel();
-        Encounter(new CharacterData[] { encounterData[0] });
+        //Encounter(new CharacterData[] { encounterData[0] });
     }
 
     private void OnEnable()
@@ -65,9 +65,12 @@ public class ProgressManager : Singleton<ProgressManager>
         // if-statement stops error when exiting playmode
         if (BattleManager.Instance) BattleManager.Instance.onBattleEndCallback -= Wander;
         deckModifier.onChoiceConfirmed -= NextLevel;
-        SceneTransitionManager.Instance.onLevelLoaded -= UpdateLevelLength;
-        SceneTransitionManager.Instance.onLevelLoaded -= ResetProgress;
-        SceneTransitionManager.Instance.onLevelLoaded -= Wander;
+        if (SceneTransitionManager.Instance)
+        {
+            SceneTransitionManager.Instance.onLevelLoaded -= UpdateLevelLength;
+            SceneTransitionManager.Instance.onLevelLoaded -= ResetProgress;
+            SceneTransitionManager.Instance.onLevelLoaded -= Wander;
+        }   
     }
 
     private void Update()
@@ -173,7 +176,7 @@ public class ProgressManager : Singleton<ProgressManager>
     private void NextLevel()
     {
         curLevel++;
-        SceneTransitionManager.Instance.ChangeScene(SceneTransitionManager.MainMenuSceneName);
+        SceneTransitionManager.Instance.ChangeScene(SceneTransitionManager.MainSceneName);
     }
 
     private void ResetProgress()
@@ -191,6 +194,6 @@ public class ProgressManager : Singleton<ProgressManager>
     public void PlayerDied()
     {
         playerDeathManager.playerIsDead = true;
-        BattleManager.Instance.onBattleEndCallback += playerDeathManager.ShowDeathPanel;
+        BattleManager.Instance.onTurnEndCallback += playerDeathManager.ShowDeathPanel;
     }
 }

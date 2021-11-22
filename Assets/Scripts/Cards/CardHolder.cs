@@ -7,6 +7,8 @@ using MyBox;
 
 public class CardHolder : Targetable
 {
+    private bool HasSelectedCard { get { return PlayerSelectionHandler.Instance.SelectedCard != null; } }
+
     [Expandable] public CardData card;
     public TextMeshProUGUI nameText;
     public RectTransform descriptionRect;
@@ -22,7 +24,7 @@ public class CardHolder : Targetable
     public float dissolveDur = 0.5f;
     [SerializeField, ReadOnly] private bool isSpawningCard;
     [SerializeField, ReadOnly] private bool isDestroyingCard;
-    [SerializeField, ReadOnly] private bool isSelected;
+    //[SerializeField, ReadOnly] private bool isSelected;
 
     private Canvas canvas;
     private GraphicRaycaster graphicRaycaster;
@@ -72,37 +74,35 @@ public class CardHolder : Targetable
 
     public void ShowHoveredOver()
     {
-        if (isSelected || isDestroyingCard) return;
+        if (isDestroyingCard || HasSelectedCard) return;
 
         if (hoveredOverCoroutine != null) StopCoroutine(hoveredOverCoroutine);
         hoveredOverCoroutine = StartCoroutine(MoveCard(basePos + Vector2.up * hoveredMoveDistance));
 
+        SetLayerFront();
         descriptionRect.gameObject.SetActive(true);
     }
 
     public void StopHoveredOver()
     {
-        if (isSelected || isDestroyingCard) return;
+        if (isDestroyingCard || HasSelectedCard) return;
 
         if (hoveredOverCoroutine != null) StopCoroutine(hoveredOverCoroutine);
         hoveredOverCoroutine = StartCoroutine(MoveCard(basePos));
 
+        SetLayerBack();
         descriptionRect.gameObject.SetActive(false);
     }
 
     private void OnSelected()
     {
-        isSelected = true;
-
         if (hoveredOverCoroutine != null) StopCoroutine(hoveredOverCoroutine);
-        SetLayerFront();
+        SetLayerFront(1);
         descriptionRect.gameObject.SetActive(false);
     }
 
     private void OnUnselected()
     {
-        isSelected = false;
-
         SetLayerBack();
     }
 
@@ -118,9 +118,9 @@ public class CardHolder : Targetable
         }
     }
 
-    public void SetLayerFront()
+    public void SetLayerFront(int priority = 0)
     {
-        SetLayer(2);
+        SetLayer(2 + priority);
     }
 
     public void SetLayerBack()

@@ -17,14 +17,15 @@ public abstract class Character : Targetable
             curHealth = value;
             onHealthChange?.Invoke(curHealth);
 
-            if (curHealth <= 0 || curHealth > OverflowLimit) onDeathCallback?.Invoke(this);
+            if (curHealth <= 0 || curHealth > HealthOverflowLimit) onDeathCallback?.Invoke(this);
         }
     }
 
     [SerializeField, ReadOnly] private int damageBoost;
-    public int Damage { get { return characterData.BaseDamage + damageBoost; } }
-    public int MaxHealth { get { return characterData.BaseHealth; } }
-    public int OverflowLimit { get { return characterData.OverflowLimit; } }
+    public int Damage { get { return characterData.BaseDamage + damageBoost + Mathf.FloorToInt(characterData.baseDamageScaling * ProgressManager.Instance.curLevel); } }
+    public int DamageOverflowLimit { get { return characterData.DamageOverflowLimit + Mathf.FloorToInt(characterData.damageOverflowLimitScaling * ProgressManager.Instance.curLevel); } }
+    public int MaxHealth { get { return characterData.BaseHealth + Mathf.FloorToInt(characterData.baseHealthScaling * ProgressManager.Instance.curLevel); } }
+    public int HealthOverflowLimit { get { return characterData.HealthOverflowLimit + Mathf.FloorToInt(characterData.healthOverflowLimitScaling * ProgressManager.Instance.curLevel); } }
 
     [SerializeField, ReadOnly] private bool isExecutingTurn = false;
     public bool IsExecutingTurn
@@ -107,6 +108,7 @@ public abstract class Character : Targetable
     public void BoostDamage(int change)
     {
         damageBoost += change;
+        damageBoost = (damageBoost - DamageOverflowLimit) % (DamageOverflowLimit * 2) + DamageOverflowLimit;
         onDamageChange?.Invoke(Damage);
     }
 

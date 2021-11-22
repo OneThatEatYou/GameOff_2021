@@ -89,6 +89,7 @@ public class BattleManager : Singleton<BattleManager>
     public delegate void BattleDelegate();
     public BattleDelegate onBattleStartCallback;
     public BattleDelegate onBattleEndCallback;
+    public BattleDelegate onTurnEndCallback;
 
     private void Awake()
     {
@@ -159,6 +160,22 @@ public class BattleManager : Singleton<BattleManager>
         }
     }
 
+    private void DragCard(Transform cardTransform, Vector2 offest)
+    {
+        cardTransform.position = MouseRawPosition + offest;
+    }
+
+    public void DisableInput()
+    {
+        input.Disable();
+    }
+
+    public void EnableInput()
+    {
+        input.Enable();
+    }
+
+    #region Turn Functions
     [ContextMenu("Proceed Turn")]
     public void ProceedTurn()
     {
@@ -166,6 +183,7 @@ public class BattleManager : Singleton<BattleManager>
         if (curTurnStatus == 0) turnNum++;
 
         EvaluateTurn();
+        onTurnEndCallback?.Invoke();
     }
 
     public void StartBattle(CharacterData[] enemies)
@@ -183,19 +201,19 @@ public class BattleManager : Singleton<BattleManager>
         StartCoroutine(StartBattleCoroutine());
     }
 
-    public void DisableInput()
+    private IEnumerator StartBattleCoroutine()
     {
-        input.Disable();
-    }
+        yield return new WaitForSeconds(cardPanelSpawnDelay);
 
-    public void EnableInput()
-    {
-        input.Enable();
-    }
+        //cardAreaCanvasGroup.alpha = 1;
+        cardAreaCanvasGroup.gameObject.SetActive(true);
 
-    private void DragCard(Transform cardTransform, Vector2 offest)
-    {
-        cardTransform.position = MouseRawPosition + offest;
+        yield return new WaitForSeconds(cardSpawnStartDelay);
+
+        EvaluateTurn();
+        DrawCards();
+
+        onBattleStartCallback?.Invoke();
     }
 
     public void EndBattle()
@@ -208,6 +226,108 @@ public class BattleManager : Singleton<BattleManager>
         Debug.Log("Ending battle");
     }
 
+    private IEnumerator EndBattleCoroutine()
+    {
+        yield return new WaitForSeconds(1);
+
+        foreach (var heldCard in heldCards)
+        {
+            if (heldCard.cardHolder)
+            {
+                heldCard.cardHolder.DestoyCard();
+                yield return new WaitForSeconds(cardDissolveDelay);
+            }
+        }
+
+        yield return new WaitForSeconds(1);
+
+        //cardAreaCanvasGroup.alpha = 0;
+        cardAreaCanvasGroup.gameObject.SetActive(false);
+
+        onBattleEndCallback?.Invoke();
+    }
+
+    private void EvaluateTurn()
+    {
+        // check if battle ended
+        if (!CanContinueBattle())
+        {
+            EndBattle();
+        }
+        else
+        {
+            switch (curTurnStatus)
+            {
+                case TurnStatus.Player:
+                    StartCoroutine(EvaluatePlayerTurn());
+                    break;
+                case TurnStatus.Enemy:
+                    StartCoroutine(EvaluateEnemyTurn());
+                    break;
+            }
+        }
+    }
+
+    private IEnumerator EvaluatePlayerTurn()
+    {
+        Debug.Log($"It's {Player.name}'s turn");
+        DrawCards();
+        StartCoroutine(Player.Evaluate());
+
+        while (Player.IsExecutingTurn)
+        {
+            yield return null;
+        }
+
+        ProceedTurn();
+    }
+
+    private IEnumerator EvaluateEnemyTurn()
+    {
+        foreach (EnemyPosition enemyPos in enemies)
+        {
+            if (!enemyPos.enemy) continue;
+
+            StartCoroutine(enemyPos.enemy.Evaluate());
+
+            // wait until the turn finished
+            while (enemyPos.enemy && enemyPos.enemy.IsExecutingTurn)
+            {
+                yield return null;
+            }
+        }
+
+        ProceedTurn();
+    }
+
+    /// <summary>
+    /// Returns true if there is no enemies left. False otherwise
+    /// </summary>
+    private bool CanContinueBattle()
+    {
+        if (!isBattling) return false;
+        if (ProgressManager.Instance.playerDeathManager.playerIsDead) return false;
+
+        if (HasEnemyRemaining()) return true;
+
+        return false;
+    }
+
+    private bool HasEnemyRemaining()
+    {
+        foreach (var enemyPos in enemies)
+        {
+            if (enemyPos.enemy)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    #endregion
+
+    #region Enemy
     private void SpawnEnemies(CharacterData[] enemies)
     {
         int maxPosIndex = enemies.Length - 1;
@@ -252,41 +372,37 @@ public class BattleManager : Singleton<BattleManager>
         return false;
     }
 
-    private IEnumerator StartBattleCoroutine()
+    private void RegisterEnemy(Character enemy, int positionIndex)
     {
-        yield return new WaitForSeconds(cardPanelSpawnDelay);
-
-        //cardAreaCanvasGroup.alpha = 1;
-        cardAreaCanvasGroup.gameObject.SetActive(true);
-
-        yield return new WaitForSeconds(cardSpawnStartDelay);
-
-        EvaluateTurn();
-        DrawCards();
-
-        onBattleStartCallback?.Invoke();
+        if (enemy is Enemy)
+        {
+            enemies[positionIndex].enemy = enemy as Enemy;
+        }
+        else
+        {
+            Debug.LogError("Attempting to register non-enemy character");
+        }
     }
 
-    private IEnumerator EndBattleCoroutine()
+    private void UnregisterEnemy(Character enemy)
     {
-        yield return new WaitForSeconds(1);
-
-        foreach (var heldCard in heldCards)
+        if (enemy is Enemy)
         {
-            if (heldCard.cardHolder)
+            foreach (EnemyPosition enemyPosition in enemies)
             {
-                heldCard.cardHolder.DestoyCard();
-                yield return new WaitForSeconds(cardDissolveDelay);
+                if (enemyPosition.enemy == enemy)
+                {
+                    enemyPosition.enemy = null;
+                    break;
+                }
             }
         }
-
-        yield return new WaitForSeconds(1);
-
-        //cardAreaCanvasGroup.alpha = 0;
-        cardAreaCanvasGroup.gameObject.SetActive(false);
-
-        onBattleEndCallback?.Invoke();
+        else
+        {
+            Debug.LogError("Attempting to unregister non-enemy character");
+        }
     }
+    #endregion
 
     private void DrawCards()
     {
@@ -320,58 +436,6 @@ public class BattleManager : Singleton<BattleManager>
         heldCards[cardPosIndex].cardHolder = cardHolder;
     }
 
-    private void EvaluateTurn()
-    {
-        // check if battle ended
-        if (!CanContinueBattle())
-        {
-            EndBattle();
-            return;
-        }
-
-        switch (curTurnStatus)
-        {
-            case TurnStatus.Player:
-                StartCoroutine(EvaluatePlayerTurn());
-                break;
-            case TurnStatus.Enemy:
-                StartCoroutine(EvaluateEnemyTurn());
-                break;
-        }
-    }
-
-    private IEnumerator EvaluatePlayerTurn()
-    {
-        Debug.Log($"It's {Player.name}'s turn");
-        DrawCards();
-        StartCoroutine(Player.Evaluate());
-
-        while (Player.IsExecutingTurn)
-        {
-            yield return null;
-        }
-
-        ProceedTurn();
-    }
-
-    private IEnumerator EvaluateEnemyTurn()
-    {
-        foreach (EnemyPosition enemyPos in enemies)
-        {
-            if (!enemyPos.enemy) continue;
-
-            StartCoroutine(enemyPos.enemy.Evaluate());
-
-            // wait until the turn finished
-            while (enemyPos.enemy.IsExecutingTurn)
-            {
-                yield return null;
-            }
-        }
-
-        ProceedTurn();
-    }
-
     [ContextMenu("Update Card Positions")]
     private void UpdateCardPositions()
     {
@@ -381,55 +445,6 @@ public class BattleManager : Singleton<BattleManager>
         {
             heldCards[i].position = (Vector2)cardHolderParent.position + positionOffset * i - new Vector2(positionOffset.x / 2 * (heldCards.Length - 1), 0);
         }
-    }
-
-    private void RegisterEnemy(Character enemy, int positionIndex)
-    {
-        if (enemy is Enemy)
-        {
-            enemies[positionIndex].enemy = enemy as Enemy;
-        }
-        else
-        {
-            Debug.LogError("Attempting to register non-enemy character");
-        }
-    }
-
-    private void UnregisterEnemy(Character enemy)
-    {
-        if (enemy is Enemy)
-        {
-            foreach (EnemyPosition enemyPosition in enemies)
-            {
-                if (enemyPosition.enemy == enemy)
-                {
-                    enemyPosition.enemy = null;
-                    break;
-                }
-            }
-        }
-        else
-        {
-            Debug.LogError("Attempting to unregister non-enemy character");
-        }
-    }
-
-    /// <summary>
-    /// Returns true if there is no enemies left. False otherwise
-    /// </summary>
-    private bool CanContinueBattle()
-    {
-        if (!isBattling) return false;
-
-        foreach (var enemyPos in enemies)
-        {
-            if (enemyPos.enemy)
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private void OnDrawGizmosSelected()
