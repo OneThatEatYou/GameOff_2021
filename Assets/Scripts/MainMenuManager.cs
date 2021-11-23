@@ -49,6 +49,7 @@ public class MainMenuManager : MonoBehaviour
 
         StartShowLine(introLines, startDelay, 0, introLines.Count - 1);
         //PlayGame();
+        DestroyMainSceneSingletons();
     }
 
     private void OnEnable()
@@ -196,5 +197,16 @@ public class MainMenuManager : MonoBehaviour
     private void LoadGame()
     {
         SceneTransitionManager.Instance.ChangeScene(SceneTransitionManager.MainSceneName);
+    }
+
+    private void DestroyMainSceneSingletons()
+    {
+        if (BattleManager.Instance)
+        {
+            Debug.Log("Destroying battle manager");
+            Destroy(BattleManager.Instance.gameObject);
+        }
+        if (ProgressManager.Instance) Destroy(ProgressManager.Instance.gameObject);
+        if (PlayerSelectionHandler.Instance) Destroy(PlayerSelectionHandler.Instance.gameObject);
     }
 }

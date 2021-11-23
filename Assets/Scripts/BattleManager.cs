@@ -89,7 +89,7 @@ public class BattleManager : Singleton<BattleManager>
     public delegate void BattleDelegate();
     public BattleDelegate onBattleStartCallback;
     public BattleDelegate onBattleEndCallback;
-    public BattleDelegate onTurnEndCallback;
+    //public BattleDelegate onTurnEndCallback;
 
     private void Awake()
     {
@@ -183,7 +183,7 @@ public class BattleManager : Singleton<BattleManager>
         if (curTurnStatus == 0) turnNum++;
 
         EvaluateTurn();
-        onTurnEndCallback?.Invoke();
+        //onTurnEndCallback?.Invoke();
     }
 
     public void StartBattle(CharacterData[] enemies)
@@ -246,19 +246,17 @@ public class BattleManager : Singleton<BattleManager>
         onBattleEndCallback?.Invoke();
     }
 
+    // Battle status is evaluated at the end of each character's turn
     private void EvaluateTurn()
     {
-        if (!HasBattleEnded())
+        switch (curTurnStatus)
         {
-            switch (curTurnStatus)
-            {
-                case TurnStatus.Player:
-                    StartCoroutine(EvaluatePlayerTurn());
-                    break;
-                case TurnStatus.Enemy:
-                    StartCoroutine(EvaluateEnemyTurn());
-                    break;
-            }
+            case TurnStatus.Player:
+                StartCoroutine(EvaluatePlayerTurn());
+                break;
+            case TurnStatus.Enemy:
+                StartCoroutine(EvaluateEnemyTurn());
+                break;
         }
     }
 
@@ -273,7 +271,11 @@ public class BattleManager : Singleton<BattleManager>
             yield return null;
         }
 
-        ProceedTurn();
+        if (!HasBattleEnded())
+        {
+            // battle continues
+            ProceedTurn();
+        }
     }
 
     private IEnumerator EvaluateEnemyTurn()
@@ -299,6 +301,7 @@ public class BattleManager : Singleton<BattleManager>
 
         if (isBattling)
         {
+            // battle continues
             ProceedTurn();
         }
     }

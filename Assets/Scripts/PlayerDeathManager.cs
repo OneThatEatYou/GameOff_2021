@@ -27,6 +27,7 @@ public class PlayerDeathManager : MonoBehaviour
     {
         deathText.gameObject.SetActive(true);
         deathRect.gameObject.SetActive(true);
+        BattleManager.Instance.onBattleEndCallback -= ShowDeathPanel;
     }
 
     public void RetryLevel()
@@ -41,7 +42,6 @@ public class PlayerDeathManager : MonoBehaviour
 
     private void ResetObject()
     {
-        playerIsDead = false;
         deathText.gameObject.SetActive(false);
         deathRect.gameObject.SetActive(false);
     }

@@ -46,8 +46,8 @@ public class ProgressManager : Singleton<ProgressManager>
     private void Start()
     {
         levelLength = startLevelLength;
-        Wander();
-        //EndLevel();
+        //Wander();
+        EndLevel();
         //Encounter(new CharacterData[] { encounterData[0] });
     }
 
@@ -83,7 +83,11 @@ public class ProgressManager : Singleton<ProgressManager>
 
     private void Wander()
     {
-        if (isWandering || playerDeathManager.playerIsDead) return;
+        if (isWandering || playerDeathManager.playerIsDead)
+        {
+            Debug.Log("Unable to wander");
+            return;
+        }
 
         isWandering = true;
         wanderTime = Random.Range(wanderTimeRange.x, wanderTimeRange.y);
@@ -181,9 +185,12 @@ public class ProgressManager : Singleton<ProgressManager>
 
     private void ResetProgress()
     {
+        Debug.Log("Reseting progress");
         levelTimeElapsed = 0;
         progress = 0;
         levelIsOver = false;
+        isWandering = false;
+        playerDeathManager.playerIsDead = false;
     }
 
     private void UpdateLevelLength()
@@ -194,6 +201,7 @@ public class ProgressManager : Singleton<ProgressManager>
     public void PlayerDied()
     {
         playerDeathManager.playerIsDead = true;
-        BattleManager.Instance.onTurnEndCallback += playerDeathManager.ShowDeathPanel;
+        // show death panel after battle ends
+        BattleManager.Instance.onBattleEndCallback += playerDeathManager.ShowDeathPanel;
     }
 }

@@ -27,4 +27,10 @@ public class Player : Character
         Debug.Log("Player died.");
         ProgressManager.Instance.PlayerDied();
     }
+
+    [ContextMenu("Kill Player")]
+    private void KillPlayer()
+    {
+        Die(this);
+    }
 }
