@@ -1,8 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MyBox;
 
 public abstract class CardEffect : ScriptableObject
 {
-    public abstract void ApplyEffect(Character character);
+    [Header("Animation")]
+    public bool playAnimation;
+    [ConditionalField(nameof(playAnimation)), SerializeField] private AnimationClip animationClip;
+    [ConditionalField(nameof(playAnimation)), SerializeField] private Vector2 animationPosOffset;
+    public bool useParticleEffect;
+    [ConditionalField(nameof(useParticleEffect)), SerializeField] private GameObject particlePrefab;
+    [ConditionalField(nameof(useParticleEffect)), SerializeField] private Vector2 particleSpawnPosOffset;
+
+    public abstract float ApplyEffect(Character character);
+
+    protected float PlayAnimation(Vector2 pos)
+    {
+        float animDur = 0;
+
+        if (playAnimation && animationClip)
+        {
+            Vector2 animSpawnPos = pos + animationPosOffset;
+            Debug.Log("Playing animation at " + animSpawnPos);
+            AnimationManager.PlayAnimation(animationClip, animSpawnPos);
+            animDur = animationClip.length;
+        }
+
+        if (useParticleEffect && particlePrefab)
+        {
+            Vector2 particleSpawnPos = pos + particleSpawnPosOffset;
+            Debug.Log("Spawning particle effect at " + particleSpawnPos);
+            GameObject.Instantiate(particlePrefab, particleSpawnPos, Quaternion.identity);
+            float particleSystemDur = particlePrefab.GetComponent<ParticleSystem>().main.duration;
+
+            if (animDur < particleSystemDur) animDur = particleSystemDur;
+        }
+
+        return animDur;
+    }
 }

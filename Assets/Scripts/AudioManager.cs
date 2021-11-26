@@ -22,4 +22,23 @@ public class AudioManager : Singleton<AudioManager>
             Debug.LogError("Error finding audio mixer group");
         }
     }
+
+    public static AudioSource PlayAudioAtPosition(AudioClip audioClip, Vector2 position, AudioMixerGroup mixerGroup, bool autoDestroy = true)
+    {
+        GameObject obj = new GameObject("OneShotAudio");
+        obj.transform.position = position;
+
+        AudioSource source = obj.AddComponent<AudioSource>();
+        source.clip = audioClip;
+        source.spatialBlend = 0;
+        source.outputAudioMixerGroup = mixerGroup;
+        source.Play();
+
+        if (autoDestroy)
+        {
+            GameObject.Destroy(obj, audioClip.length);
+        }
+
+        return source;
+    }
 }

@@ -16,9 +16,9 @@ public class Player : Character
         BattleManager.Instance.EnableInput();
     }
 
-    public override void EndTurn(float delay = 0)
+    public override void EndTurn()
     {
-        base.EndTurn(delay);
+        base.EndTurn();
         BattleManager.Instance.DisableInput();
     }
 

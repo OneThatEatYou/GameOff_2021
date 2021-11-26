@@ -24,7 +24,6 @@ public class CardHolder : Targetable
     public float dissolveDur = 0.5f;
     [SerializeField, ReadOnly] private bool isSpawningCard;
     [SerializeField, ReadOnly] private bool isDestroyingCard;
-    //[SerializeField, ReadOnly] private bool isSelected;
 
     private Canvas canvas;
     private GraphicRaycaster graphicRaycaster;
@@ -49,16 +48,16 @@ public class CardHolder : Targetable
 
     private void OnEnable()
     {
-        onPointerEnter += ShowHoveredOver;
-        onPointerExit += StopHoveredOver;
+        onPointerEnter += OnHoveredOver;
+        onPointerExit += OnHoveredExit;
         onSelected += OnSelected;
         onUnselected += OnUnselected;
     }
 
     private void OnDisable()
     {
-        onPointerExit += StopHoveredOver;
-        onPointerExit -= StopHoveredOver;
+        onPointerEnter -= OnHoveredOver;
+        onPointerExit -= OnHoveredExit;
         onSelected -= OnSelected;
         onUnselected -= OnUnselected;
     }
@@ -72,10 +71,16 @@ public class CardHolder : Targetable
         PlaySpawnCardAnimation();
     }
 
-    public void ShowHoveredOver()
+    private bool CanDetectHover()
     {
-        if (isDestroyingCard || HasSelectedCard) return;
+        return !isDestroyingCard && !BattleManager.Instance.isHoldingSelect;
+    }
 
+    private void OnHoveredOver()
+    {
+        if (!CanDetectHover()) return;
+
+        // move card upwards
         if (hoveredOverCoroutine != null) StopCoroutine(hoveredOverCoroutine);
         hoveredOverCoroutine = StartCoroutine(MoveCard(basePos + Vector2.up * hoveredMoveDistance));
 
@@ -83,10 +88,11 @@ public class CardHolder : Targetable
         descriptionRect.gameObject.SetActive(true);
     }
 
-    public void StopHoveredOver()
+    private void OnHoveredExit()
     {
-        if (isDestroyingCard || HasSelectedCard) return;
+        if (!CanDetectHover()) return;
 
+        // move card downwards
         if (hoveredOverCoroutine != null) StopCoroutine(hoveredOverCoroutine);
         hoveredOverCoroutine = StartCoroutine(MoveCard(basePos));
 
@@ -133,15 +139,30 @@ public class CardHolder : Targetable
     {
         if (targetable is Character)
         {
-            card.UseCard(targetable as Character);
-            DestoyCard();
-            BattleManager.Instance.Player.EndTurn(dissolveDur + 0.5f);
+            // get another object to run the coroutine as this object will be destroyed
+            BattleManager.Instance.StartCoroutine(UseCardCoroutine(targetable));
             return true;
         }
         else
         {
             return false;
         }
+    }
+
+    private IEnumerator UseCardCoroutine(Targetable target)
+    {
+        card.UseCard(target as Character);
+        DestoyCard();
+
+        yield return new WaitForSeconds(dissolveDur + 0.5f);
+
+        // wait for card effect to finish
+        while (card.IsApplyingEffects)
+        {
+            yield return null;
+        }
+
+        BattleManager.Instance.Player.EndTurn();
     }
 
     public void ToggleRaycastable(bool canBlockRaycast)

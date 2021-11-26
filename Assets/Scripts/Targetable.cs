@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Targetable : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class Targetable : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
     public bool targetable = true;
 
     public delegate void PointerCallback();
     public PointerCallback onPointerEnter;
     public PointerCallback onPointerExit;
+    public PointerCallback onPointerDown;
+    public PointerCallback onPointerUp;
     public PointerCallback onSelected;
     public PointerCallback onUnselected;
 
@@ -26,5 +28,15 @@ public class Targetable : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         PlayerSelectionHandler.Instance.SetHoveredTarget(null);
         onPointerExit?.Invoke();
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        onPointerDown?.Invoke();
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        onPointerUp?.Invoke();
     }
 }

@@ -35,7 +35,6 @@ public abstract class Character : Targetable
 
     private SpriteRenderer spriteRenderer;
     private Animator animator;
-    private bool isEndingTurn;
 
     public delegate void ValueChangeCallback(int val);
     public ValueChangeCallback onHealthChange;
@@ -90,19 +89,15 @@ public abstract class Character : Targetable
         isExecutingTurn = true;
     }
 
-    public virtual void EndTurn(float delay = 0)
+    public virtual void EndTurn()
     {
-        if (!isExecutingTurn || isEndingTurn) return;
+        if (!isExecutingTurn)
+        {
+            Debug.LogWarning("Not executing turn.");
+            return;
+        }
 
-        isEndingTurn = true;
-        StartCoroutine(EndTurnCoroutine(delay));
-    }
-
-    IEnumerator EndTurnCoroutine(float delay)
-    {
-        yield return new WaitForSeconds(delay);
         isExecutingTurn = false;
-        isEndingTurn = false;
     }
 
     public void BoostDamage(int change)

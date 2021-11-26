@@ -24,7 +24,8 @@ public class BattleManager : Singleton<BattleManager>
     }
     public Vector2 MouseWorldPosition
     {
-        get { return Camera.main.ScreenToWorldPoint(MouseRawPosition); }
+        // cast to vector2 to set z value to 0
+        get { return Camera.main.ScreenToWorldPoint((Vector2)MouseRawPosition); }
     }
     public Vector2 CardHolderArea 
     { 
@@ -68,7 +69,7 @@ public class BattleManager : Singleton<BattleManager>
 
     [Header("Selection")]
     [SerializeField, ReadOnly] private Vector2 selectOffset;
-    [SerializeField, ReadOnly] private bool isHoldingSelect;
+    [ReadOnly] public bool isHoldingSelect;
 
     [Header("Turn Info")]
     [SerializeField, ReadOnly] private int turnNum = 1;

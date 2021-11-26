@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66d9e21c0be144041b18fd4f225e6426, type: 3}
   m_Name: ATK_DW2
   m_EditorClassIdentifier: 
+  playAnimation: 1
+  animationClip: {fileID: 7400000, guid: a8066c6554aef6246b804b80fad84201, type: 2}
+  playFromTargetPos: 0
+  animationPosOffset: {x: 0, y: 0}
   amount: -2

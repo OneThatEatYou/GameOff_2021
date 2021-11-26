@@ -18,7 +18,7 @@ MonoBehaviour:
   baseDamage: 1
   healthOverflowLimit: 8
   damageOverflowLimit: 4
-  baseHealthScaling: 2
+  baseHealthScaling: 1
   healthOverflowLimitScaling: 2
   baseDamageScaling: 0
   damageOverflowLimitScaling: 0.5

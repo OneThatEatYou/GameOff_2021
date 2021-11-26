@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b62b22e1e70d680498065b42088b1d81, type: 3}
   m_Name: Attack1
   m_EditorClassIdentifier: 
+  playAnimation: 1
+  animationClip: {fileID: -1140562330431453910, guid: c9e0fe233846fac43923de62cccf5d5f, type: 3}
+  playFromTargetPos: 0
+  animationPosOffset: {x: 0, y: 0}
   useUserAttack: 0
   damage: 1

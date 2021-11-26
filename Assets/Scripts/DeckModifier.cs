@@ -11,6 +11,7 @@ public class DeckModifier : MonoBehaviour
     {
         public int minLevel;
         public CardData card;
+        public GameObject indication;
     }
 
     public Vector2 CardHolderArea
@@ -110,7 +111,15 @@ public class DeckModifier : MonoBehaviour
     private void SelectCard()
     {
         if (SelectedCard && HoveredTarget == SelectedCard) PlayerSelectionHandler.Instance.SelectCard(null);
-        else if (HoveredTarget is CardHolder) PlayerSelectionHandler.Instance.SelectCard(HoveredTarget as CardHolder);
+        else if (HoveredTarget is CardHolder)
+        {
+            PlayerSelectionHandler.Instance.SelectCard(HoveredTarget as CardHolder);
+        }
+    }
+
+    private void ShowSelection(int index)
+    {
+        
     }
 
     private void UpdateButtons()
@@ -174,7 +183,6 @@ public class DeckModifier : MonoBehaviour
         levelEndText.gameObject.SetActive(false);
         onChoiceConfirmed?.Invoke();
     }
-
 
     private CardData[] PickCards(int cardNum)
     {

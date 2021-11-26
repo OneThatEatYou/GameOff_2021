@@ -10,7 +10,7 @@ public class CardData : ScriptableObject
     public Sprite cardImage;
     public CardEffect[] effects;
 
-    private bool isApplyingEffects;
+    public bool IsApplyingEffects { get; private set; }
 
     public void UseCard(Character character)
     {
@@ -20,10 +20,15 @@ public class CardData : ScriptableObject
 
     private void ApplyEffects(Character character)
     {
-        if (isApplyingEffects) return;
+        if (IsApplyingEffects)
+        {
+            Debug.Log($"{cardName} is already applying effect. Cannot currently apply effect on {character.name}");
+            return;
+        }
 
-        isApplyingEffects = true;
+        IsApplyingEffects = true;
         character.StartCoroutine(ApplyEffectsCoroutine(character, BattleManager.Instance.cardEffectInitialDelay, BattleManager.Instance.cardEffectTriggerDelay));
+        //IsApplyingEffects = false;
     }
 
     private IEnumerator ApplyEffectsCoroutine(Character character, float initialDelay, float loopDelay)
@@ -32,10 +37,11 @@ public class CardData : ScriptableObject
 
         foreach (CardEffect effect in effects)
         {
-            effect.ApplyEffect(character);
+            yield return new WaitForSeconds(effect.ApplyEffect(character));
             yield return new WaitForSeconds(loopDelay);
         }
 
-        isApplyingEffects = false;
+        IsApplyingEffects = false;
+        Debug.Log("Finished applying eff");
     }
 }
