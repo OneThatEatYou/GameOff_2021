@@ -8,10 +8,10 @@ public abstract class CardEffect : ScriptableObject
     [Header("Animation")]
     public bool playAnimation;
     [ConditionalField(nameof(playAnimation)), SerializeField] private AnimationClip animationClip;
-    [ConditionalField(nameof(playAnimation)), SerializeField] private Vector2 animationPosOffset;
+    [ConditionalField(nameof(playAnimation)), SerializeField] private Vector2 animationPosOffset = new Vector2(0, 1);
     public bool useParticleEffect;
     [ConditionalField(nameof(useParticleEffect)), SerializeField] private GameObject particlePrefab;
-    [ConditionalField(nameof(useParticleEffect)), SerializeField] private Vector2 particleSpawnPosOffset;
+    [ConditionalField(nameof(useParticleEffect)), SerializeField] private Vector2 particleSpawnPosOffset = new Vector2(0, 1);
 
     public delegate void CardDelegate();
 

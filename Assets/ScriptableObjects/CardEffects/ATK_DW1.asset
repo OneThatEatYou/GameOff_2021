@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66d9e21c0be144041b18fd4f225e6426, type: 3}
   m_Name: ATK_DW1
   m_EditorClassIdentifier: 
-  playAnimation: 1
+  playAnimation: 0
   animationClip: {fileID: 7400000, guid: a8066c6554aef6246b804b80fad84201, type: 2}
   animationPosOffset: {x: 0, y: 0}
-  useParticleEffect: 0
-  particlePrefab: {fileID: 0}
-  particleSpawnPosOffset: {x: 0, y: 0}
+  useParticleEffect: 1
+  particlePrefab: {fileID: 5630310882976348703, guid: dd51ecd2ee26a524daa6233be054184f, type: 3}
+  particleSpawnPosOffset: {x: 0, y: 1}
   amount: -1

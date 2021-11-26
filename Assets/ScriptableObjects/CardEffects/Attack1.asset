@@ -17,6 +17,6 @@ MonoBehaviour:
   animationPosOffset: {x: 0, y: 0}
   useParticleEffect: 1
   particlePrefab: {fileID: 6974521488058202541, guid: 2c7b7d08bf1d5a3419b54eb23e7311e8, type: 3}
-  particleSpawnPosOffset: {x: 0, y: 0.5}
+  particleSpawnPosOffset: {x: 0, y: 1}
   useUserAttack: 0
   damage: 1

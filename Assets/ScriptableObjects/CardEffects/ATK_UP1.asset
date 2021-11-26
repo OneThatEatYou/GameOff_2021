@@ -12,4 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66d9e21c0be144041b18fd4f225e6426, type: 3}
   m_Name: ATK_UP1
   m_EditorClassIdentifier: 
+  playAnimation: 0
+  animationClip: {fileID: 0}
+  animationPosOffset: {x: 0, y: 0}
+  useParticleEffect: 1
+  particlePrefab: {fileID: 4880093369331408966, guid: 3069948d09cf62442ae94c7c74f005a0, type: 3}
+  particleSpawnPosOffset: {x: 0, y: 1}
   amount: 1
