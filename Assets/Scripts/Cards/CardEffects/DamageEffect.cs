@@ -11,10 +11,11 @@ public class DamageEffect : CardEffect
     public bool useUserAttack;
     [ConditionalField(nameof(useUserAttack), true)] public int damage;
 
-    public override float ApplyEffect(Character character)
+    public override float ApplyEffect(Character character, out CardDelegate callback)
     {
         int damageDealt = useUserAttack ? character.Damage : damage;
-        character.TakeDamage(damageDealt);
+        callback = null;
+        callback += () => character.TakeDamage(damageDealt);
 
         return PlayAnimation(character.transform.position);
     }

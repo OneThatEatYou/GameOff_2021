@@ -13,7 +13,9 @@ public abstract class CardEffect : ScriptableObject
     [ConditionalField(nameof(useParticleEffect)), SerializeField] private GameObject particlePrefab;
     [ConditionalField(nameof(useParticleEffect)), SerializeField] private Vector2 particleSpawnPosOffset;
 
-    public abstract float ApplyEffect(Character character);
+    public delegate void CardDelegate();
+
+    public abstract float ApplyEffect(Character character, out CardDelegate callback);
 
     protected float PlayAnimation(Vector2 pos)
     {

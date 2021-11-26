@@ -1244,11 +1244,11 @@ MonoBehaviour:
   cardHolderAreaScale: {x: 0.9, y: 0.55}
   cardHolderAreaOffset: {x: 0, y: 0}
   cardChoices:
-  - position: {x: 264, y: 223.44003}
+  - position: {x: -312, y: 254.48001}
     cardHolder: {fileID: 0}
-  - position: {x: 480, y: 223.44003}
+  - position: {x: 480, y: 254.48001}
     cardHolder: {fileID: 0}
-  - position: {x: 696, y: 223.44003}
+  - position: {x: 1272, y: 254.48001}
     cardHolder: {fileID: 0}
   confirmButton: {fileID: 323052983}
   cardPanelSpawnDelay: 1
@@ -1387,13 +1387,13 @@ MonoBehaviour:
   cardAreaCanvasGroup: {fileID: 136048148}
   cardHolderAreaScale: {x: 0.9, y: 0.8}
   heldCards:
-  - position: {x: 237, y: 126}
+  - position: {x: -411, y: 222}
     cardHolder: {fileID: 0}
-  - position: {x: 399, y: 126}
+  - position: {x: 183, y: 222}
     cardHolder: {fileID: 0}
-  - position: {x: 561, y: 126}
+  - position: {x: 777, y: 222}
     cardHolder: {fileID: 0}
-  - position: {x: 723, y: 126}
+  - position: {x: 1371, y: 222}
     cardHolder: {fileID: 0}
   isDrawingCard: 0
   selectOffset: {x: 0, y: 0}

@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playAnimation: 1
   animationClip: {fileID: 7400000, guid: a8066c6554aef6246b804b80fad84201, type: 2}
-  playFromTargetPos: 0
   animationPosOffset: {x: 0, y: 0}
+  useParticleEffect: 0
+  particlePrefab: {fileID: 0}
+  particleSpawnPosOffset: {x: 0, y: 0}
   amount: -1

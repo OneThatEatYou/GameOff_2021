@@ -28,7 +28,6 @@ public class CardData : ScriptableObject
 
         IsApplyingEffects = true;
         character.StartCoroutine(ApplyEffectsCoroutine(character, BattleManager.Instance.cardEffectInitialDelay, BattleManager.Instance.cardEffectTriggerDelay));
-        //IsApplyingEffects = false;
     }
 
     private IEnumerator ApplyEffectsCoroutine(Character character, float initialDelay, float loopDelay)
@@ -37,11 +36,11 @@ public class CardData : ScriptableObject
 
         foreach (CardEffect effect in effects)
         {
-            yield return new WaitForSeconds(effect.ApplyEffect(character));
+            yield return new WaitForSeconds(effect.ApplyEffect(character, out CardEffect.CardDelegate effectCallback));
+            effectCallback?.Invoke();
             yield return new WaitForSeconds(loopDelay);
         }
 
         IsApplyingEffects = false;
-        Debug.Log("Finished applying eff");
     }
 }

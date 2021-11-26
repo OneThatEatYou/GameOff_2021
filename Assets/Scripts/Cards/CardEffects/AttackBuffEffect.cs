@@ -8,9 +8,10 @@ public class AttackBuffEffect : CardEffect
     [Space]
     public int amount;
 
-    public override float ApplyEffect(Character character)
+    public override float ApplyEffect(Character character, out CardDelegate callback)
     {
-        character.BoostDamage(amount);
+        callback = null;
+        callback += () => character.BoostDamage(amount);
         return PlayAnimation(character.transform.position);
     }
 }

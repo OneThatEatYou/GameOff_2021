@@ -16,15 +16,17 @@ public class Enemy : Character
         StartTurn();
         yield return new WaitForSeconds(1);
 
-        yield return new WaitForSeconds(Action());
+        yield return new WaitForSeconds(Action(out CardEffect.CardDelegate cardEffect));
+        cardEffect?.Invoke();
         EndTurn();
     }
 
     // returns the wait time of the action
-    public float Action()
+    public float Action(out CardEffect.CardDelegate cardEffect)
     {
         Action action = characterData.GetRandomAction();
         Character target = null;
+        cardEffect = null;
         //Debug.Log($"{characterData.enemyName} is using {action.effect.name}");
 
         // assign target
@@ -46,7 +48,8 @@ public class Enemy : Character
         {
             if (target)
             {
-                return PlayAttackSequence(() => action.effect.ApplyEffect(target));
+                float dur = PlayAttackSequence(() => action.effect.ApplyEffect(target, out CardEffect.CardDelegate effectCallback));
+                return dur;
             }
             else
             {
