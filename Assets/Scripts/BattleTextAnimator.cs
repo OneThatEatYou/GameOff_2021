@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 
-public class OverflowAnimator : MonoBehaviour
+public class BattleTextAnimator : MonoBehaviour
 {
     public float height;
     public float raiseDur;
@@ -18,13 +18,10 @@ public class OverflowAnimator : MonoBehaviour
         text = GetComponentInChildren<TextMeshProUGUI>();
     }
 
-    private void Start()
+    public void Animate(string content)
     {
-        Animate();
-    }
+        text.text = content;
 
-    private void Animate()
-    {
         Sequence s = DOTween.Sequence();
         s.Append(transform.DOMoveY(height, raiseDur).SetRelative().SetEase(Ease.OutSine));
         s.Append(transform.DOMoveY(-height, raiseDur).SetRelative().SetEase(Ease.InSine));

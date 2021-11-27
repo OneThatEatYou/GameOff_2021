@@ -38,7 +38,8 @@ public class CharacterUIHandler : MonoBehaviour
         character.onHealthChange += UpdateHealth;
         character.onDamageChange += UpdateDamage;
         character.onDamageChange += ctx => UpdateStatsText();
-        character.onOverflowCallback += ShowOverflow;
+        character.onOverflowCallback += ctx => ShowBattleText((Vector2)character.transform.position + Vector2.up, "OVERFLOW");
+        character.onTakeDamage += ShowDamageTaken;
         character.onPointerEnter += ShowHoveredOver;
         character.onPointerExit += StopHoveredOver;
     }
@@ -48,7 +49,8 @@ public class CharacterUIHandler : MonoBehaviour
         character.onHealthChange -= UpdateHealth;
         character.onDamageChange -= UpdateDamage;
         character.onDamageChange -= ctx => UpdateStatsText();
-        character.onOverflowCallback -= ShowOverflow;
+        character.onOverflowCallback -= ctx => ShowBattleText((Vector2)character.transform.position + Vector2.up, "OVERFLOW");
+        character.onTakeDamage -= ShowDamageTaken;
         character.onPointerEnter -= ShowHoveredOver;
         character.onPointerExit -= StopHoveredOver;
     }
@@ -88,9 +90,17 @@ public class CharacterUIHandler : MonoBehaviour
         }
     }
 
-    private void ShowOverflow(Character character)
+    private void ShowBattleText(Vector2 pos, string content)
     {
-        Instantiate(overflowEffect, (Vector2)character.transform.position + Vector2.up, Quaternion.identity);
+        BattleTextAnimator text = Instantiate(overflowEffect, pos, Quaternion.identity).GetComponent<BattleTextAnimator>();
+        text.Animate(content);
+    }
+
+    private void ShowDamageTaken(int value)
+    {
+        string str = value >= 0 ? "" : "+";
+        str += (value * -1).ToString();
+        ShowBattleText((Vector2)character.transform.position + Vector2.up, str);
     }
 
     private void ShowHoveredOver()

@@ -13,6 +13,10 @@ public abstract class CardEffect : ScriptableObject
     [ConditionalField(nameof(useParticleEffect)), SerializeField] private GameObject particlePrefab;
     [ConditionalField(nameof(useParticleEffect)), SerializeField] private Vector2 particleSpawnPosOffset = new Vector2(0, 1);
 
+    [Header("Audio")]
+    public bool playAudio;
+    [ConditionalField(nameof(playAudio)), SerializeField] private AudioClip audioClip;
+
     public delegate void CardDelegate();
 
     public abstract float ApplyEffect(Character character, out CardDelegate callback);
@@ -37,6 +41,11 @@ public abstract class CardEffect : ScriptableObject
             float particleSystemDur = particlePrefab.GetComponent<ParticleSystem>().main.duration;
 
             if (animDur < particleSystemDur) animDur = particleSystemDur;
+        }
+
+        if (playAudio && audioClip)
+        {
+            AudioManager.PlayAudioAtPosition(audioClip, pos, AudioManager.SFXGroup);
         }
 
         return animDur;

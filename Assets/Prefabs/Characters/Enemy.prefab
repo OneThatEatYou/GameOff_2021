@@ -184,6 +184,7 @@ MonoBehaviour:
   tackleTime: 0.05
   recoverTime: 0.22
   waitTime: 0.3
+  attackSFX: {fileID: 8300000, guid: d0772c2be48992c43a7f1d33e679e795, type: 3}
 --- !u!114 &3741273703683720773
 MonoBehaviour:
   m_ObjectHideFlags: 0

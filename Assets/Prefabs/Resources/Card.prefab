@@ -143,6 +143,7 @@ MonoBehaviour:
   dissolveDur: 0.5
   isSpawningCard: 0
   isDestroyingCard: 0
+  dissolveSFX: {fileID: 8300000, guid: 5ad603988a2dcb64eb20f300ae024a08, type: 3}
 --- !u!1 &4090143474134280850
 GameObject:
   m_ObjectHideFlags: 0

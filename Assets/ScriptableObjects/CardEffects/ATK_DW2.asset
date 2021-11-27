@@ -18,4 +18,6 @@ MonoBehaviour:
   useParticleEffect: 1
   particlePrefab: {fileID: 5630310882976348703, guid: dd51ecd2ee26a524daa6233be054184f, type: 3}
   particleSpawnPosOffset: {x: 0, y: 1}
+  playAudio: 1
+  audioClip: {fileID: 8300000, guid: f6e1115a1d8d49f41ad6e9189493a64b, type: 3}
   amount: -2

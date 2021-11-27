@@ -7,8 +7,6 @@ using MyBox;
 
 public class CardHolder : Targetable
 {
-    private bool HasSelectedCard { get { return PlayerSelectionHandler.Instance.SelectedCard != null; } }
-
     [Expandable] public CardData card;
     public TextMeshProUGUI nameText;
     public RectTransform descriptionRect;
@@ -24,6 +22,9 @@ public class CardHolder : Targetable
     public float dissolveDur = 0.5f;
     [SerializeField, ReadOnly] private bool isSpawningCard;
     [SerializeField, ReadOnly] private bool isDestroyingCard;
+
+    [Header("Sound")]
+    public AudioClip dissolveSFX;
 
     private Canvas canvas;
     private GraphicRaycaster graphicRaycaster;
@@ -179,6 +180,7 @@ public class CardHolder : Targetable
         cardImage.material = new Material(dissolveMat);
         dissolveMat = cardImage.material;
         dissolveMat.SetFloat("_Amount", 0);
+        AudioManager.PlayAudioAtPosition(dissolveSFX, transform.position, AudioManager.SFXGroup);
         StartCoroutine(DestroyCardCoroutine());
     }
 
@@ -209,6 +211,7 @@ public class CardHolder : Targetable
 
         isSpawningCard = true;
         targetable = false;
+        AudioManager.PlayAudioAtPosition(dissolveSFX, transform.position, AudioManager.SFXGroup);
         StartCoroutine(SpawnCardAnimationCoroutine());
     }
 

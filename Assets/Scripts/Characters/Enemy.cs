@@ -11,6 +11,9 @@ public class Enemy : Character
     public float recoverTime;
     public float waitTime;
 
+    [Header("Audio")]
+    public AudioClip attackSFX;
+
     public override IEnumerator Evaluate()
     {
         StartTurn();
@@ -62,6 +65,7 @@ public class Enemy : Character
     // returns the length of attack sequence
     private float Attack(Character target)
     {
+        AudioManager.PlayAudioAtPosition(attackSFX, target.transform.position, AudioManager.SFXGroup);
         return PlayAttackSequence(() => target.TakeDamage(Damage));
     }
 

@@ -47,6 +47,7 @@ public abstract class Character : Targetable
     public delegate void ValueChangeCallback(int val);
     public ValueChangeCallback onHealthChange;
     public ValueChangeCallback onDamageChange;
+    public ValueChangeCallback onTakeDamage;
     public delegate void CharacterCallback(Character character);
     public CharacterCallback onDeathCallback;
     public CharacterCallback onOverflowCallback;
@@ -82,6 +83,7 @@ public abstract class Character : Targetable
 
     public void TakeDamage(int damage)
     {
+        onTakeDamage?.Invoke(damage);
         CurHealth -= damage;
         Debug.Log($"{name} took {damage} damage");
     }
