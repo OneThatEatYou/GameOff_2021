@@ -205,6 +205,7 @@ MonoBehaviour:
   descriptionText: {fileID: 8836371982363339203}
   attackIconSprite: {fileID: -1009063153085919067, guid: 7115a159fe137804aa5a689fd8ebf0e0, type: 3}
   healIconSprite: {fileID: 5508246156682241296, guid: 7115a159fe137804aa5a689fd8ebf0e0, type: 3}
+  overflowEffect: {fileID: 4383892016315742799, guid: 06b794e102368114fa10ae78b26dda92, type: 3}
 --- !u!1001 &8277457890908797361
 PrefabInstance:
   m_ObjectHideFlags: 0

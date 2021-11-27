@@ -17,7 +17,15 @@ public abstract class Character : Targetable
             curHealth = value;
             onHealthChange?.Invoke(curHealth);
 
-            if (curHealth <= 0 || curHealth > HealthOverflowLimit) onDeathCallback?.Invoke(this);
+            if (curHealth <= 0)
+            {
+                onDeathCallback?.Invoke(this);
+            }
+            else if (curHealth > HealthOverflowLimit)
+            {
+                onOverflowCallback?.Invoke(this);
+                onDeathCallback?.Invoke(this);
+            }
         }
     }
 
@@ -41,6 +49,7 @@ public abstract class Character : Targetable
     public ValueChangeCallback onDamageChange;
     public delegate void CharacterCallback(Character character);
     public CharacterCallback onDeathCallback;
+    public CharacterCallback onOverflowCallback;
 
     protected virtual void Awake()
     {

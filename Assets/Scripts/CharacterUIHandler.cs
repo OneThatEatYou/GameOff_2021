@@ -17,6 +17,7 @@ public class CharacterUIHandler : MonoBehaviour
     [Space]
     public Sprite attackIconSprite;
     public Sprite healIconSprite;
+    public GameObject overflowEffect;
 
     private Character character;
 
@@ -37,6 +38,7 @@ public class CharacterUIHandler : MonoBehaviour
         character.onHealthChange += UpdateHealth;
         character.onDamageChange += UpdateDamage;
         character.onDamageChange += ctx => UpdateStatsText();
+        character.onOverflowCallback += ShowOverflow;
         character.onPointerEnter += ShowHoveredOver;
         character.onPointerExit += StopHoveredOver;
     }
@@ -46,6 +48,7 @@ public class CharacterUIHandler : MonoBehaviour
         character.onHealthChange -= UpdateHealth;
         character.onDamageChange -= UpdateDamage;
         character.onDamageChange -= ctx => UpdateStatsText();
+        character.onOverflowCallback -= ShowOverflow;
         character.onPointerEnter -= ShowHoveredOver;
         character.onPointerExit -= StopHoveredOver;
     }
@@ -83,6 +86,11 @@ public class CharacterUIHandler : MonoBehaviour
         {
             damageImage.sprite = attackIconSprite;
         }
+    }
+
+    private void ShowOverflow(Character character)
+    {
+        Instantiate(overflowEffect, (Vector2)character.transform.position + Vector2.up, Quaternion.identity);
     }
 
     private void ShowHoveredOver()
