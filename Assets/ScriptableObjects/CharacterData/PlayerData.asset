@@ -19,7 +19,7 @@ MonoBehaviour:
   healthOverflowLimit: 12
   damageOverflowLimit: 4
   baseHealthScaling: 1
-  healthOverflowLimitScaling: 2
+  healthOverflowLimitScaling: 1.5
   baseDamageScaling: 0
   damageOverflowLimitScaling: 0.5
   characterSprite: {fileID: 6920209119401886799, guid: b57199e9244fe0b4c8819ffce1cb892f, type: 3}

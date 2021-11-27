@@ -109,7 +109,16 @@ public class ProgressManager : Singleton<ProgressManager>
     private void Encounter(CharacterData[] fixedEncounter = null)
     {
         CharacterData[] encounters;
-        int maxEncounterNum = Mathf.Min(curLevel + 1, 3);
+        int maxEncounterNum = 1;
+
+        if (curLevel > 4)
+        {
+            maxEncounterNum = 3;
+        }
+        else if (curLevel > 2)
+        {
+            maxEncounterNum = 2;
+        }
 
         if (fixedEncounter != null) encounters = fixedEncounter;
         else encounters = GetRandomEncounters(Random.Range(1, maxEncounterNum + 1));
