@@ -13,6 +13,13 @@ public class MainMenuManager : MonoBehaviour
         public string line;
         public float lineWaitTime;
         public int repeats;
+
+        public Line(string _line, float _lineWaitTime, int _repeats)
+        {
+            line = _line;
+            lineWaitTime = _lineWaitTime;
+            repeats = _repeats;
+        }
     }
 
     [Header("UI")]
@@ -27,6 +34,7 @@ public class MainMenuManager : MonoBehaviour
     public int maxLineNum = 15;
     public List<Line> introLines;
     public List<Line> startGameLines;
+    public AudioSource audioSource;
 
     [SerializeField, ReadOnly] private bool awaitingInput;
 
@@ -116,6 +124,8 @@ public class MainMenuManager : MonoBehaviour
         text.text += "> ";
         text.text += line.line;
         text.text += "\n";
+
+        audioSource.Play();
     }
 
     public void ToggleSettingsMenu()
@@ -189,9 +199,22 @@ public class MainMenuManager : MonoBehaviour
 
     private void PlayGame()
     {
-        input.Disable();
+        if (!awaitingInput || isStarting)
+        {
+            SkipStartGameSequence();
+            return;
+        }
 
         StartShowLine(startGameLines, 0, 0, startGameLines.Count - 1, () => LoadGame());
+    }
+
+    private void SkipStartGameSequence()
+    {
+        List<Line> temp = new List<Line>();
+        temp.Add(new Line("Skipping intro sequence", 2f, 0));
+
+        StopAllCoroutines();
+        StartShowLine(temp, 0, 0, 0, () => LoadGame());
     }
 
     private void LoadGame()

@@ -28,7 +28,7 @@ public abstract class CardEffect : ScriptableObject
         if (playAnimation && animationClip)
         {
             Vector2 animSpawnPos = pos + animationPosOffset;
-            Debug.Log("Playing animation at " + animSpawnPos);
+            //Debug.Log("Playing animation at " + animSpawnPos);
             AnimationManager.PlayAnimation(animationClip, animSpawnPos);
             animDur = animationClip.length;
         }
@@ -36,7 +36,7 @@ public abstract class CardEffect : ScriptableObject
         if (useParticleEffect && particlePrefab)
         {
             Vector2 particleSpawnPos = pos + particleSpawnPosOffset;
-            Debug.Log("Spawning particle effect at " + particleSpawnPos);
+            //Debug.Log("Spawning particle effect at " + particleSpawnPos);
             GameObject.Instantiate(particlePrefab, particleSpawnPos, Quaternion.identity);
             float particleSystemDur = particlePrefab.GetComponent<ParticleSystem>().main.duration;
 

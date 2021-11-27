@@ -20,6 +20,7 @@ public class Player : Character
     {
         base.EndTurn();
         BattleManager.Instance.DisableInput();
+        Debug.Log("Ending player turn");
     }
 
     protected override void Die(Character character)

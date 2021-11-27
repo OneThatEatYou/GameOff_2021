@@ -160,6 +160,7 @@ public class CardHolder : Targetable
         // wait for card effect to finish
         while (card.IsApplyingEffects)
         {
+            Debug.Log(".");
             yield return null;
         }
 

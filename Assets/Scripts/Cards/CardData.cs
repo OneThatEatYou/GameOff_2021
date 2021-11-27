@@ -27,7 +27,7 @@ public class CardData : ScriptableObject
         }
 
         IsApplyingEffects = true;
-        character.StartCoroutine(ApplyEffectsCoroutine(character, BattleManager.Instance.cardEffectInitialDelay, BattleManager.Instance.cardEffectTriggerDelay));
+        BattleManager.Instance.StartCoroutine(ApplyEffectsCoroutine(character, BattleManager.Instance.cardEffectInitialDelay, BattleManager.Instance.cardEffectTriggerDelay));
     }
 
     private IEnumerator ApplyEffectsCoroutine(Character character, float initialDelay, float loopDelay)

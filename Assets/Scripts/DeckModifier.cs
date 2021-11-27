@@ -59,6 +59,9 @@ public class DeckModifier : MonoBehaviour
     public float cardSpawnStartDelay = 1f;
     public float cardDrawDelay = 0.5f;
 
+    [Header("Audio")]
+    public AudioClip buttonSFX;
+
     public delegate void LevelEndDelegate();
     public LevelEndDelegate onChoiceConfirmed;
 
@@ -108,6 +111,11 @@ public class DeckModifier : MonoBehaviour
         }
     }
 
+    public void PlayButtonSFX()
+    {
+        AudioManager.PlayAudioAtPosition(buttonSFX, transform.position, AudioManager.SFXGroup);
+    }
+
     private void SelectCard()
     {
         if (SelectedCard && HoveredTarget == SelectedCard) PlayerSelectionHandler.Instance.SelectCard(null);
@@ -115,11 +123,6 @@ public class DeckModifier : MonoBehaviour
         {
             PlayerSelectionHandler.Instance.SelectCard(HoveredTarget as CardHolder);
         }
-    }
-
-    private void ShowSelection(int index)
-    {
-        
     }
 
     private void UpdateButtons()

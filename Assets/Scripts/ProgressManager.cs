@@ -46,9 +46,9 @@ public class ProgressManager : Singleton<ProgressManager>
     private void Start()
     {
         levelLength = startLevelLength;
-        //Wander();
+        Wander();
         //EndLevel();
-        Encounter(new CharacterData[] { encounterData[0] });
+        //Encounter(new CharacterData[] { encounterData[0] });
     }
 
     private void OnEnable()
@@ -109,9 +109,10 @@ public class ProgressManager : Singleton<ProgressManager>
     private void Encounter(CharacterData[] fixedEncounter = null)
     {
         CharacterData[] encounters;
+        int maxEncounterNum = Mathf.Min(curLevel + 1, 3);
 
         if (fixedEncounter != null) encounters = fixedEncounter;
-        else encounters = GetRandomEncounters(Random.Range(1, 3));
+        else encounters = GetRandomEncounters(Random.Range(1, maxEncounterNum + 1));
 
         BattleManager.Instance.StartBattle(encounters);
     }

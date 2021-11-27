@@ -19,17 +19,15 @@ public class Enemy : Character
         StartTurn();
         yield return new WaitForSeconds(1);
 
-        yield return new WaitForSeconds(Action(out CardEffect.CardDelegate cardEffect));
-        cardEffect?.Invoke();
+        yield return new WaitForSeconds(Action());
         EndTurn();
     }
 
     // returns the wait time of the action
-    public float Action(out CardEffect.CardDelegate cardEffect)
+    public float Action()
     {
         Action action = characterData.GetRandomAction();
         Character target = null;
-        cardEffect = null;
         //Debug.Log($"{characterData.enemyName} is using {action.effect.name}");
 
         // assign target

@@ -16,7 +16,7 @@ MonoBehaviour:
   description: It's you!
   baseHealth: 5
   baseDamage: 1
-  healthOverflowLimit: 8
+  healthOverflowLimit: 12
   damageOverflowLimit: 4
   baseHealthScaling: 1
   healthOverflowLimitScaling: 2
