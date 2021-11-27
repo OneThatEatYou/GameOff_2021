@@ -26,6 +26,7 @@ public class Player : Character
     protected override void Die(Character character)
     {
         Debug.Log("Player died.");
+        animator.Play("Player_Die");
         ProgressManager.Instance.PlayerDied();
     }
 

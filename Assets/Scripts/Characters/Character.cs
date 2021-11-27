@@ -42,7 +42,7 @@ public abstract class Character : Targetable
     }
 
     private SpriteRenderer spriteRenderer;
-    private Animator animator;
+    protected Animator animator;
 
     public delegate void ValueChangeCallback(int val);
     public ValueChangeCallback onHealthChange;

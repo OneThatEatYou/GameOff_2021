@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: ChefData
   m_EditorClassIdentifier: 
   enemyName: Chef
-  description: Loves feeding his allies
+  description: Loves feeding everyone
   baseHealth: 4
   baseDamage: -1
   healthOverflowLimit: 8
   damageOverflowLimit: 4
-  baseHealthScaling: 1
+  baseHealthScaling: 0.75
   healthOverflowLimitScaling: 1
   baseDamageScaling: -0.5
   damageOverflowLimitScaling: 0.5

@@ -61,6 +61,7 @@ public class DeckModifier : MonoBehaviour
 
     [Header("Audio")]
     public AudioClip buttonSFX;
+    public AudioClip levelUpSFX;
 
     public delegate void LevelEndDelegate();
     public LevelEndDelegate onChoiceConfirmed;
@@ -145,6 +146,7 @@ public class DeckModifier : MonoBehaviour
 
         isShowingChoices = true;
         choiceRect.gameObject.SetActive(true);
+        AudioManager.PlayAudioAtPosition(levelUpSFX, transform.position, AudioManager.SFXGroup);
         UpdateButtons();
         StartCoroutine(ShowChoicesCoroutine());
     }
@@ -182,8 +184,18 @@ public class DeckModifier : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         isShowingChoices = false;
+
+        // flushes any remaining cards
+        foreach (CardPosition cp in cardChoices)
+        {
+            if (cp.cardHolder)
+            {
+                Destroy(cp.cardHolder.gameObject);
+            }
+        }
         choiceRect.gameObject.SetActive(false);
         levelEndText.gameObject.SetActive(false);
+
         onChoiceConfirmed?.Invoke();
     }
 
